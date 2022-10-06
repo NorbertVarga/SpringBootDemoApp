@@ -5,6 +5,8 @@ import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserCreateCommand;
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserUpdateCommand;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.AppUser;
 import com.NorbertVarga.SpringBootSecuritydemoProject.service.AppUserService;
+import com.NorbertVarga.SpringBootSecuritydemoProject.validation.UserCreateCommandValidator;
+import com.NorbertVarga.SpringBootSecuritydemoProject.validation.UserUpdateCommandValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +14,11 @@ import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -22,16 +26,31 @@ import java.util.List;
 public class AppUserController {
 
     private final AppUserService userService;
+    private final UserCreateCommandValidator userCreateCommandValidator;
+    private final UserUpdateCommandValidator userUpdateCommandValidator;
 
     @Autowired
-    public AppUserController(AppUserService userService) {
+    public AppUserController(AppUserService userService, UserCreateCommandValidator userCreateCommandValidator, UserUpdateCommandValidator userUpdateCommandValidator) {
         this.userService = userService;
+        this.userCreateCommandValidator = userCreateCommandValidator;
+        this.userUpdateCommandValidator = userUpdateCommandValidator;
     }
+
+    @InitBinder("userCreateCommand")
+    protected void initBinderUserCreate(WebDataBinder binder) {
+        binder.addValidators(userCreateCommandValidator);
+    }
+
+    @InitBinder("userUpdateCommand")
+    protected void initBinderUserUpdate(WebDataBinder binder) {
+        binder.addValidators(userUpdateCommandValidator);
+    }
+
 
     // UNSECURED "free" endpoints for the registration and login
     @PostMapping("/register")
-    public ResponseEntity<AppUserData_DTO> registerUser(@RequestBody UserCreateCommand command) {
-        AppUserData_DTO registeredUserData = userService.registerUser(command);
+    public ResponseEntity<AppUserData_DTO> registerUser(@RequestBody @Valid UserCreateCommand userCreateCommand) {
+        AppUserData_DTO registeredUserData = userService.registerUser(userCreateCommand);
         return new ResponseEntity<>(registeredUserData, HttpStatus.OK);
     }
 
@@ -64,8 +83,8 @@ public class AppUserController {
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PutMapping("/update/me")
-    public ResponseEntity<AppUserData_DTO> updateUser(@RequestBody UserUpdateCommand command) {
-        AppUserData_DTO updatedUserData = userService.updateUser(command);
+    public ResponseEntity<AppUserData_DTO> updateUser(@RequestBody @Valid UserUpdateCommand userUpdateCommand) {
+        AppUserData_DTO updatedUserData = userService.updateUser(userUpdateCommand);
         ResponseEntity<AppUserData_DTO> response = null;
         if (updatedUserData != null) {
             response = new ResponseEntity<>(updatedUserData, HttpStatus.OK);
@@ -120,8 +139,8 @@ public class AppUserController {
 
     @Secured({"ROLE_ADMIN"})
     @PutMapping("/update/{id}")
-    public ResponseEntity<AppUserData_DTO> updateUserById(@PathVariable(value = "id") Long id, @RequestBody UserUpdateCommand command) {
-        AppUserData_DTO updatedUserData = userService.updateUserById(id, command);
+    public ResponseEntity<AppUserData_DTO> updateUserById(@PathVariable(value = "id") Long id, @RequestBody @Valid UserUpdateCommand userUpdateCommand) {
+        AppUserData_DTO updatedUserData = userService.updateUserById(id, userUpdateCommand);
         ResponseEntity<AppUserData_DTO> response;
         if (updatedUserData != null) {
             response = new ResponseEntity<>(updatedUserData, HttpStatus.OK);
