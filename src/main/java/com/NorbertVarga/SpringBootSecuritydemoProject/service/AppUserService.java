@@ -13,6 +13,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
@@ -36,9 +37,15 @@ public class AppUserService {
 
     //  ** UNSECURED Registration method reachable for anybody
     public AppUserData_DTO registerUser(UserCreateCommand command) {
-        AppUser user = new AppUser(command);
-        user.setPassword(pwEncoder.encode(command.getPassword()));
-        AppUser registeredUser = userRepository.save(user);
+        AppUser registeredUser = null;
+        if (!checkEmailExistAlready(command.getEmail())) {
+            AppUser user = new AppUser(command);
+            user.setPassword(pwEncoder.encode(command.getPassword()));
+            registeredUser = userRepository.save(user);
+        } else {
+            throw new EntityExistsException("The given email is already taken.");
+        }
+
         return new AppUserData_DTO(registeredUser);
     }
 
@@ -52,19 +59,15 @@ public class AppUserService {
         AppUser user = getLoggedInUser();
         AppUserData_DTO updatedUserData = null;
         if (user != null) {
-            // One more level of validation for check if the incoming data's is empty or null, regardless we have another "controller level" validation or not.
-            if (command.getEmail() != null && !command.getEmail().isEmpty() && !checkEmailExistAlready(command.getEmail()) && checkEmailFormatIsValid(command.getEmail())) {
+            if (!checkEmailExistAlready(command.getEmail())) {
                 user.setEmail(command.getEmail());
+            } else {
+                throw new EntityExistsException("The given email is already exist");
             }
-            if (command.getLastName() != null && !command.getLastName().isEmpty() && !command.getLastName().isBlank()) {
-                user.setLastName(command.getLastName());
-            }
-            if (command.getFirstName() != null && !command.getFirstName().isEmpty() && !command.getFirstName().isBlank()) {
-                user.setFirstName(command.getFirstName());
-            }
-            if (command.getPassword() != null && !command.getPassword().isEmpty() && !command.getPassword().isBlank()) {
-                user.setPassword(pwEncoder.encode(command.getPassword()));
-            }
+            user.setLastName(command.getLastName());
+            user.setFirstName(command.getFirstName());
+            user.setPassword(pwEncoder.encode(command.getPassword()));
+
             AppUser updatedUser = userRepository.save(user);
             updatedUserData = new AppUserData_DTO(updatedUser);
         } else {
@@ -109,19 +112,15 @@ public class AppUserService {
         if (userOptinal.isPresent()) {
             AppUser userForUpdate = userOptinal.get();
 
-            // One more level of validation for check if the incoming data's is empty or null, regardless we have another "controller level" validation or not.
-            if (command.getEmail() != null && !command.getEmail().isEmpty() && !checkEmailExistAlready(command.getEmail()) && checkEmailFormatIsValid(command.getEmail())) {
+            if (!checkEmailExistAlready(command.getEmail())) {
                 userForUpdate.setEmail(command.getEmail());
+            } else {
+                throw new EntityExistsException("The given email is already exist");
             }
-            if (command.getLastName() != null && !command.getLastName().isEmpty() && !command.getLastName().isBlank()) {
-                userForUpdate.setLastName(command.getLastName());
-            }
-            if (command.getFirstName() != null && !command.getFirstName().isEmpty() && !command.getFirstName().isBlank()) {
-                userForUpdate.setFirstName(command.getFirstName());
-            }
-            if (command.getPassword() != null && !command.getPassword().isEmpty() && !command.getPassword().isBlank()) {
-                userForUpdate.setPassword(pwEncoder.encode(command.getPassword()));
-            }
+            userForUpdate.setLastName(command.getLastName());
+            userForUpdate.setFirstName(command.getFirstName());
+            userForUpdate.setPassword(pwEncoder.encode(command.getPassword()));
+
             AppUser updatedUser = userRepository.save(userForUpdate);
             updatedUserData = new AppUserData_DTO(updatedUser);
         } else {
@@ -147,16 +146,13 @@ public class AppUserService {
 
 
     //  ** UTILS  //////////////////////////////////////////////////////////////////////////
+
     /**
      * @return "true" if the given email already exist.
      */
     public boolean checkEmailExistAlready(String email) {
         Optional<AppUser> userOptional = userRepository.findByEmail(email);
         return userOptional.isPresent();
-    }
-
-    public boolean checkEmailFormatIsValid(String email) {
-        return email.matches("^(.+)@(.+)$");
     }
 
     public AppUser getLoggedInUser() {
