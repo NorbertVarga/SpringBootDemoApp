@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Locale;
@@ -54,9 +55,23 @@ public class GlobalExceptionHandler {
 
         ApiError body = new ApiError(
                 "NOT_FOUND",
-                "En entity is missing for the operation",
+                "Entity is missing for the operation",
                 ex.getLocalizedMessage());
 
         return new ResponseEntity<>(body, status);
     }
+
+    @ExceptionHandler(EntityExistsException.class)
+    public ResponseEntity<ApiError> handleEntityExistException(EntityExistsException ex) {
+        logger.error("User principal error: ", ex);
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+
+        ApiError body = new ApiError(
+                "BAD_REQUEST",
+                "Entity cannot be duplicated.",
+                ex.getLocalizedMessage());
+
+        return new ResponseEntity<>(body, status);
+    }
+
 }

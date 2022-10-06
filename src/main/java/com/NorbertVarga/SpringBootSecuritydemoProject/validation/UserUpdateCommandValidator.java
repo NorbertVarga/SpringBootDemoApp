@@ -11,7 +11,7 @@ public class UserUpdateCommandValidator implements Validator {
 
     @Override
     public boolean supports(Class<?> clazz) {
-        return UserCreateCommand.class.equals(clazz);
+        return UserUpdateCommand.class.equals(clazz);
     }
 
     @Override

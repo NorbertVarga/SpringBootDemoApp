@@ -76,17 +76,13 @@ public class AppUserService {
         return updatedUserData;
     }
 
-    public boolean deleteUser() {
+    public void deleteUser() {
         AppUser user = getLoggedInUser();
-        boolean success;
         if (user != null) {
             userRepository.delete(user);
-            success = true;
         } else {
-            success = false;
-//            throw new EntityNotFoundException("there is no User with the given Id");
+            throw new EntityNotFoundException("There is no user logged in for delete");
         }
-        return success;
     }///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -102,6 +98,8 @@ public class AppUserService {
         Optional<AppUser> userOptinal = userRepository.findById(id);
         if (userOptinal.isPresent()) {
             userData = new AppUserData_DTO(userOptinal.get());
+        } else {
+            throw new EntityNotFoundException("There is no user with the given id");
         }
         return userData;
     }
@@ -129,18 +127,15 @@ public class AppUserService {
         return updatedUserData;
     }
 
-    public boolean deleteUserById(Long id) {
+    public void deleteUserById(Long id) {
         Optional<AppUser> userOptinal = userRepository.findById(id);
-        boolean success;
         if (userOptinal.isPresent()) {
             AppUser userForDelete = userOptinal.get();
             userRepository.delete(userForDelete);
-            success = true;
         } else {
-            success = false;
-//            throw new EntityNotFoundException("there is no User with the given Id");
+            throw new EntityNotFoundException("There is no User with the given Id");
         }
-        return success;
+
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -169,7 +164,7 @@ public class AppUserService {
                 user = userOptional.get();
             }
         } else {
-            throw new EntityNotFoundException("there is no account with the given email.");
+            throw new EntityNotFoundException("There is no account with the given email.");
         }
         return user;
     }

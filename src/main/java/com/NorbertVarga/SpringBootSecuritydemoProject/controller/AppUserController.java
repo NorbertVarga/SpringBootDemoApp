@@ -46,6 +46,11 @@ public class AppUserController {
         binder.addValidators(userUpdateCommandValidator);
     }
 
+    @InitBinder("userUpdateCommandForAdmin")
+    protected void initBinderUserUpdateForAdmin(WebDataBinder binder) {
+        binder.addValidators(userUpdateCommandValidator);
+    }
+
 
     // UNSECURED "free" endpoints for the registration and login
     @PostMapping("/register")
@@ -85,26 +90,14 @@ public class AppUserController {
     @PutMapping("/update/me")
     public ResponseEntity<AppUserData_DTO> updateUser(@RequestBody @Valid UserUpdateCommand userUpdateCommand) {
         AppUserData_DTO updatedUserData = userService.updateUser(userUpdateCommand);
-        ResponseEntity<AppUserData_DTO> response = null;
-        if (updatedUserData != null) {
-            response = new ResponseEntity<>(updatedUserData, HttpStatus.OK);
-        } else {
-            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-        return response;
+        return new ResponseEntity<>(updatedUserData, HttpStatus.OK);
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @DeleteMapping("/delete/me")
     public ResponseEntity<Void> deleteUser() {
-        ResponseEntity<Void> response;
-        boolean deleteWasSuccess = userService.deleteUser();
-        if (deleteWasSuccess) {
-            response = new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return response;
+        userService.deleteUser();
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_INACTIVE"})
@@ -128,39 +121,22 @@ public class AppUserController {
     @GetMapping("/find/{id}")
     public ResponseEntity<AppUserData_DTO> findUserById(@PathVariable(value = "id") Long id) {
         AppUserData_DTO userData = userService.findUserById(id);
-        ResponseEntity<AppUserData_DTO> response;
-        if (userData != null) {
-            response = new ResponseEntity<>(userData, HttpStatus.OK);
-        } else {
-            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-        return response;
+        return new ResponseEntity<>(userData, HttpStatus.OK);
     }
 
     @Secured({"ROLE_ADMIN"})
     @PutMapping("/update/{id}")
-    public ResponseEntity<AppUserData_DTO> updateUserById(@PathVariable(value = "id") Long id, @RequestBody @Valid UserUpdateCommand userUpdateCommand) {
-        AppUserData_DTO updatedUserData = userService.updateUserById(id, userUpdateCommand);
+    public ResponseEntity<AppUserData_DTO> updateUserById(@PathVariable(value = "id") Long id, @RequestBody @Valid UserUpdateCommand userUpdateCommandForAdmin) {
+        AppUserData_DTO updatedUserData = userService.updateUserById(id, userUpdateCommandForAdmin);
         ResponseEntity<AppUserData_DTO> response;
-        if (updatedUserData != null) {
-            response = new ResponseEntity<>(updatedUserData, HttpStatus.OK);
-        } else {
-            response = new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-        return response;
+        return new ResponseEntity<>(updatedUserData, HttpStatus.OK);
     }
 
     @Secured({"ROLE_ADMIN"})
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteUserById(@PathVariable(value = "id") Long id) {
-        ResponseEntity<Void> response;
-        boolean deleteWasSuccess = userService.deleteUserById(id);
-        if (deleteWasSuccess) {
-            response = new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return response;
+        userService.deleteUserById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
     ///////////////////////////////////////////////////////////////////////////////////////////////
 }
