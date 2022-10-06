@@ -57,7 +57,7 @@ public class AppUserService {
 
     public AppUserData_DTO updateUser(UserUpdateCommand command) {
         AppUser user = getLoggedInUser();
-        AppUserData_DTO updatedUserData = null;
+        AppUserData_DTO updatedUserData;
         if (user != null) {
             if (!checkEmailExistAlready(command.getEmail())) {
                 user.setEmail(command.getEmail());
@@ -94,10 +94,10 @@ public class AppUserService {
     }
 
     public AppUserData_DTO findUserById(Long id) {
-        AppUserData_DTO userData = null;
-        Optional<AppUser> userOptinal = userRepository.findById(id);
-        if (userOptinal.isPresent()) {
-            userData = new AppUserData_DTO(userOptinal.get());
+        AppUserData_DTO userData;
+        Optional<AppUser> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            userData = new AppUserData_DTO(userOptional.get());
         } else {
             throw new EntityNotFoundException("There is no user with the given id");
         }
@@ -105,7 +105,7 @@ public class AppUserService {
     }
 
     public AppUserData_DTO updateUserById(Long id, UserUpdateCommand command) {
-        AppUserData_DTO updatedUserData = null;
+        AppUserData_DTO updatedUserData;
         Optional<AppUser> userOptinal = userRepository.findById(id);
         if (userOptinal.isPresent()) {
             AppUser userForUpdate = userOptinal.get();
@@ -128,9 +128,9 @@ public class AppUserService {
     }
 
     public void deleteUserById(Long id) {
-        Optional<AppUser> userOptinal = userRepository.findById(id);
-        if (userOptinal.isPresent()) {
-            AppUser userForDelete = userOptinal.get();
+        Optional<AppUser> userOptional = userRepository.findById(id);
+        if (userOptional.isPresent()) {
+            AppUser userForDelete = userOptional.get();
             userRepository.delete(userForDelete);
         } else {
             throw new EntityNotFoundException("There is no User with the given Id");

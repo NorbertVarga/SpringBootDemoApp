@@ -128,7 +128,6 @@ public class AppUserController {
     @PutMapping("/update/{id}")
     public ResponseEntity<AppUserData_DTO> updateUserById(@PathVariable(value = "id") Long id, @RequestBody @Valid UserUpdateCommand userUpdateCommandForAdmin) {
         AppUserData_DTO updatedUserData = userService.updateUserById(id, userUpdateCommandForAdmin);
-        ResponseEntity<AppUserData_DTO> response;
         return new ResponseEntity<>(updatedUserData, HttpStatus.OK);
     }
 
