@@ -1,13 +1,17 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.dto;
 
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 public class UserCreateCommand {
 
     private String firstName;
     private String lastName;
     private String email;
-
     private String password;
+
+    @JsonProperty(value = "addressCreateCommand")
+    private AddressCreateCommand addressCreateCommand;
 
     public String getPassword() {
         return password;
@@ -42,5 +46,15 @@ public class UserCreateCommand {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    @JsonProperty(value = "addressCreateCommand")
+    public AddressCreateCommand getAddressCreateCommand() {
+        return addressCreateCommand;
+    }
+
+    @JsonProperty(value = "addressCreateCommand")
+    public void setAddressCreateCommand(AddressCreateCommand addressCreateCommand) {
+        this.addressCreateCommand = addressCreateCommand;
     }
 }
