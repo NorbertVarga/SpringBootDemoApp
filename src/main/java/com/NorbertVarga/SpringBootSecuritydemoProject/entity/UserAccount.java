@@ -64,12 +64,13 @@ public class UserAccount {
     }
 
     // Used by the faker to generate dummy users.
-    public UserAccount(String firstName, String lastName, String email, boolean enabled, List<UserRoleTypes> roles) {
+    public UserAccount(String firstName, String lastName, String email, boolean enabled, List<UserRoleTypes> roles, List<UserAddress> addressList) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.enabled = enabled;
         this.roles = roles;
+        this.addressList = addressList;
     }
 
     // User constructor for manual creating with POST method.

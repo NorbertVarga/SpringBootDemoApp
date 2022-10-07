@@ -26,10 +26,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder pwEncoder;
+    private final FakerService faker;
 
-    public UserService(UserRepository userRepository, PasswordEncoder pwEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder pwEncoder, FakerService faker) {
         this.userRepository = userRepository;
         this.pwEncoder = pwEncoder;
+        this.faker = faker;
         populateDataBaseWithDummyUsers(10);
         saveAdminUser();
         saveSimpleUser();
@@ -171,7 +173,7 @@ public class UserService {
 
     // Populate database with dummy users in the cunstructo
     private void populateDataBaseWithDummyUsers(int count) {
-        List<UserAccount> users = FakerService.createDummyUsers(count, pwEncoder);
+        List<UserAccount> users = faker.createDummyUsers(count, pwEncoder);
         userRepository.saveAll(users);
     }
 
@@ -184,6 +186,7 @@ public class UserService {
         adminUser.setEnabled(true);
         adminUser.setPassword(pwEncoder.encode("test1234"));
         adminUser.setRoles(List.of(UserRoleTypes.ROLE_USER, UserRoleTypes.ROLE_ADMIN));
+        adminUser.setAddressList(faker.generateRandomCountOfAddresses());
         userRepository.save(adminUser);
     }
 
@@ -196,6 +199,7 @@ public class UserService {
         simpleUser.setEnabled(true);
         simpleUser.setPassword(pwEncoder.encode("test1234"));
         simpleUser.setRoles(List.of(UserRoleTypes.ROLE_USER));
+        simpleUser.setAddressList(faker.generateRandomCountOfAddresses());
         userRepository.save(simpleUser);
     }
 
