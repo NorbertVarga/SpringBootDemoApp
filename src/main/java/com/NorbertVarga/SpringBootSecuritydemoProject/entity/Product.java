@@ -37,6 +37,9 @@ public class Product {
     @Column (name = "product_price")
     private Integer price;
 
+    @Column (name = "product_total_quantity")
+    private Integer totalQuantity;
+
     @Column(name = "product_created_at")
     @CreatedDate
     private LocalDateTime createdAt;
@@ -48,11 +51,12 @@ public class Product {
     public Product() {
     }
 
-    public Product(String name, String description, List<String> tags, Integer price) {
+    public Product(String name, String description, List<String> tags, Integer price, Integer totalQuantity) {
         this.name = name;
         this.description = description;
         this.tags = tags;
         this.price = price;
+        this.totalQuantity = totalQuantity;
     }
 
     public Long getProductId() {
@@ -89,6 +93,14 @@ public class Product {
 
     public Integer getPrice() {
         return price;
+    }
+
+    public Integer getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(Integer totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 
     public void setPrice(Integer price) {
