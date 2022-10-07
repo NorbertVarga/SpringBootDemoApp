@@ -1,13 +1,13 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.service;
 
-import com.NorbertVarga.SpringBootSecuritydemoProject.dto.AppUserData_DTO;
+import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserFullData_DTO;
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserCreateCommand;
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserUpdateCommand;
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.AppUser;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserAccount;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserPrincipal;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserRoleTypes;
 import com.NorbertVarga.SpringBootSecuritydemoProject.faker.FakerService;
-import com.NorbertVarga.SpringBootSecuritydemoProject.repository.AppUserRepository;
+import com.NorbertVarga.SpringBootSecuritydemoProject.repository.UserRepository;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,12 +22,12 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional
-public class AppUserService {
+public class UserService {
 
-    private final AppUserRepository userRepository;
+    private final UserRepository userRepository;
     private final PasswordEncoder pwEncoder;
 
-    public AppUserService(AppUserRepository userRepository, PasswordEncoder pwEncoder) {
+    public UserService(UserRepository userRepository, PasswordEncoder pwEncoder) {
         this.userRepository = userRepository;
         this.pwEncoder = pwEncoder;
         populateDataBaseWithDummyUsers(10);
@@ -36,28 +36,28 @@ public class AppUserService {
     }
 
     //  ** UNSECURED Registration method reachable for anybody
-    public AppUserData_DTO registerUser(UserCreateCommand command) {
-        AppUser registeredUser = null;
+    public UserFullData_DTO registerUser(UserCreateCommand command) {
+        UserAccount registeredUser = null;
         if (!checkEmailExistAlready(command.getEmail())) {
-            AppUser user = new AppUser(command);
+            UserAccount user = new UserAccount(command);
             user.setPassword(pwEncoder.encode(command.getPassword()));
             registeredUser = userRepository.save(user);
         } else {
             throw new EntityExistsException("The given email is already taken.");
         }
 
-        return new AppUserData_DTO(registeredUser);
+        return new UserFullData_DTO(registeredUser);
     }
 
     //  **  CRUD methods for "myAccount" (the actually logged in user)   ////////////////////////////////////////////////////////////////
-    public AppUserData_DTO getMyAccountData() {
-        AppUser user = getLoggedInUser();
-        return new AppUserData_DTO(user);
+    public UserFullData_DTO getMyAccountData() {
+        UserAccount user = getLoggedInUser();
+        return new UserFullData_DTO(user);
     }
 
-    public AppUserData_DTO updateUser(UserUpdateCommand command) {
-        AppUser user = getLoggedInUser();
-        AppUserData_DTO updatedUserData;
+    public UserFullData_DTO updateUser(UserUpdateCommand command) {
+        UserAccount user = getLoggedInUser();
+        UserFullData_DTO updatedUserData;
         if (user != null) {
             if (!checkEmailExistAlready(command.getEmail())) {
                 user.setEmail(command.getEmail());
@@ -68,8 +68,8 @@ public class AppUserService {
             user.setFirstName(command.getFirstName());
             user.setPassword(pwEncoder.encode(command.getPassword()));
 
-            AppUser updatedUser = userRepository.save(user);
-            updatedUserData = new AppUserData_DTO(updatedUser);
+            UserAccount updatedUser = userRepository.save(user);
+            updatedUserData = new UserFullData_DTO(updatedUser);
         } else {
             throw new EntityNotFoundException("There is no user logged in");
         }
@@ -77,7 +77,7 @@ public class AppUserService {
     }
 
     public void deleteUser() {
-        AppUser user = getLoggedInUser();
+        UserAccount user = getLoggedInUser();
         if (user != null) {
             userRepository.delete(user);
         } else {
@@ -87,28 +87,28 @@ public class AppUserService {
 
 
     //  **  CRUD methods by Id (only for ADMIN role) ////////////////////////////////////////////////////////////////
-    public List<AppUserData_DTO> getAllUsers() {
-        List<AppUser> users = userRepository.findAll();
+    public List<UserFullData_DTO> getAllUsers() {
+        List<UserAccount> users = userRepository.findAll();
         return users.stream()
-                .map(AppUserData_DTO::new).collect(Collectors.toList());
+                .map(UserFullData_DTO::new).collect(Collectors.toList());
     }
 
-    public AppUserData_DTO findUserById(Long id) {
-        AppUserData_DTO userData;
-        Optional<AppUser> userOptional = userRepository.findById(id);
+    public UserFullData_DTO findUserById(Long id) {
+        UserFullData_DTO userData;
+        Optional<UserAccount> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
-            userData = new AppUserData_DTO(userOptional.get());
+            userData = new UserFullData_DTO(userOptional.get());
         } else {
             throw new EntityNotFoundException("There is no user with the given id");
         }
         return userData;
     }
 
-    public AppUserData_DTO updateUserById(Long id, UserUpdateCommand command) {
-        AppUserData_DTO updatedUserData;
-        Optional<AppUser> userOptinal = userRepository.findById(id);
+    public UserFullData_DTO updateUserById(Long id, UserUpdateCommand command) {
+        UserFullData_DTO updatedUserData;
+        Optional<UserAccount> userOptinal = userRepository.findById(id);
         if (userOptinal.isPresent()) {
-            AppUser userForUpdate = userOptinal.get();
+            UserAccount userForUpdate = userOptinal.get();
 
             if (!checkEmailExistAlready(command.getEmail())) {
                 userForUpdate.setEmail(command.getEmail());
@@ -119,8 +119,8 @@ public class AppUserService {
             userForUpdate.setFirstName(command.getFirstName());
             userForUpdate.setPassword(pwEncoder.encode(command.getPassword()));
 
-            AppUser updatedUser = userRepository.save(userForUpdate);
-            updatedUserData = new AppUserData_DTO(updatedUser);
+            UserAccount updatedUser = userRepository.save(userForUpdate);
+            updatedUserData = new UserFullData_DTO(updatedUser);
         } else {
             throw new EntityNotFoundException("There is no user with the given Id");
         }
@@ -128,9 +128,9 @@ public class AppUserService {
     }
 
     public void deleteUserById(Long id) {
-        Optional<AppUser> userOptional = userRepository.findById(id);
+        Optional<UserAccount> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
-            AppUser userForDelete = userOptional.get();
+            UserAccount userForDelete = userOptional.get();
             userRepository.delete(userForDelete);
         } else {
             throw new EntityNotFoundException("There is no User with the given Id");
@@ -146,19 +146,19 @@ public class AppUserService {
      * @return "true" if the given email already exist.
      */
     public boolean checkEmailExistAlready(String email) {
-        Optional<AppUser> userOptional = userRepository.findByEmail(email);
+        Optional<UserAccount> userOptional = userRepository.findByEmail(email);
         return userOptional.isPresent();
     }
 
-    public AppUser getLoggedInUser() {
+    public UserAccount getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal loggedInUser = (UserPrincipal) authentication.getPrincipal();
         return userRepository.findByEmail(loggedInUser.getUsername()).orElseThrow(EntityNotFoundException::new);
     }
 
-    public AppUser findUserByEmail(String email) {
-        AppUser user = null;
-        Optional<AppUser> userOptional = userRepository.findByEmail(email);
+    public UserAccount findUserByEmail(String email) {
+        UserAccount user = null;
+        Optional<UserAccount> userOptional = userRepository.findByEmail(email);
         if (userOptional.isPresent()) {
             if (userOptional.get().isEnabled()) {
                 user = userOptional.get();
@@ -171,13 +171,13 @@ public class AppUserService {
 
     // Populate database with dummy users in the cunstructo
     private void populateDataBaseWithDummyUsers(int count) {
-        List<AppUser> users = FakerService.createDummyUsers(count, pwEncoder);
+        List<UserAccount> users = FakerService.createDummyUsers(count, pwEncoder);
         userRepository.saveAll(users);
     }
 
     // Populate database with an ADMIN user
     private void saveAdminUser() {
-        AppUser adminUser = new AppUser();
+        UserAccount adminUser = new UserAccount();
         adminUser.setEmail("admin@email.com");
         adminUser.setFirstName("admin");
         adminUser.setLastName("user");
@@ -189,7 +189,7 @@ public class AppUserService {
 
     // Populate database with a "simple" user
     private void saveSimpleUser() {
-        AppUser simpleUser = new AppUser();
+        UserAccount simpleUser = new UserAccount();
         simpleUser.setEmail("norbertVarga@email.com");
         simpleUser.setFirstName("norbert");
         simpleUser.setLastName("varga");

@@ -32,7 +32,7 @@ public class UserPrincipal implements UserDetails {
         this.authorities = authorities;
     }
 
-    public static UserPrincipal create(AppUser user) {
+    public static UserPrincipal create(UserAccount user) {
 
         List<GrantedAuthority> authorities = user.getRoles()
                 .stream()
@@ -41,7 +41,7 @@ public class UserPrincipal implements UserDetails {
                 .collect(Collectors.toList());
 
         return new UserPrincipal(
-                user.getAppUserId(),
+                user.getUserId(),
                 user.getEmail(),
                 user.getPassword(),
                 user.isEnabled(),

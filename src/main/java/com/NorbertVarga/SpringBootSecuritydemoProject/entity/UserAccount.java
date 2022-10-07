@@ -10,42 +10,42 @@ import java.util.List;
 
 @Entity
 @Table(name = "app_user")
-public class AppUser {
+public class UserAccount {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "app_user_id", nullable = false)
-    private Long appUserId;
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 
-    @Column(name = "app_user_first_name", nullable = false)
+    @Column(name = "user_first_name", nullable = false)
     private String firstName;
 
-    @Column(name = "app_user_last_name", nullable = false)
+    @Column(name = "user_last_name", nullable = false)
     private String lastName;
 
-    @Column(name = "app_user_email", nullable = false)
+    @Column(name = "user_email", nullable = false)
     private String email;
 
-    @Column(name = "password", nullable = false)
+    @Column(name = "user_password", nullable = false)
     private String password;
 
-    @Column(name = "enabled")
+    @Column(name = "user_enabled")
     private boolean enabled;
 
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = UserRoleTypes.class,
             fetch = FetchType.EAGER)
-    @CollectionTable(name = "app_user_role")
+    @CollectionTable(name = "user_role")
     @Column(name = "user_role")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<UserRoleTypes> roles;
 
 
-    public AppUser() {
+    public UserAccount() {
     }
 
     // Used by the faker to generate dummy users.
-    public AppUser(String firstName, String lastName, String email, boolean enabled, List<UserRoleTypes> roles) {
+    public UserAccount(String firstName, String lastName, String email, boolean enabled, List<UserRoleTypes> roles) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
@@ -54,7 +54,7 @@ public class AppUser {
     }
 
     // User constructor for manual creating with POST method.
-    public AppUser(UserCreateCommand command) {
+    public UserAccount(UserCreateCommand command) {
         this.firstName = command.getFirstName();
         this.lastName = command.getLastName();
         this.email = command.getEmail();
@@ -62,12 +62,12 @@ public class AppUser {
         this.roles = Collections.singletonList(UserRoleTypes.ROLE_USER);
     }
 
-    public Long getAppUserId() {
-        return appUserId;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setAppUserId(Long appUserId) {
-        this.appUserId = appUserId;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getFirstName() {

@@ -1,8 +1,8 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.config;
 
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.AppUser;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserAccount;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserPrincipal;
-import com.NorbertVarga.SpringBootSecuritydemoProject.repository.AppUserRepository;
+import com.NorbertVarga.SpringBootSecuritydemoProject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -15,16 +15,16 @@ import javax.persistence.EntityNotFoundException;
 
 public class CustomUserDetailsService implements UserDetailsService {
 
-    private final AppUserRepository userRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public CustomUserDetailsService(AppUserRepository userRepository) {
+    public CustomUserDetailsService(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        AppUser user = userRepository.findByEmail(username).orElseThrow(EntityNotFoundException::new);
+        UserAccount user = userRepository.findByEmail(username).orElseThrow(EntityNotFoundException::new);
 
         return UserPrincipal.create(user);
     }

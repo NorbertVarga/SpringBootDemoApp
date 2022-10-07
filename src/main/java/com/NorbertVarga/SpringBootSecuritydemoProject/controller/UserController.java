@@ -1,10 +1,10 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.controller;
 
-import com.NorbertVarga.SpringBootSecuritydemoProject.dto.AppUserData_DTO;
+import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserFullData_DTO;
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserCreateCommand;
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserUpdateCommand;
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.AppUser;
-import com.NorbertVarga.SpringBootSecuritydemoProject.service.AppUserService;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserAccount;
+import com.NorbertVarga.SpringBootSecuritydemoProject.service.UserService;
 import com.NorbertVarga.SpringBootSecuritydemoProject.validation.UserCreateCommandValidator;
 import com.NorbertVarga.SpringBootSecuritydemoProject.validation.UserUpdateCommandValidator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +23,14 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
-public class AppUserController {
+public class UserController {
 
-    private final AppUserService userService;
+    private final UserService userService;
     private final UserCreateCommandValidator userCreateCommandValidator;
     private final UserUpdateCommandValidator userUpdateCommandValidator;
 
     @Autowired
-    public AppUserController(AppUserService userService, UserCreateCommandValidator userCreateCommandValidator, UserUpdateCommandValidator userUpdateCommandValidator) {
+    public UserController(UserService userService, UserCreateCommandValidator userCreateCommandValidator, UserUpdateCommandValidator userUpdateCommandValidator) {
         this.userService = userService;
         this.userCreateCommandValidator = userCreateCommandValidator;
         this.userUpdateCommandValidator = userUpdateCommandValidator;
@@ -54,19 +54,19 @@ public class AppUserController {
 
     // UNSECURED "free" endpoints for the registration and login
     @PostMapping("/register")
-    public ResponseEntity<AppUserData_DTO> registerUser(@RequestBody @Valid UserCreateCommand userCreateCommand) {
-        AppUserData_DTO registeredUserData = userService.registerUser(userCreateCommand);
+    public ResponseEntity<UserFullData_DTO> registerUser(@RequestBody @Valid UserCreateCommand userCreateCommand) {
+        UserFullData_DTO registeredUserData = userService.registerUser(userCreateCommand);
         return new ResponseEntity<>(registeredUserData, HttpStatus.OK);
     }
 
     @GetMapping("/login")
-    public ResponseEntity<AppUserData_DTO> loginUser() {
-        ResponseEntity<AppUserData_DTO> response;
+    public ResponseEntity<UserFullData_DTO> loginUser() {
+        ResponseEntity<UserFullData_DTO> response;
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication.getPrincipal() instanceof UserDetails user) {
-            AppUser loggedUser = userService.findUserByEmail(user.getUsername());
+            UserAccount loggedUser = userService.findUserByEmail(user.getUsername());
             if (loggedUser != null) {
-                response = new ResponseEntity<>(new AppUserData_DTO(loggedUser), HttpStatus.OK);
+                response = new ResponseEntity<>(new UserFullData_DTO(loggedUser), HttpStatus.OK);
             } else {
                 response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
@@ -81,15 +81,15 @@ public class AppUserController {
     //  **  SECURED USER ENDPOINTS **  //////////////////////////////////////////////////////////
     @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_INACTIVE"})
     @GetMapping("/me")
-    public ResponseEntity<AppUserData_DTO> getMyAccount() {
-        AppUserData_DTO userData = userService.getMyAccountData();
+    public ResponseEntity<UserFullData_DTO> getMyAccount() {
+        UserFullData_DTO userData = userService.getMyAccountData();
         return new ResponseEntity<>(userData, HttpStatus.OK);
     }
 
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @PutMapping("/update/me")
-    public ResponseEntity<AppUserData_DTO> updateUser(@RequestBody @Valid UserUpdateCommand userUpdateCommand) {
-        AppUserData_DTO updatedUserData = userService.updateUser(userUpdateCommand);
+    public ResponseEntity<UserFullData_DTO> updateUser(@RequestBody @Valid UserUpdateCommand userUpdateCommand) {
+        UserFullData_DTO updatedUserData = userService.updateUser(userUpdateCommand);
         return new ResponseEntity<>(updatedUserData, HttpStatus.OK);
     }
 
@@ -112,22 +112,22 @@ public class AppUserController {
     //  **  SECURED ADMIN ENDPOINTS **  //////////////////////////////////////////////////////////
 //    @Secured({"ROLE_ADMIN"})
     @GetMapping("/all")
-    public ResponseEntity<List<AppUserData_DTO>> getAllUsersData() {
-        List<AppUserData_DTO> usersDataList = userService.getAllUsers();
+    public ResponseEntity<List<UserFullData_DTO>> getAllUsersData() {
+        List<UserFullData_DTO> usersDataList = userService.getAllUsers();
         return new ResponseEntity<>(usersDataList, HttpStatus.OK);
     }
 
     @Secured({"ROLE_ADMIN"})
     @GetMapping("/find/{id}")
-    public ResponseEntity<AppUserData_DTO> findUserById(@PathVariable(value = "id") Long id) {
-        AppUserData_DTO userData = userService.findUserById(id);
+    public ResponseEntity<UserFullData_DTO> findUserById(@PathVariable(value = "id") Long id) {
+        UserFullData_DTO userData = userService.findUserById(id);
         return new ResponseEntity<>(userData, HttpStatus.OK);
     }
 
     @Secured({"ROLE_ADMIN"})
     @PutMapping("/update/{id}")
-    public ResponseEntity<AppUserData_DTO> updateUserById(@PathVariable(value = "id") Long id, @RequestBody @Valid UserUpdateCommand userUpdateCommandForAdmin) {
-        AppUserData_DTO updatedUserData = userService.updateUserById(id, userUpdateCommandForAdmin);
+    public ResponseEntity<UserFullData_DTO> updateUserById(@PathVariable(value = "id") Long id, @RequestBody @Valid UserUpdateCommand userUpdateCommandForAdmin) {
+        UserFullData_DTO updatedUserData = userService.updateUserById(id, userUpdateCommandForAdmin);
         return new ResponseEntity<>(updatedUserData, HttpStatus.OK);
     }
 

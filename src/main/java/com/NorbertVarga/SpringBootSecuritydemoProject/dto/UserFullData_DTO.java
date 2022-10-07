@@ -1,12 +1,12 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.dto;
 
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.AppUser;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserAccount;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserRoleTypes;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class AppUserData_DTO {
+public class UserFullData_DTO {
 
     private Long appUserId;
     private String firstName;
@@ -15,11 +15,11 @@ public class AppUserData_DTO {
     private boolean enabled;
     private List<String> roles;
 
-    public AppUserData_DTO() {
+    public UserFullData_DTO() {
     }
 
-    public AppUserData_DTO(AppUser user) {
-        this.appUserId = user.getAppUserId();
+    public UserFullData_DTO(UserAccount user) {
+        this.appUserId = user.getUserId();
         this.firstName = user.getFirstName();
         this.lastName = user.getLastName();
         this.email = user.getEmail();
