@@ -57,7 +57,7 @@ public class FakerService {
             zipcode = faker.address().zipCode();
             street = faker.address().streetName();
             houseNumber = random.nextInt(300)+1;
-            additionalInfo = faker.lorem().words(random.nextInt(10) + 2).toString();
+            additionalInfo = faker.lorem().sentence(random.nextInt(8)+2);
             UserAddress address = new UserAddress(
                     country,
                     city,

@@ -1,6 +1,7 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.entity;
 
 
+import com.NorbertVarga.SpringBootSecuritydemoProject.dto.AddressCreateCommand;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -55,6 +56,15 @@ public class UserAddress {
         this.street = street;
         this.houseNumber = houseNumber;
         this.additionalInfo = additionalInfo;
+    }
+
+    public UserAddress(AddressCreateCommand command) {
+        this.country = command.getCountry();
+        this.city = command.getCity();
+        this.zipcode = command.getZipcode();
+        this.street = command.getStreet();
+        this.houseNumber = command.getHouseNumber();
+        this.additionalInfo = command.getAdditionalInfo();
     }
 
     public Long getAddressId() {

@@ -80,6 +80,7 @@ public class UserAccount {
         this.email = command.getEmail();
         this.enabled = true;
         this.roles = Collections.singletonList(UserRoleTypes.ROLE_USER);
+        this.addressList = List.of(new UserAddress(command.getAddressCreateCommand()));
     }
 
     public Long getUserId() {
