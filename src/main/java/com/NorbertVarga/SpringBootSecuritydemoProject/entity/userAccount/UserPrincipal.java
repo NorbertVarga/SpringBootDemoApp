@@ -1,4 +1,4 @@
-package com.NorbertVarga.SpringBootSecuritydemoProject.entity;
+package com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;

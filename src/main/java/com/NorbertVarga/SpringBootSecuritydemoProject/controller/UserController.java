@@ -3,7 +3,7 @@ package com.NorbertVarga.SpringBootSecuritydemoProject.controller;
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAccount.UserFullData_DTO;
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAccount.UserCreateCommand;
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAccount.UserUpdateCommand;
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserAccount;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserAccount;
 import com.NorbertVarga.SpringBootSecuritydemoProject.service.UserService;
 import com.NorbertVarga.SpringBootSecuritydemoProject.validation.UserCreateCommandValidator;
 import com.NorbertVarga.SpringBootSecuritydemoProject.validation.UserUpdateCommandValidator;

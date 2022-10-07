@@ -1,7 +1,7 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.config;
 
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserAccount;
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserPrincipal;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserAccount;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserPrincipal;
 import com.NorbertVarga.SpringBootSecuritydemoProject.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

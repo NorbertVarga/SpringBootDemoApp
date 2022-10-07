@@ -1,8 +1,8 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.faker;
 
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserAccount;
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserAddress;
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserRoleTypes;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserAccount;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserAddress;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserRoleTypes;
 import com.github.javafaker.Faker;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

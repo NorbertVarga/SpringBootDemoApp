@@ -1,6 +1,6 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.repository;
 
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserAccount;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserAccount;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

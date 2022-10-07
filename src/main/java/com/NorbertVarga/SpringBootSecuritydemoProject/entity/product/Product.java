@@ -1,4 +1,4 @@
-package com.NorbertVarga.SpringBootSecuritydemoProject.entity;
+package com.NorbertVarga.SpringBootSecuritydemoProject.entity.product;
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;

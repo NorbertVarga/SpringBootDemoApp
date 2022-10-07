@@ -1,8 +1,7 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAddress;
 
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserAddress;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserAddress;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
 

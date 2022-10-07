@@ -1,8 +1,8 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAccount;
 
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAddress.AddressData_DTO;
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserAccount;
-import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserRoleTypes;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserAccount;
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserRoleTypes;
 
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;

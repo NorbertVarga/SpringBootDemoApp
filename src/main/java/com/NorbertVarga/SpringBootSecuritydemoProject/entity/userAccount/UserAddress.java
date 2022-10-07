@@ -1,4 +1,4 @@
-package com.NorbertVarga.SpringBootSecuritydemoProject.entity;
+package com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount;
 
 
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAddress.AddressCreateCommand;
