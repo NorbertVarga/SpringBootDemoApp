@@ -3,13 +3,20 @@ package com.NorbertVarga.SpringBootSecuritydemoProject.entity;
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserCreateCommand;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 @Entity
-@Table(name = "app_user")
+@Table(name = "user_account")
+// Entity Listener needed for auditing and automatically manage the creating and modified dates
+@EntityListeners(AuditingEntityListener.class)
 public class UserAccount {
 
     @Id
@@ -32,6 +39,14 @@ public class UserAccount {
     @Column(name = "user_enabled")
     private boolean enabled;
 
+    @Column(name = "user_created_at")
+    @CreatedDate
+    private LocalDateTime createdAt;
+
+    @Column(name = "user_last_modified")
+    @LastModifiedDate
+    private LocalDateTime lastModified;
+
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = UserRoleTypes.class,
             fetch = FetchType.EAGER)
@@ -39,6 +54,10 @@ public class UserAccount {
     @Column(name = "user_role")
     @Fetch(value = FetchMode.SUBSELECT)
     private List<UserRoleTypes> roles;
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "user_id")
+    private List<UserAddress> addressList = new ArrayList<>();
 
 
     public UserAccount() {
@@ -116,5 +135,29 @@ public class UserAccount {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public LocalDateTime getLastModified() {
+        return lastModified;
+    }
+
+    public void setLastModified(LocalDateTime lastModified) {
+        this.lastModified = lastModified;
+    }
+
+    public List<UserAddress> getAddressList() {
+        return addressList;
+    }
+
+    public void setAddressList(List<UserAddress> addressList) {
+        this.addressList = addressList;
     }
 }
