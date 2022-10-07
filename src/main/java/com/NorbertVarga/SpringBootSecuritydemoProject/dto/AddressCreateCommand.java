@@ -5,6 +5,7 @@ public class AddressCreateCommand {
 
     private String country;
     private String city;
+    private String zipcode;
     private String street;
     private Integer houseNumber;
     private String additionalInfo;
@@ -12,9 +13,10 @@ public class AddressCreateCommand {
     public AddressCreateCommand() {
     }
 
-    public AddressCreateCommand(String country, String city, String street, Integer houseNumber, String additionalInfo) {
+    public AddressCreateCommand(String country, String city, String zipcode, String street, Integer houseNumber, String additionalInfo) {
         this.country = country;
         this.city = city;
+        this.zipcode = zipcode;
         this.street = street;
         this.houseNumber = houseNumber;
         this.additionalInfo = additionalInfo;
@@ -34,6 +36,14 @@ public class AddressCreateCommand {
 
     public void setCity(String city) {
         this.city = city;
+    }
+
+    public String getZipcode() {
+        return zipcode;
+    }
+
+    public void setZipcode(String zipcode) {
+        this.zipcode = zipcode;
     }
 
     public String getStreet() {

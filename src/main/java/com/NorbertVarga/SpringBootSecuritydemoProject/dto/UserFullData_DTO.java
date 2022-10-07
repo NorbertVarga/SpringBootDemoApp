@@ -31,13 +31,20 @@ public class UserFullData_DTO {
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.enabled = user.isEnabled();
-        this.roles = user.getRoles().stream().map(UserRoleTypes::name).collect(Collectors.toList());
+
+        this.roles = user.getRoles()
+                .stream()
+                .map(UserRoleTypes::name)
+                .collect(Collectors.toList());
+
         this.addressList = user.getAddressList()
                 .stream()
                 .map(AddressData_DTO::new)
                 .collect(Collectors.toList());
+
         this.createdAt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
                 .format(user.getCreatedAt());
+
         this.lastModified = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
                 .format(user.getLastModified());
     }
