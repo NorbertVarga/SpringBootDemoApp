@@ -79,7 +79,7 @@ public class UserController {
 
 
     //  **  SECURED USER ENDPOINTS **  //////////////////////////////////////////////////////////
-    @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_INACTIVE"})
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/me")
     public ResponseEntity<UserFullData_DTO> getMyAccount() {
         UserFullData_DTO userData = userService.getMyAccountData();
@@ -100,7 +100,7 @@ public class UserController {
         return new ResponseEntity<>(HttpStatus.OK);
     }
 
-    @Secured({"ROLE_USER", "ROLE_ADMIN", "ROLE_INACTIVE"})
+    @Secured({"ROLE_USER", "ROLE_ADMIN"})
     @GetMapping("/logout")
     public ResponseEntity<Void> logoutUser(HttpSession session) {
         session.invalidate();
