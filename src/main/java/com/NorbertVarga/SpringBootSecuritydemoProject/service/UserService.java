@@ -1,8 +1,8 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.service;
 
-import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserFullData_DTO;
-import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserCreateCommand;
-import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserUpdateCommand;
+import com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAccount.UserFullData_DTO;
+import com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAccount.UserCreateCommand;
+import com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAccount.UserUpdateCommand;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserAccount;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserPrincipal;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.UserRoleTypes;

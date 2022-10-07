@@ -1,6 +1,7 @@
-package com.NorbertVarga.SpringBootSecuritydemoProject.dto;
+package com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAccount;
 
 
+import com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAddress.AddressCreateCommand;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class UserCreateCommand {

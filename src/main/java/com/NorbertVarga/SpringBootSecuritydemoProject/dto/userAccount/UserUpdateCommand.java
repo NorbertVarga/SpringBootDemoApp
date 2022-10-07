@@ -1,4 +1,4 @@
-package com.NorbertVarga.SpringBootSecuritydemoProject.dto;
+package com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAccount;
 
 public class UserUpdateCommand {
 

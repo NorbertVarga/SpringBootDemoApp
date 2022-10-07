@@ -1,7 +1,6 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.validation;
 
-import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserCreateCommand;
-import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserUpdateCommand;
+import com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAccount.UserUpdateCommand;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;

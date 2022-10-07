@@ -1,6 +1,6 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.entity;
 
-import com.NorbertVarga.SpringBootSecuritydemoProject.dto.UserCreateCommand;
+import com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAccount.UserCreateCommand;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedDate;
