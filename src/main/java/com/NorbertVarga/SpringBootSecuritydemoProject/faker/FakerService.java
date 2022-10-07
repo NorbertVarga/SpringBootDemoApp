@@ -1,5 +1,6 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.faker;
 
+import com.NorbertVarga.SpringBootSecuritydemoProject.entity.product.Product;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserAccount;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserAddress;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.userAccount.UserRoleTypes;
@@ -20,6 +21,8 @@ public class FakerService {
     private final Faker faker = new Faker();
     private Random random = new Random();
 
+
+    //  **  USER ACCOUNT **  ///////////////////////////////////////////////////////
     public List<UserAccount> createDummyUsers(int count, PasswordEncoder pwEncoder) {
         List<UserAccount> users = new ArrayList<>();
         for (int i = 0; i < count; i++) {
@@ -71,4 +74,27 @@ public class FakerService {
         }
         return addressList;
     }
+    //////////////////////////////////////////////////////////////////////////////
+
+    //  **  PRODUCT **  ///////////////////////////////////////////////////////
+    public List<Product> createDummyProducts(int count) {
+        List<Product> productList = new ArrayList<>();
+        for (int i = 0; i < count; i++) {
+            Product product = generateDummyProduct();
+            productList.add(product);
+        }
+        return productList;
+    }
+
+    public Product generateDummyProduct() {
+        String name = faker.commerce().productName();
+        String description = faker.lorem().sentence(random.nextInt(10)+3);
+        List<String> tags = faker.lorem().words(random.nextInt(5));
+        int price = random.nextInt(500)+25;
+        int totalQuantity = random.nextInt(300)+5;
+        return new Product(name,description,tags,price,totalQuantity);
+    }
+
+
+    //////////////////////////////////////////////////////////////////////////////
 }

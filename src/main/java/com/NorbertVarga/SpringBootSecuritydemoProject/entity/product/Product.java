@@ -51,6 +51,7 @@ public class Product {
     public Product() {
     }
 
+    // Used by the faker to generate dummy products.
     public Product(String name, String description, List<String> tags, Integer price, Integer totalQuantity) {
         this.name = name;
         this.description = description;
