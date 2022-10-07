@@ -35,10 +35,11 @@ public class FakerService {
         String lastName = faker.name().lastName();
         String email = firstname + "." + lastName + "@email.com";
         String password = "test1234";
+        int balance = random.nextInt(20000)+5000;
         List<UserRoleTypes> roles = List.of(UserRoleTypes.ROLE_USER);
         List<UserAddress> addressList = generateRandomCountOfAddresses();
 
-        return new UserAccount(firstname,lastName,email,true,roles,addressList);
+        return new UserAccount(firstname,lastName,email,true,balance,roles,addressList);
     }
 
     public List<UserAddress> generateRandomCountOfAddresses() {

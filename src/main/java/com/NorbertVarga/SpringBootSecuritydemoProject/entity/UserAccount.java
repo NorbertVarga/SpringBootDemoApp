@@ -39,6 +39,9 @@ public class UserAccount {
     @Column(name = "user_enabled")
     private boolean enabled;
 
+    @Column(name = "user_balance")
+    private Integer balance;
+
     @Column(name = "user_created_at")
     @CreatedDate
     private LocalDateTime createdAt;
@@ -64,11 +67,12 @@ public class UserAccount {
     }
 
     // Used by the faker to generate dummy users.
-    public UserAccount(String firstName, String lastName, String email, boolean enabled, List<UserRoleTypes> roles, List<UserAddress> addressList) {
+    public UserAccount(String firstName, String lastName, String email, boolean enabled, Integer balance, List<UserRoleTypes> roles, List<UserAddress> addressList) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.email = email;
         this.enabled = enabled;
+        this.balance = balance;
         this.roles = roles;
         this.addressList = addressList;
     }
@@ -79,6 +83,7 @@ public class UserAccount {
         this.lastName = command.getLastName();
         this.email = command.getEmail();
         this.enabled = true;
+        this.balance = 20000;
         this.roles = Collections.singletonList(UserRoleTypes.ROLE_USER);
         this.addressList = List.of(new UserAddress(command.getAddressCreateCommand()));
     }
@@ -137,6 +142,14 @@ public class UserAccount {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public Integer getBalance() {
+        return balance;
+    }
+
+    public void setBalance(Integer balance) {
+        this.balance = balance;
     }
 
     public LocalDateTime getCreatedAt() {

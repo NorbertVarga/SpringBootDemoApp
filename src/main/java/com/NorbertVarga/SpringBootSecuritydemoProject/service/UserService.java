@@ -184,6 +184,7 @@ public class UserService {
         adminUser.setFirstName("admin");
         adminUser.setLastName("user");
         adminUser.setEnabled(true);
+        adminUser.setBalance(1000000);
         adminUser.setPassword(pwEncoder.encode("test1234"));
         adminUser.setRoles(List.of(UserRoleTypes.ROLE_USER, UserRoleTypes.ROLE_ADMIN));
         adminUser.setAddressList(faker.generateRandomCountOfAddresses());
@@ -197,6 +198,7 @@ public class UserService {
         simpleUser.setFirstName("norbert");
         simpleUser.setLastName("varga");
         simpleUser.setEnabled(true);
+        simpleUser.setBalance(20000);
         simpleUser.setPassword(pwEncoder.encode("test1234"));
         simpleUser.setRoles(List.of(UserRoleTypes.ROLE_USER));
         simpleUser.setAddressList(faker.generateRandomCountOfAddresses());

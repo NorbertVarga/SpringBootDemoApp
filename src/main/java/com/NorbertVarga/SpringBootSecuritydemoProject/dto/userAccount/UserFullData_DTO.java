@@ -17,6 +17,7 @@ public class UserFullData_DTO {
     private String lastName;
     private String email;
     private boolean enabled;
+    private int balance;
     private List<String> roles;
     private String createdAt;
     private String lastModified;
@@ -32,7 +33,7 @@ public class UserFullData_DTO {
         this.lastName = user.getLastName();
         this.email = user.getEmail();
         this.enabled = user.isEnabled();
-
+        this.balance = user.getBalance();
         this.roles = user.getRoles()
                 .stream()
                 .map(UserRoleTypes::name)
@@ -88,6 +89,14 @@ public class UserFullData_DTO {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public int getBalance() {
+        return balance;
+    }
+
+    public void setBalance(int balance) {
+        this.balance = balance;
     }
 
     public List<String> getRoles() {
