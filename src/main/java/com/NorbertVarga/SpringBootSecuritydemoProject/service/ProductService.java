@@ -68,6 +68,15 @@ public class ProductService {
             throw new EntityNotFoundException("There is no Product with the given Id");
         }
     }
+
+    public void deleteProductById(Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()) {
+            productRepository.delete(productOptional.get());
+        } else {
+            throw new EntityNotFoundException("There is no Product with the given Id");
+        }
+    }
     ////////////////////////////////////////////////////////////////////////////////
 
     //  **  UTILS   **  ////////////////////////////////////////////////////////////

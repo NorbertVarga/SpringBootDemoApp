@@ -54,5 +54,11 @@ public class ProductController {
         return new ResponseEntity<>(updatedProductData, HttpStatus.OK);
     }
 
+    @DeleteMapping("/delete/{id}")
+    @Secured({"ROLE_ADMIN"})
+    public ResponseEntity<Void> deleteProductById(@PathVariable(value = "id") Long id) {
+        productService.deleteProductById(id);
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
     ///////////////////////////////////////////////////////////////////////////////////////////////
 }
