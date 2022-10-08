@@ -1,10 +1,20 @@
 package com.NorbertVarga.SpringBootDemoApp.dto.product;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Size;
+
 public class ProductUpdateCommand {
 
     private String name;
+
+    @Size(max = 1000, message =
+            "Product description cannot be more than 1000 characters")
     private String description;
+
+    @Min(value = 0, message = "Price cannot be negative number")
     private int price;
+
+    @Min(value = 0, message = "Total quantity cannot be negative number")
     private int totalQuantity;
 
     public ProductUpdateCommand() {

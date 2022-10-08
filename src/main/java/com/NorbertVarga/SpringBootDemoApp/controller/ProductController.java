@@ -50,7 +50,7 @@ public class ProductController {
 
     @PutMapping("/update/{id}")
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<ProductData_DTO> updateProductById(@RequestBody ProductUpdateCommand productUpdateCommand, @PathVariable(value = "id") Long id) {
+    public ResponseEntity<ProductData_DTO> updateProductById(@RequestBody @Valid ProductUpdateCommand productUpdateCommand, @PathVariable(value = "id") Long id) {
         ProductData_DTO updatedProductData = productService.updateProductById(productUpdateCommand, id);
         return new ResponseEntity<>(updatedProductData, HttpStatus.OK);
     }
