@@ -6,6 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -30,8 +31,7 @@ public class PurchaseItem {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "purchase_item_id")
-    @NotNull
-    @Size(min = 1)
+    @NotEmpty
     private List<ProductOrder> productOrderList;
 
     @Column(name = "purchase_item_total_price")

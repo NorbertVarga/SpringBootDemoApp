@@ -26,14 +26,12 @@ public class Product {
     private Long productId;
 
     @Column(name = "product_name")
-    @NotNull
     @Size(min = 3, max = 80, message =
             "Name of the Product must be between {min} and {max} characters.")
     @NotBlank
     private String name;
 
     @Column(name = "product_description", columnDefinition = "TEXT(1000)")
-    @NotBlank
     private String description;
 
     @ElementCollection

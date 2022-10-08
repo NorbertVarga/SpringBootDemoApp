@@ -1,9 +1,17 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAddress;
 
 
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 public class AddressCreateCommand {
 
+    @Size(min = 3, message
+            = "Country must be minimum {min} characters")
     private String country;
+
+    @Size(min = 3, message
+            = "City must be minimum {min} characters")
     private String city;
     private String zipcode;
     private String street;

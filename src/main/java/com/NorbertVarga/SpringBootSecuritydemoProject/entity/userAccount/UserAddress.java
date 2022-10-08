@@ -8,6 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -24,26 +25,22 @@ public class UserAddress {
     private Long addressId;
 
     @Column(name = "address_country")
-    @NotNull
     @Size(min = 3, message
             = "Country must be minimum 3 character")
     @NotBlank
     private String country;
 
     @Column(name = "address_city")
-    @NotNull
     @Size(min = 3, message
             = "City must be minimum 3 character")
     @NotBlank
     private String city;
 
     @Column(name = "address_zipcode")
-    @NotNull
     @NotBlank
     private String zipcode;
 
     @Column(name = "address_street")
-    @NotNull
     @NotBlank
     private String street;
 
@@ -53,8 +50,7 @@ public class UserAddress {
 
     @Column(
             name = "address_additional_info",
-            columnDefinition = "TEXT(1000)")
-    @NotBlank
+            columnDefinition = "TEXT(500)")
     private String additionalInfo;
 
     @Column(name = "address_created_at")

@@ -8,10 +8,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -31,26 +28,22 @@ public class UserAccount {
     @Column(name = "user_first_name")
     @Size(min = 3, max = 30, message
             = "First name must be between {min} and {max} characters")
-    @NotNull
     @NotBlank
     private String firstName;
 
     @Column(name = "user_last_name")
     @Size(min = 3, max = 30, message
             = "Last name must be between {min} and {max} characters")
-    @NotNull
     @NotBlank
     private String lastName;
 
     @Column(name = "user_email")
     @Size(min = 10, max = 80, message
             = "Email must be between {min} and {max} characters")
-    @NotNull
     @NotBlank
     private String email;
 
     @Column(name = "user_password")
-    @NotNull
     @NotBlank
     private String password;
 
@@ -77,8 +70,7 @@ public class UserAccount {
     @CollectionTable(name = "user_role")
     @Column(name = "user_role")
     @Fetch(value = FetchMode.SUBSELECT)
-    @NotNull
-    @Size(min = 1)
+    @NotEmpty
     private List<UserRoleTypes> roles;
 
     @OneToMany(cascade = CascadeType.ALL)
