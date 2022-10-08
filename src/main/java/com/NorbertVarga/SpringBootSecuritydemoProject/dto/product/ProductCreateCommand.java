@@ -2,17 +2,32 @@ package com.NorbertVarga.SpringBootSecuritydemoProject.dto.product;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 public class ProductCreateCommand {
 
+    @Size(min = 3, max = 80, message =
+            "Name of the Product must be between {min} and {max} characters.")
+    @NotBlank(message = "Empty string not allowed here!")
     private String name;
+
+    @Size(max = 1000, message =
+            "Product description cannot be more than 1000 characters")
     private String description;
 
     @JsonProperty(value = "tags")
     private List<String> tags;
 
+    @NotNull
+    @Min(value = 0, message = "Price cannot be negative number")
     private int price;
+
+    @NotNull
+    @Min(value = 0, message = "Total quantity cannot be negative number")
     private int totalQuantity;
 
     public ProductCreateCommand() {

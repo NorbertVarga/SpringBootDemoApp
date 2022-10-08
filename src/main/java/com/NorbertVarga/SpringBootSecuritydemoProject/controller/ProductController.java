@@ -9,6 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @RestController
@@ -42,7 +43,7 @@ public class ProductController {
     //  **  SECURED ADMIN ENDPOINTS  ** //////////////////////////////////////////////////////////
     @PostMapping("/create")
     @Secured({"ROLE_ADMIN"})
-    public ResponseEntity<ProductData_DTO> createProductByAdmin(@RequestBody ProductCreateCommand productCreateCommandByAdmin) {
+    public ResponseEntity<ProductData_DTO> createProductByAdmin(@RequestBody @Valid ProductCreateCommand productCreateCommandByAdmin) {
         ProductData_DTO createdProductData = productService.createProduct(productCreateCommandByAdmin);
         return new ResponseEntity<>(createdProductData, HttpStatus.OK);
     }
