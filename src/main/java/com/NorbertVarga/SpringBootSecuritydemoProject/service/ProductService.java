@@ -2,13 +2,16 @@ package com.NorbertVarga.SpringBootSecuritydemoProject.service;
 
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.product.ProductCreateCommand;
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.product.ProductData_DTO;
+import com.NorbertVarga.SpringBootSecuritydemoProject.dto.product.ProductUpdateCommand;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.product.Product;
 import com.NorbertVarga.SpringBootSecuritydemoProject.faker.FakerService;
 import com.NorbertVarga.SpringBootSecuritydemoProject.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,6 +35,16 @@ public class ProductService {
                 .map(ProductData_DTO::new)
                 .collect(Collectors.toList());
     }
+
+    public ProductData_DTO getProductById(Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()) {
+            return new ProductData_DTO(productOptional.get());
+        } else {
+            throw new EntityNotFoundException("There is no Product with the given Id");
+        }
+    }
+
     ////////////////////////////////////////////////////////////////////////////////
 
     //  **  SECURED ADMIN METHODS    **  ////////////////////////////////////////////
@@ -40,6 +53,21 @@ public class ProductService {
         Product createdProduct = productRepository.save(product);
         return new ProductData_DTO(createdProduct);
     }
+
+    public ProductData_DTO updateProductById(ProductUpdateCommand command, Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()) {
+            Product product = productOptional.get();
+            product.setName(command.getName());
+            product.setDescription(command.getDescription());
+            product.setPrice(command.getPrice());
+            product.setTotalQuantity(command.getTotalQuantity());
+            Product updatedProduct = productRepository.save(product);
+            return new ProductData_DTO(updatedProduct);
+        } else {
+            throw new EntityNotFoundException("There is no Product with the given Id");
+        }
+    }
     ////////////////////////////////////////////////////////////////////////////////
 
     //  **  UTILS   **  ////////////////////////////////////////////////////////////
@@ -47,6 +75,7 @@ public class ProductService {
         List<Product> productList = faker.createDummyProducts(count);
         productRepository.saveAll(productList);
     }
+
 
     ////////////////////////////////////////////////////////////////////////////////
 }
