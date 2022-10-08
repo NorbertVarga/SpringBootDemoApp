@@ -1,5 +1,6 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.service;
 
+import com.NorbertVarga.SpringBootSecuritydemoProject.dto.product.ProductCreateCommand;
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.product.ProductData_DTO;
 import com.NorbertVarga.SpringBootSecuritydemoProject.entity.product.Product;
 import com.NorbertVarga.SpringBootSecuritydemoProject.faker.FakerService;
@@ -30,6 +31,14 @@ public class ProductService {
                 .stream()
                 .map(ProductData_DTO::new)
                 .collect(Collectors.toList());
+    }
+    ////////////////////////////////////////////////////////////////////////////////
+
+    //  **  SECURED ADMIN METHODS    **  ////////////////////////////////////////////
+    public ProductData_DTO createProduct(ProductCreateCommand command) {
+        Product product = new Product(command);
+        Product createdProduct = productRepository.save(product);
+        return new ProductData_DTO(createdProduct);
     }
     ////////////////////////////////////////////////////////////////////////////////
 

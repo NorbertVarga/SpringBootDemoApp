@@ -1,5 +1,6 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.entity.product;
 
+import com.NorbertVarga.SpringBootSecuritydemoProject.dto.product.ProductCreateCommand;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -58,6 +59,15 @@ public class Product {
         this.tags = tags;
         this.price = price;
         this.totalQuantity = totalQuantity;
+    }
+
+    // Used by admin endpoints to create products manually
+    public Product(ProductCreateCommand command) {
+        this.name = command.getName();
+        this.description = command.getDescription();
+        this.tags = command.getTags();
+        this.price = command.getPrice();
+        this.totalQuantity = command.getTotalQuantity();
     }
 
     public Long getProductId() {
