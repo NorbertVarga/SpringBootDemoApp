@@ -40,7 +40,7 @@ public class UserService {
     //  ** UNSECURED Registration method reachable for anybody
     public UserFullData_DTO registerUser(UserCreateCommand command) {
         UserAccount registeredUser = null;
-        if (!checkEmailExistAlready(command.getEmail())) {
+        if (!isEmailAlreadyExist(command.getEmail())) {
             UserAccount user = new UserAccount(command);
             user.setPassword(pwEncoder.encode(command.getPassword()));
             registeredUser = userRepository.save(user);
@@ -61,7 +61,7 @@ public class UserService {
         UserAccount user = getLoggedInUser();
         UserFullData_DTO updatedUserData;
         if (user != null) {
-            if (!checkEmailExistAlready(command.getEmail())) {
+            if (!isEmailAlreadyExist(command.getEmail())) {
                 user.setEmail(command.getEmail());
             } else {
                 throw new EntityExistsException("The given email is already exist");
@@ -112,7 +112,7 @@ public class UserService {
         if (userOptinal.isPresent()) {
             UserAccount userForUpdate = userOptinal.get();
 
-            if (!checkEmailExistAlready(command.getEmail())) {
+            if (!isEmailAlreadyExist(command.getEmail())) {
                 userForUpdate.setEmail(command.getEmail());
             } else {
                 throw new EntityExistsException("The given email is already exist");
@@ -147,7 +147,7 @@ public class UserService {
     /**
      * @return "true" if the given email already exist.
      */
-    public boolean checkEmailExistAlready(String email) {
+    public boolean isEmailAlreadyExist(String email) {
         Optional<UserAccount> userOptional = userRepository.findByEmail(email);
         return userOptional.isPresent();
     }

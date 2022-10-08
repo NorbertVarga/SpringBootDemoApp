@@ -36,11 +36,11 @@ public class UserController {
         this.userUpdateCommandValidator = userUpdateCommandValidator;
     }
 
-//    @InitBinder("userCreateCommand")
-//    protected void initBinderUserCreate(WebDataBinder binder) {
-//        binder.addValidators(userCreateCommandValidator);
-//    }
-//
+    @InitBinder("userCreateCommand")
+    protected void initBinderUserCreate(WebDataBinder binder) {
+        binder.addValidators(userCreateCommandValidator);
+    }
+
 //    @InitBinder("userUpdateCommand")
 //    protected void initBinderUserUpdate(WebDataBinder binder) {
 //        binder.addValidators(userUpdateCommandValidator);
