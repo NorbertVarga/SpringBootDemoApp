@@ -8,6 +8,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -30,36 +32,43 @@ public class UserAccount {
     @Size(min = 3, max = 30, message
             = "First name must be between {min} and {max} characters")
     @NotNull
+    @NotBlank
     private String firstName;
 
     @Column(name = "user_last_name")
     @Size(min = 3, max = 30, message
             = "Last name must be between {min} and {max} characters")
     @NotNull
+    @NotBlank
     private String lastName;
 
     @Column(name = "user_email")
     @Size(min = 10, max = 80, message
             = "Email must be between {min} and {max} characters")
     @NotNull
+    @NotBlank
     private String email;
 
     @Column(name = "user_password")
     @NotNull
+    @NotBlank
     private String password;
 
     @Column(name = "user_enabled")
     private boolean enabled;
 
     @Column(name = "user_balance")
+    @Min(0)
     private Integer balance;
 
     @Column(name = "user_created_at")
     @CreatedDate
+    @NotNull
     private LocalDateTime createdAt;
 
     @Column(name = "user_last_modified")
     @LastModifiedDate
+    @NotNull
     private LocalDateTime lastModified;
 
     @Enumerated(EnumType.STRING)
@@ -68,10 +77,13 @@ public class UserAccount {
     @CollectionTable(name = "user_role")
     @Column(name = "user_role")
     @Fetch(value = FetchMode.SUBSELECT)
+    @NotNull
+    @Size(min = 1)
     private List<UserRoleTypes> roles;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    @NotNull
     @Size(max = 3, message = "The maximum size of that list is {max}")
     private List<UserAddress> addressList = new ArrayList<>();
 

@@ -7,6 +7,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Min;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
@@ -28,9 +29,11 @@ public class Product {
     @NotNull
     @Size(min = 3, max = 80, message =
             "Name of the Product must be between {min} and {max} characters.")
+    @NotBlank
     private String name;
 
     @Column(name = "product_description", columnDefinition = "TEXT(1000)")
+    @NotBlank
     private String description;
 
     @ElementCollection
