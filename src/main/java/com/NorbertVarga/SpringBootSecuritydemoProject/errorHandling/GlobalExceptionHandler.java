@@ -1,5 +1,6 @@
 package com.NorbertVarga.SpringBootSecuritydemoProject.errorHandling;
 
+import org.h2.jdbc.JdbcSQLDataException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +39,8 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(processFieldErrors(fieldErrors), HttpStatus.BAD_REQUEST);
     }
 
-    // This exception related to Hibernate Entity level validation (Data cannot be saved to the database)
+    // These exceptions related to Hibernate Entity level validation, or jpa, or jdbc
+    // (Data cannot be saved to the database)
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ApiError> handleConstraintViolationException(ConstraintViolationException ex) {
         logger.error("Database validation error: ", ex);
@@ -49,6 +51,18 @@ public class GlobalExceptionHandler {
                 "Sorry, we can't tell you what was the problem.");
         return new ResponseEntity<>(body, status);
     }
+
+    @ExceptionHandler(JdbcSQLDataException.class)
+    public ResponseEntity<ApiError> handleJdbcSQLDataException(JdbcSQLDataException ex) {
+        logger.error("Database validation error: ", ex);
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ApiError body = new ApiError(
+                "BAD_REQUEST",
+                "Ups, something went wrong...",
+                "Sorry, we can't tell you what was the problem.");
+        return new ResponseEntity<>(body, status);
+    }
+    //////////////////////////////////////////////////////////////////////////////////////////////////////
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ApiError> handleEntityNotFoundException(EntityNotFoundException ex) {
@@ -75,7 +89,7 @@ public class GlobalExceptionHandler {
 
     private ValidationError processFieldErrors(List<FieldError> fieldErrors) {
         ValidationError validationError = new ValidationError();
-        for (FieldError fieldError: fieldErrors) {
+        for (FieldError fieldError : fieldErrors) {
             validationError.addFieldError(fieldError.getField(), messageSource.getMessage(fieldError, Locale.getDefault()));
         }
         return validationError;

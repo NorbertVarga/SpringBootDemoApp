@@ -8,6 +8,8 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -24,16 +26,26 @@ public class UserAccount {
     @Column(name = "user_id", nullable = false)
     private Long userId;
 
-    @Column(name = "user_first_name", nullable = false)
+    @Column(name = "user_first_name")
+    @Size(min = 3, max = 30, message
+            = "First name must be between {min} and {max} characters")
+    @NotNull
     private String firstName;
 
-    @Column(name = "user_last_name", nullable = false)
+    @Column(name = "user_last_name")
+    @Size(min = 3, max = 30, message
+            = "Last name must be between {min} and {max} characters")
+    @NotNull
     private String lastName;
 
-    @Column(name = "user_email", nullable = false)
+    @Column(name = "user_email")
+    @Size(min = 10, max = 80, message
+            = "Email must be between {min} and {max} characters")
+    @NotNull
     private String email;
 
-    @Column(name = "user_password", nullable = false)
+    @Column(name = "user_password")
+    @NotNull
     private String password;
 
     @Column(name = "user_enabled")
@@ -60,6 +72,7 @@ public class UserAccount {
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
+    @Size(max = 3, message = "The maximum size of that list is {max}")
     private List<UserAddress> addressList = new ArrayList<>();
 
 

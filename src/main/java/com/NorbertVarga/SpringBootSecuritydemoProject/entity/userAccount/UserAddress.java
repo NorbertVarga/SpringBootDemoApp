@@ -7,43 +7,58 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 
 @Entity
-@Table (name = "user_adress")
+@Table(name = "user_adress")
 // Entity Listener needed for auditing and automatically manage the creating and modified dates
 @EntityListeners(AuditingEntityListener.class)
 public class UserAddress {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column (name = "address_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "address_id", nullable = false)
     private Long addressId;
 
-    @Column (name = "address_country")
+    @Column(name = "address_country")
+    @NotNull
+    @Size(min = 3, message
+            = "Country must be minimum 3 character")
     private String country;
 
-    @Column (name = "address_city")
+    @Column(name = "address_city")
+    @NotNull
+    @Size(min = 3, message
+            = "City must be minimum 3 character")
     private String city;
 
-    @Column (name = "address_zipcode")
+    @Column(name = "address_zipcode")
+    @NotNull
     private String zipcode;
 
-    @Column (name = "address_street")
+    @Column(name = "address_street")
+    @NotNull
     private String street;
 
-    @Column (name = "address_house_number")
+    @Column(name = "address_house_number")
+    @NotNull
     private Integer houseNumber;
 
-    @Column (name = "address_additional_info")
+    @Column(
+            name = "address_additional_info",
+            columnDefinition = "TEXT(1000)")
     private String additionalInfo;
 
     @Column(name = "address_created_at")
     @CreatedDate
+    @NotNull
     private LocalDateTime createdAt;
 
     @Column(name = "address_last_modified")
     @LastModifiedDate
+    @NotNull
     private LocalDateTime lastModified;
 
     public UserAddress() {

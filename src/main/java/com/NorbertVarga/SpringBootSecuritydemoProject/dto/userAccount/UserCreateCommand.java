@@ -11,7 +11,7 @@ public class UserCreateCommand {
     private String email;
     private String password;
 
-    @JsonProperty(value = "addressCreateCommand")
+    @JsonProperty(value = "address")
     private AddressCreateCommand addressCreateCommand;
 
     public UserCreateCommand() {
@@ -49,12 +49,12 @@ public class UserCreateCommand {
         this.email = email;
     }
 
-    @JsonProperty(value = "addressCreateCommand")
+    @JsonProperty(value = "address")
     public AddressCreateCommand getAddressCreateCommand() {
         return addressCreateCommand;
     }
 
-    @JsonProperty(value = "addressCreateCommand")
+    @JsonProperty(value = "address")
     public void setAddressCreateCommand(AddressCreateCommand addressCreateCommand) {
         this.addressCreateCommand = addressCreateCommand;
     }

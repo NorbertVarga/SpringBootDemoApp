@@ -6,6 +6,9 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,13 +21,16 @@ public class Product {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column (name = "product_id")
+    @Column(name = "product_id", nullable = false)
     private Long productId;
 
-    @Column (name = "product_name")
+    @Column(name = "product_name")
+    @NotNull
+    @Size(min = 3, max = 80, message =
+            "Name of the Product must be between {min} and {max} characters.")
     private String name;
 
-    @Column (name = "product_description")
+    @Column(name = "product_description", columnDefinition = "TEXT(1000)")
     private String description;
 
     @ElementCollection
@@ -35,18 +41,24 @@ public class Product {
     @OrderColumn
     private List<String> tags = new ArrayList<>();
 
-    @Column (name = "product_price")
+    @Column(name = "product_price")
+    @NotNull
+    @Min(0)
     private Integer price;
 
-    @Column (name = "product_total_quantity")
+    @Column(name = "product_total_quantity")
+    @NotNull
+    @Min(0)
     private Integer totalQuantity;
 
     @Column(name = "product_created_at")
     @CreatedDate
+    @NotNull
     private LocalDateTime createdAt;
 
     @Column(name = "product_last_modified")
     @LastModifiedDate
+    @NotNull
     private LocalDateTime lastModified;
 
     public Product() {
