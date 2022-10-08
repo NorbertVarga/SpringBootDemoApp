@@ -14,15 +14,15 @@ public class UserCreateCommand {
     @JsonProperty(value = "addressCreateCommand")
     private AddressCreateCommand addressCreateCommand;
 
+    public UserCreateCommand() {
+    }
+
     public String getPassword() {
         return password;
     }
 
     public void setPassword(String password) {
         this.password = password;
-    }
-
-    public UserCreateCommand() {
     }
 
     public String getFirstName() {
