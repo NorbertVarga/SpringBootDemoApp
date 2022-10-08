@@ -6,10 +6,7 @@ import com.NorbertVarga.SpringBootSecuritydemoProject.service.ProductService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -34,6 +31,7 @@ public class ProductController {
     /////////////////////////////////////////////////////////////////////////////////////
 
     //  **  SECURED ADMIN ENDPOINTS  ** //////////////////////////////////////////////////////////
+    @PostMapping("/create")
     public ResponseEntity<ProductData_DTO> createProductByAdmin(@RequestBody ProductCreateCommand productCreateCommandByAdmin) {
         ProductData_DTO createdProductData = productService.createProduct(productCreateCommandByAdmin);
         return new ResponseEntity<>(createdProductData, HttpStatus.OK);
