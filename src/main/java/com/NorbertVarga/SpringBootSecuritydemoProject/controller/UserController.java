@@ -41,15 +41,15 @@ public class UserController {
         binder.addValidators(userCreateCommandValidator);
     }
 
-//    @InitBinder("userUpdateCommand")
-//    protected void initBinderUserUpdate(WebDataBinder binder) {
-//        binder.addValidators(userUpdateCommandValidator);
-//    }
-//
-//    @InitBinder("userUpdateCommandForAdmin")
-//    protected void initBinderUserUpdateForAdmin(WebDataBinder binder) {
-//        binder.addValidators(userUpdateCommandValidator);
-//    }
+    @InitBinder("userUpdateCommand")
+    protected void initBinderUserUpdate(WebDataBinder binder) {
+        binder.addValidators(userUpdateCommandValidator);
+    }
+
+    @InitBinder("userUpdateCommandForAdmin")
+    protected void initBinderUserUpdateForAdmin(WebDataBinder binder) {
+        binder.addValidators(userUpdateCommandValidator);
+    }
 
 
     // UNSECURED "free" endpoints for the registration and login

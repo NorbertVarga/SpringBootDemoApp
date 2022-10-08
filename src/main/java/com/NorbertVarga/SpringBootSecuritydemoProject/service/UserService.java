@@ -61,14 +61,24 @@ public class UserService {
         UserAccount user = getLoggedInUser();
         UserFullData_DTO updatedUserData;
         if (user != null) {
-            if (!isEmailAlreadyExist(command.getEmail())) {
-                user.setEmail(command.getEmail());
-            } else {
-                throw new EntityExistsException("The given email is already exist");
+
+            if (!isStringEmpty(command.getEmail())) {
+                if (!isEmailAlreadyExist(command.getEmail())) {
+                    user.setEmail(command.getEmail());
+                } else {
+                    throw new EntityExistsException("The given email is already exist");
+                }
             }
-            user.setLastName(command.getLastName());
-            user.setFirstName(command.getFirstName());
-            user.setPassword(pwEncoder.encode(command.getPassword()));
+
+            if (!isStringEmpty(command.getFirstName())) {
+                user.setFirstName(command.getFirstName());
+            }
+            if (!isStringEmpty(command.getLastName())) {
+                user.setLastName(command.getLastName());
+            }
+            if (!isStringEmpty(command.getPassword())) {
+                user.setPassword(pwEncoder.encode(command.getPassword()));
+            }
 
             UserAccount updatedUser = userRepository.save(user);
             updatedUserData = new UserFullData_DTO(updatedUser);
@@ -88,7 +98,7 @@ public class UserService {
     }///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
-    //  **  CRUD methods by Id (only for ADMIN role) ////////////////////////////////////////////////////////////////
+    //  **  CRUD methods by id (only for ADMIN role) ////////////////////////////////////////////////////////////////
     public List<UserFullData_DTO> getAllUsers() {
         List<UserAccount> users = userRepository.findAll();
         return users.stream()
@@ -111,15 +121,23 @@ public class UserService {
         Optional<UserAccount> userOptinal = userRepository.findById(id);
         if (userOptinal.isPresent()) {
             UserAccount userForUpdate = userOptinal.get();
-
-            if (!isEmailAlreadyExist(command.getEmail())) {
-                userForUpdate.setEmail(command.getEmail());
-            } else {
-                throw new EntityExistsException("The given email is already exist");
+            if (!isStringEmpty(command.getEmail())) {
+                if (!isEmailAlreadyExist(command.getEmail())) {
+                    userForUpdate.setEmail(command.getEmail());
+                } else {
+                    throw new EntityExistsException("The given email is already exist");
+                }
             }
-            userForUpdate.setLastName(command.getLastName());
-            userForUpdate.setFirstName(command.getFirstName());
-            userForUpdate.setPassword(pwEncoder.encode(command.getPassword()));
+
+            if (!isStringEmpty(command.getFirstName())) {
+                userForUpdate.setFirstName(command.getFirstName());
+            }
+            if (!isStringEmpty(command.getLastName())) {
+                userForUpdate.setLastName(command.getLastName());
+            }
+            if (!isStringEmpty(command.getPassword())) {
+                userForUpdate.setPassword(pwEncoder.encode(command.getPassword()));
+            }
 
             UserAccount updatedUser = userRepository.save(userForUpdate);
             updatedUserData = new UserFullData_DTO(updatedUser);
@@ -144,14 +162,6 @@ public class UserService {
 
     //  ** UTILS  //////////////////////////////////////////////////////////////////////////
 
-    /**
-     * @return "true" if the given email already exist.
-     */
-    public boolean isEmailAlreadyExist(String email) {
-        Optional<UserAccount> userOptional = userRepository.findByEmail(email);
-        return userOptional.isPresent();
-    }
-
     public UserAccount getLoggedInUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         UserPrincipal loggedInUser = (UserPrincipal) authentication.getPrincipal();
@@ -171,7 +181,20 @@ public class UserService {
         return user;
     }
 
-    // Populate database with dummy users in the cunstructo
+    // One more level or validation for the email existence
+    public boolean isEmailAlreadyExist(String email) {
+        Optional<UserAccount> userOptional = userRepository.findByEmail(email);
+        return userOptional.isPresent();
+    }
+
+    // We use that method in the update commands
+    // If an incoming field is empty or null we just leave the original value of that field
+    public boolean isStringEmpty(String string) {
+        return (string == null || string.isEmpty() || string.isBlank());
+    }
+
+    //      --  DATABASE INITIATING --  (Methods called in the Constructor)
+    // Populate database with dummy users
     private void populateDataBaseWithDummyUsers(int count) {
         List<UserAccount> users = faker.createDummyUsers(count, pwEncoder);
         userRepository.saveAll(users);
@@ -194,9 +217,9 @@ public class UserService {
     // Populate database with a "simple" user
     private void saveSimpleUser() {
         UserAccount simpleUser = new UserAccount();
-        simpleUser.setEmail("norbertVarga@email.com");
-        simpleUser.setFirstName("norbert");
-        simpleUser.setLastName("varga");
+        simpleUser.setEmail("simple.user@email.com");
+        simpleUser.setFirstName("Simple");
+        simpleUser.setLastName("User");
         simpleUser.setEnabled(true);
         simpleUser.setBalance(20000);
         simpleUser.setPassword(pwEncoder.encode("test1234"));
