@@ -4,30 +4,34 @@ package com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAccount;
 import com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAddress.AddressCreateCommand;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class UserCreateCommand {
 
     @Size(min = 3, max = 30, message
             = "First name must be between {min} and {max} characters")
-    @NotBlank
+    @NotBlank (message = "Empty string not allowed here!")
     private String firstName;
 
     @Size(min = 3, max = 30, message
             = "Last name must be between {min} and {max} characters")
+    @NotBlank (message = "Empty string not allowed here!")
     private String lastName;
 
     @Size(min = 10, max = 80, message
             = "Email must be between {min} and {max} characters")
+    @NotBlank (message = "Empty string not allowed here!")
     private String email;
 
     @Size(min = 8, max = 40, message
             = "Password must be between {min} and {max} characters")
+    @NotBlank (message = "Empty string not allowed here!")
     private String password;
 
     @JsonProperty(value = "address")
+    @Valid
     private AddressCreateCommand addressCreateCommand;
 
     public UserCreateCommand() {

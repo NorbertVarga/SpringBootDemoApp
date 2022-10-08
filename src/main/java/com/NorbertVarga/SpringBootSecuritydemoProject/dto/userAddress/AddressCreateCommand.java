@@ -2,20 +2,32 @@ package com.NorbertVarga.SpringBootSecuritydemoProject.dto.userAddress;
 
 
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 public class AddressCreateCommand {
 
     @Size(min = 3, message
             = "Country must be minimum {min} characters")
+    @NotBlank (message = "Empty string not allowed here!")
     private String country;
 
     @Size(min = 3, message
             = "City must be minimum {min} characters")
+    @NotBlank (message = "Empty string not allowed here!")
     private String city;
+
+    @NotBlank (message = "Empty string not allowed here!")
     private String zipcode;
+
+    @NotBlank (message = "Empty string not allowed here!")
     private String street;
+
+    @NotNull
     private Integer houseNumber;
+
+    @Size(max = 500, message
+            = "Info cannot be more than 500 characters")
     private String additionalInfo;
 
     public AddressCreateCommand() {
