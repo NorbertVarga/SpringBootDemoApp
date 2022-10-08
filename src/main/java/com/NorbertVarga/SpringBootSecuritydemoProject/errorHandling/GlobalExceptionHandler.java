@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import javax.persistence.EntityExistsException;
 import javax.persistence.EntityNotFoundException;
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.Locale;
 
@@ -34,30 +35,29 @@ public class GlobalExceptionHandler {
         logger.error("A validation error occurred: ", ex);
         BindingResult result = ex.getBindingResult();
         List<FieldError> fieldErrors = result.getFieldErrors();
-
         return new ResponseEntity<>(processFieldErrors(fieldErrors), HttpStatus.BAD_REQUEST);
     }
 
-    private ValidationError processFieldErrors(List<FieldError> fieldErrors) {
-        ValidationError validationError = new ValidationError();
-
-        for (FieldError fieldError: fieldErrors) {
-            validationError.addFieldError(fieldError.getField(), messageSource.getMessage(fieldError, Locale.getDefault()));
-        }
-
-        return validationError;
+    // This exception related to Hibernate Entity level validation (Data cannot be saved to the database)
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ApiError> handleConstraintViolationException(ConstraintViolationException ex) {
+        logger.error("Database validation error: ", ex);
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ApiError body = new ApiError(
+                "BAD_REQUEST",
+                "Ups, something went wrong...",
+                "Sorry, we can't tell you what was the problem.");
+        return new ResponseEntity<>(body, status);
     }
 
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ApiError> handleEntityNotFoundException(EntityNotFoundException ex) {
         logger.error("User principal error: ", ex);
         HttpStatus status = HttpStatus.NOT_FOUND;
-
         ApiError body = new ApiError(
                 "NOT_FOUND",
                 "Entity is missing for the operation",
                 ex.getLocalizedMessage());
-
         return new ResponseEntity<>(body, status);
     }
 
@@ -65,13 +65,20 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiError> handleEntityExistException(EntityExistsException ex) {
         logger.error("User principal error: ", ex);
         HttpStatus status = HttpStatus.BAD_REQUEST;
-
         ApiError body = new ApiError(
                 "BAD_REQUEST",
                 "Entity cannot be duplicated.",
                 ex.getLocalizedMessage());
-
         return new ResponseEntity<>(body, status);
+    }
+
+
+    private ValidationError processFieldErrors(List<FieldError> fieldErrors) {
+        ValidationError validationError = new ValidationError();
+        for (FieldError fieldError: fieldErrors) {
+            validationError.addFieldError(fieldError.getField(), messageSource.getMessage(fieldError, Locale.getDefault()));
+        }
+        return validationError;
     }
 
 }
