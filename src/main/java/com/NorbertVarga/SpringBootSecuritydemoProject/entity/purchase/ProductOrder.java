@@ -5,31 +5,38 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
 // Entity Listener needed for auditing and automatically manage the creating and modified dates
 @EntityListeners(AuditingEntityListener.class)
 @Entity
-@Table (name = "product_order")
+@Table(name = "product_order")
 public class ProductOrder {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column(name = "product_order_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "product_order_id", nullable = false)
     private Long productOrderId;
 
     @OneToOne
-    @JoinColumn (name = "product_id")
+    @JoinColumn(name = "product_id")
+    @NotNull
     private Product product;
 
-    @Column (name = "product_order_quantity")
+    @Column(name = "product_order_quantity")
+    @NotNull
+    @Min(1)
     private int quantity;
 
     @Column(name = "product_order_total_price")
+    @NotNull
     private int totalPrice;
 
     @Column(name = "product_order_created_at")
     @CreatedDate
+    @NotNull
     private LocalDateTime createdAt;
 
     public ProductOrder() {

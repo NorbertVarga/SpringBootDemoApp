@@ -5,6 +5,9 @@ import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -16,23 +19,28 @@ import java.util.stream.Collectors;
 public class PurchaseItem {
 
     @Id
-    @GeneratedValue (strategy = GenerationType.IDENTITY)
-    @Column(name = "purchase_item_id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "purchase_item_id", nullable = false)
     private Long purchaseItemId;
 
     @ManyToOne // todo update userAccount entity and related DTO
-    @JoinColumn (name = "user_id")
+    @JoinColumn(name = "user_id")
+    @NotNull
     private UserAccount userAccount;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "purchase_item_id")
+    @NotNull
+    @Size(min = 1)
     private List<ProductOrder> productOrderList;
 
     @Column(name = "purchase_item_total_price")
+    @NotNull
     private int totalPrice;
 
     @Column(name = "purchase_item_created_at")
     @CreatedDate
+    @NotNull
     private LocalDateTime createdAt;
 
     public PurchaseItem() {
