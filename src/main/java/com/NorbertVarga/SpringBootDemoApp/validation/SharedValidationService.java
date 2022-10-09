@@ -30,7 +30,8 @@ public class SharedValidationService {
         return userOptional.isPresent();
     }
 
-    public boolean isStringEmpty(String string) {
-        return (string == null || string.isEmpty() || string.isBlank());
+    public boolean isStringEmpty(String input) {
+        return (input == null || input.isEmpty() || input.isBlank());
     }
+
 }
