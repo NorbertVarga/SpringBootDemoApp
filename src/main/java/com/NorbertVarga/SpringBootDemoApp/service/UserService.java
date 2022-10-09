@@ -8,6 +8,7 @@ import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserPrincipal;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserRoleTypes;
 import com.NorbertVarga.SpringBootDemoApp.faker.FakerService;
 import com.NorbertVarga.SpringBootDemoApp.repository.UserRepository;
+import com.NorbertVarga.SpringBootDemoApp.validation.SharedValidationService;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,11 +27,13 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder pwEncoder;
+    private final SharedValidationService validationService;
     private final FakerService faker;
 
-    public UserService(UserRepository userRepository, PasswordEncoder pwEncoder, FakerService faker) {
+    public UserService(UserRepository userRepository, PasswordEncoder pwEncoder, SharedValidationService validationService, FakerService faker) {
         this.userRepository = userRepository;
         this.pwEncoder = pwEncoder;
+        this.validationService = validationService;
         this.faker = faker;
         populateDataBaseWithDummyUsers(10);
         saveAdminUser();
@@ -40,7 +43,7 @@ public class UserService {
     //  ** UNSECURED Registration method reachable for anybody
     public UserFullData_DTO registerUser(UserCreateCommand command) {
         UserAccount registeredUser = null;
-        if (!isEmailAlreadyExist(command.getEmail())) {
+        if (!validationService.isEmailAlreadyExist(command.getEmail())) {
             UserAccount user = new UserAccount(command);
             user.setPassword(pwEncoder.encode(command.getPassword()));
             registeredUser = userRepository.save(user);
@@ -62,21 +65,21 @@ public class UserService {
         UserFullData_DTO updatedUserData;
         if (user != null) {
 
-            if (!isStringEmpty(command.getEmail())) {
-                if (!isEmailAlreadyExist(command.getEmail())) {
+            if (!validationService.isStringEmpty(command.getEmail())) {
+                if (!validationService.isEmailAlreadyExist(command.getEmail())) {
                     user.setEmail(command.getEmail());
                 } else {
                     throw new EntityExistsException("The given email is already exist");
                 }
             }
 
-            if (!isStringEmpty(command.getFirstName())) {
+            if (!validationService.isStringEmpty(command.getFirstName())) {
                 user.setFirstName(command.getFirstName());
             }
-            if (!isStringEmpty(command.getLastName())) {
+            if (!validationService.isStringEmpty(command.getLastName())) {
                 user.setLastName(command.getLastName());
             }
-            if (!isStringEmpty(command.getPassword())) {
+            if (!validationService.isStringEmpty(command.getPassword())) {
                 user.setPassword(pwEncoder.encode(command.getPassword()));
             }
 
@@ -121,21 +124,21 @@ public class UserService {
         Optional<UserAccount> userOptinal = userRepository.findById(id);
         if (userOptinal.isPresent()) {
             UserAccount userForUpdate = userOptinal.get();
-            if (!isStringEmpty(command.getEmail())) {
-                if (!isEmailAlreadyExist(command.getEmail())) {
+            if (!validationService.isStringEmpty(command.getEmail())) {
+                if (!validationService.isEmailAlreadyExist(command.getEmail())) {
                     userForUpdate.setEmail(command.getEmail());
                 } else {
                     throw new EntityExistsException("The given email is already exist");
                 }
             }
 
-            if (!isStringEmpty(command.getFirstName())) {
+            if (!validationService.isStringEmpty(command.getFirstName())) {
                 userForUpdate.setFirstName(command.getFirstName());
             }
-            if (!isStringEmpty(command.getLastName())) {
+            if (!validationService.isStringEmpty(command.getLastName())) {
                 userForUpdate.setLastName(command.getLastName());
             }
-            if (!isStringEmpty(command.getPassword())) {
+            if (!validationService.isStringEmpty(command.getPassword())) {
                 userForUpdate.setPassword(pwEncoder.encode(command.getPassword()));
             }
 
@@ -179,18 +182,6 @@ public class UserService {
             throw new EntityNotFoundException("There is no account with the given email.");
         }
         return user;
-    }
-
-    // One more level or validation for the email existence
-    public boolean isEmailAlreadyExist(String email) {
-        Optional<UserAccount> userOptional = userRepository.findByEmail(email);
-        return userOptional.isPresent();
-    }
-
-    // We use that method in the update commands
-    // If an incoming field is empty or null we just leave the original value of that field
-    public boolean isStringEmpty(String string) {
-        return (string == null || string.isEmpty() || string.isBlank());
     }
 
     //      --  DATABASE INITIATING --  (Methods called in the Constructor)

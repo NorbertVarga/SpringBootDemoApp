@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.util.Optional;
 
 @Service
 @Transactional
@@ -21,5 +22,15 @@ public class SharedValidationService {
 
     public UserAccount findUserByEmail(String email) {
         return userRepository.findByEmail(email).orElse(null);
+    }
+
+    // One more level of validation for the email existence
+    public boolean isEmailAlreadyExist(String email) {
+        Optional<UserAccount> userOptional = userRepository.findByEmail(email);
+        return userOptional.isPresent();
+    }
+
+    public boolean isStringEmpty(String string) {
+        return (string == null || string.isEmpty() || string.isBlank());
     }
 }
