@@ -4,9 +4,12 @@ import com.NorbertVarga.SpringBootDemoApp.dto.product.ProductCreateCommand;
 import com.NorbertVarga.SpringBootDemoApp.dto.product.ProductData_DTO;
 import com.NorbertVarga.SpringBootDemoApp.dto.product.ProductUpdateCommand;
 import com.NorbertVarga.SpringBootDemoApp.service.ProductService;
+import com.NorbertVarga.SpringBootDemoApp.validation.ProductUpdateCommandValidator;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -16,10 +19,18 @@ import java.util.List;
 @RequestMapping("/api/products")
 public class ProductController {
 
-    private ProductService productService;
+    private final ProductService productService;
+    private final ProductUpdateCommandValidator productUpdateCommandValidator;
 
-    public ProductController(ProductService productService) {
+    @Autowired
+    public ProductController(ProductService productService, ProductUpdateCommandValidator productUpdateCommandValidator) {
         this.productService = productService;
+        this.productUpdateCommandValidator = productUpdateCommandValidator;
+    }
+
+    @InitBinder("productUpdateCommand")
+    protected void initBinderForProductUpdateCommand(WebDataBinder binder) {
+        binder.addValidators(productUpdateCommandValidator);
     }
 
     //  **  SECURED USER ENDPOINTS  **  //////////////////////////////////////////////////////////

@@ -1,6 +1,7 @@
 package com.NorbertVarga.SpringBootDemoApp.validation;
 
 import com.NorbertVarga.SpringBootDemoApp.dto.product.ProductUpdateCommand;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
@@ -10,6 +11,7 @@ public class ProductUpdateCommandValidator implements Validator {
 
     private final SharedValidationService validationService;
 
+    @Autowired
     public ProductUpdateCommandValidator(SharedValidationService validationService) {
         this.validationService = validationService;
     }
