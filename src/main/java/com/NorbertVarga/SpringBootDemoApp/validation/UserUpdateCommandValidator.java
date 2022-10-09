@@ -25,7 +25,7 @@ public class UserUpdateCommandValidator implements Validator {
     public void validate(Object target, Errors errors) {
         UserUpdateCommand command = (UserUpdateCommand) target;
 
-        if (command.getEmail() != null && !command.getEmail().isEmpty() && !command.getEmail().isBlank()) {
+        if (!validationService.isStringEmpty(command.getEmail())) {
             if (!command.getEmail().matches("^(.+)@(.+)$")) {
                 errors.rejectValue("email", "email.valid");
             }
@@ -34,19 +34,19 @@ public class UserUpdateCommandValidator implements Validator {
             }
         }
 
-        if (command.getFirstName() != null && !command.getFirstName().isEmpty() && !command.getFirstName().isBlank()) {
+        if (!validationService.isStringEmpty(command.getFirstName())) {
             if (command.getFirstName().length() < 3 || command.getFirstName().length() > 30) {
                 errors.rejectValue("firstName", "firstname.length");
             }
         }
 
-        if (command.getLastName() != null && !command.getLastName().isEmpty() && !command.getLastName().isBlank()) {
+        if (!validationService.isStringEmpty(command.getLastName())) {
             if (command.getLastName().length() < 3 || command.getLastName().length() > 30) {
                 errors.rejectValue("lastName", "lastname.length");
             }
         }
 
-        if (command.getPassword() != null && !command.getPassword().isEmpty() && !command.getPassword().isBlank()) {
+        if (!validationService.isStringEmpty(command.getPassword())) {
             if (command.getPassword().length() < 8 || command.getPassword().length() > 30) {
                 errors.rejectValue("password", "password.length");
             }
