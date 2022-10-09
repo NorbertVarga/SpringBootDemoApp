@@ -6,6 +6,7 @@ import com.NorbertVarga.SpringBootDemoApp.dto.product.ProductUpdateCommand;
 import com.NorbertVarga.SpringBootDemoApp.entity.product.Product;
 import com.NorbertVarga.SpringBootDemoApp.faker.FakerService;
 import com.NorbertVarga.SpringBootDemoApp.repository.ProductRepository;
+import com.NorbertVarga.SpringBootDemoApp.validation.SharedValidationService;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -18,12 +19,14 @@ import java.util.stream.Collectors;
 @Transactional
 public class ProductService {
 
-    private FakerService faker;
-    private ProductRepository productRepository;
+    private final FakerService faker;
+    private final ProductRepository productRepository;
+    private final SharedValidationService validationService;
 
-    public ProductService(FakerService faker, ProductRepository productRepository) {
+    public ProductService(FakerService faker, ProductRepository productRepository, SharedValidationService validationService) {
         this.faker = faker;
         this.productRepository = productRepository;
+        this.validationService = validationService;
         populateDataBaseWithDummyProducts(30);
     }
 
@@ -58,10 +61,22 @@ public class ProductService {
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
-            product.setName(command.getName());
-            product.setDescription(command.getDescription());
-            product.setPrice(command.getPrice());
-            product.setTotalQuantity(command.getTotalQuantity());
+
+            if (!validationService.isStringEmpty(command.getName())) {
+                product.setName(command.getName());
+            }
+            if (!validationService.isStringEmpty(command.getDescription())) {
+                product.setDescription(command.getDescription());
+            }
+
+            if (command.getPrice() != null && command.getPrice() > 0) {
+                product.setPrice(command.getPrice());
+            }
+
+            if (command.getTotalQuantity() != null && command.getTotalQuantity() > 0) {
+                product.setTotalQuantity(command.getTotalQuantity());
+            }
+
             Product updatedProduct = productRepository.save(product);
             return new ProductData_DTO(updatedProduct);
         } else {

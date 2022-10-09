@@ -24,21 +24,13 @@ public class ProductCreateCommand {
 
     @NotNull
     @Min(value = 0, message = "Price cannot be negative number")
-    private int price;
+    private Integer price;
 
     @NotNull
     @Min(value = 0, message = "Total quantity cannot be negative number")
-    private int totalQuantity;
+    private Integer totalQuantity;
 
     public ProductCreateCommand() {
-    }
-
-    public ProductCreateCommand(String name, String description, List<String> tags, int price, int totalQuantity) {
-        this.name = name;
-        this.description = description;
-        this.tags = tags;
-        this.price = price;
-        this.totalQuantity = totalQuantity;
     }
 
     public String getName() {
@@ -67,19 +59,19 @@ public class ProductCreateCommand {
         this.tags = tags;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public int getTotalQuantity() {
+    public Integer getTotalQuantity() {
         return totalQuantity;
     }
 
-    public void setTotalQuantity(int totalQuantity) {
+    public void setTotalQuantity(Integer totalQuantity) {
         this.totalQuantity = totalQuantity;
     }
 }

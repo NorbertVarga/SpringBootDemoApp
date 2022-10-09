@@ -12,10 +12,10 @@ public class ProductUpdateCommand {
     private String description;
 
     @Min(value = 0, message = "Price cannot be negative number")
-    private int price;
+    private Integer price;
 
     @Min(value = 0, message = "Total quantity cannot be negative number")
-    private int totalQuantity;
+    private Integer totalQuantity;
 
     public ProductUpdateCommand() {
     }
@@ -36,19 +36,19 @@ public class ProductUpdateCommand {
         this.description = description;
     }
 
-    public int getPrice() {
+    public Integer getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Integer price) {
         this.price = price;
     }
 
-    public int getTotalQuantity() {
+    public Integer getTotalQuantity() {
         return totalQuantity;
     }
 
-    public void setTotalQuantity(int totalQuantity) {
+    public void setTotalQuantity(Integer totalQuantity) {
         this.totalQuantity = totalQuantity;
     }
 }
