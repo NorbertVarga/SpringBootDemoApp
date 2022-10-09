@@ -73,7 +73,7 @@ public class ProductService {
                 product.setPrice(command.getPrice());
             }
 
-            if (command.getTotalQuantity() != null && command.getTotalQuantity() > 0) {
+            if (command.getTotalQuantity() != null && command.getTotalQuantity() >= 0) {
                 product.setTotalQuantity(command.getTotalQuantity());
             }
 

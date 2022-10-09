@@ -20,7 +20,6 @@ public class ValidationError {
         this.fieldErrors = customFieldErrors;
     }
 
-
     private static class CustomFieldError {
 
         private String field;

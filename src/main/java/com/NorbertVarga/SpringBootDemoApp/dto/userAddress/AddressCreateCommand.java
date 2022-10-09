@@ -9,18 +9,18 @@ public class AddressCreateCommand {
 
     @Size(min = 3, message
             = "Country must be minimum {min} characters")
-    @NotBlank (message = "Empty string not allowed here!")
+    @NotBlank(message = "Empty string not allowed here!")
     private String country;
 
     @Size(min = 3, message
             = "City must be minimum {min} characters")
-    @NotBlank (message = "Empty string not allowed here!")
+    @NotBlank(message = "Empty string not allowed here!")
     private String city;
 
-    @NotBlank (message = "Empty string not allowed here!")
+    @NotBlank(message = "Empty string not allowed here!")
     private String zipcode;
 
-    @NotBlank (message = "Empty string not allowed here!")
+    @NotBlank(message = "Empty string not allowed here!")
     private String street;
 
     @NotNull

@@ -31,14 +31,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
 
-        //@formatter:off
         http
                 .cors()
                 .and()
                 .csrf().disable()
                 .httpBasic()
                 .and()
-                .logout().logoutUrl("/api/accounts/logout")
+                .logout().logoutUrl("/api/users/logout")
                 .deleteCookies("JSESSIONID")
                 .invalidateHttpSession(true);
 
@@ -46,6 +45,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated();
 
-        //@formatter:on
     }
 }

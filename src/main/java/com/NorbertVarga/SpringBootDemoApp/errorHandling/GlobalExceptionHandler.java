@@ -81,7 +81,7 @@ public class GlobalExceptionHandler {
     //  **  BUSINESS   ////////////////////
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<ApiError> handleEntityNotFoundException(EntityNotFoundException ex) {
-        logger.error("User principal error: ", ex);
+        logger.error("Entity not found error: ", ex);
         HttpStatus status = HttpStatus.NOT_FOUND;
         ApiError body = new ApiError(
                 "NOT_FOUND",
@@ -92,7 +92,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityExistsException.class)
     protected ResponseEntity<ApiError> handleEntityExistException(EntityExistsException ex) {
-        logger.error("User principal error: ", ex);
+        logger.error("Entity already exist error: ", ex);
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ApiError body = new ApiError(
                 "BAD_REQUEST",

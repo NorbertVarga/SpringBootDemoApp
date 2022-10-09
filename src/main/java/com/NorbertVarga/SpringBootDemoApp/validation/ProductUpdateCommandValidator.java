@@ -25,8 +25,8 @@ public class ProductUpdateCommandValidator implements Validator {
     public void validate(Object target, Errors errors) {
         ProductUpdateCommand command = (ProductUpdateCommand) target;
 
-        if(!validationService.isStringEmpty(command.getName())) {
-            if(command.getName().length() < 3 || command.getName().length() > 80) {
+        if (!validationService.isStringEmpty(command.getName())) {
+            if (command.getName().length() < 3 || command.getName().length() > 80) {
                 errors.rejectValue("name", "product.name.length");
             }
         }

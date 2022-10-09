@@ -38,15 +38,15 @@ public class FakerService {
         String lastName = faker.name().lastName();
         String email = firstname + "." + lastName + "@email.com";
         String password = "test1234";
-        int balance = random.nextInt(20000)+5000;
+        int balance = random.nextInt(20000) + 5000;
         List<UserRoleTypes> roles = List.of(UserRoleTypes.ROLE_USER);
         List<UserAddress> addressList = generateRandomCountOfAddresses();
 
-        return new UserAccount(firstname,lastName,email,true,balance,roles,addressList);
+        return new UserAccount(firstname, lastName, email, true, balance, roles, addressList);
     }
 
     public List<UserAddress> generateRandomCountOfAddresses() {
-        int randomCount = random.nextInt(3)+1;
+        int randomCount = random.nextInt(3) + 1;
         List<UserAddress> addressList = new ArrayList<>();
         String country;
         String city;
@@ -60,8 +60,8 @@ public class FakerService {
             city = faker.address().city();
             zipcode = faker.address().zipCode();
             street = faker.address().streetName();
-            houseNumber = random.nextInt(300)+1;
-            additionalInfo = faker.lorem().sentence(random.nextInt(8)+2);
+            houseNumber = random.nextInt(300) + 1;
+            additionalInfo = faker.lorem().sentence(random.nextInt(8) + 2);
             UserAddress address = new UserAddress(
                     country,
                     city,
@@ -88,11 +88,11 @@ public class FakerService {
 
     public Product generateDummyProduct() {
         String name = faker.commerce().productName();
-        String description = faker.lorem().sentence(random.nextInt(10)+3);
+        String description = faker.lorem().sentence(random.nextInt(10) + 3);
         List<String> tags = faker.lorem().words(random.nextInt(5));
-        int price = random.nextInt(500)+25;
-        int totalQuantity = random.nextInt(300)+5;
-        return new Product(name,description,tags,price,totalQuantity);
+        int price = random.nextInt(500) + 25;
+        int totalQuantity = random.nextInt(300) + 5;
+        return new Product(name, description, tags, price, totalQuantity);
     }
 
 
