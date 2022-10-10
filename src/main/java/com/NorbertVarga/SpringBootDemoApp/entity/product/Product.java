@@ -150,18 +150,14 @@ public class Product {
 
     @Override
     public boolean equals(Object o) {
-        // self check
-        if (this == o)
-            return true;
-        // null check
-        if (o == null)
-            return false;
-        // type check and cast
-        if (getClass() != o.getClass())
-            return false;
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
         Product product = (Product) o;
-        // field comparison
-        return Objects.equals(productId, product.getProductId())
-                && Objects.equals(name, product.name);
+        return productId.equals(product.productId) && name.equals(product.name) && createdAt.equals(product.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(productId, name, createdAt);
     }
 }

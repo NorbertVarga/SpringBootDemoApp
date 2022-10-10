@@ -29,12 +29,16 @@ public class CartService {
     }
 
     public void initCart() {
-
         UserAccount user = userService.getLoggedInUser();
         Cart cart = (Cart) this.session.getAttribute("cart");
         if (user != null) {
             this.user = user;
-            if (cart == null) {
+            if (cart != null) {
+                if (!cart.getUser().equals(user)) {
+                    session.removeAttribute("cart");
+                    session.setAttribute("cart", new Cart(user));
+                }
+            } else {
                 session.setAttribute("cart", new Cart(user));
             }
         } else {

@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 @Entity
 @Table(name = "user_account")
@@ -191,5 +192,18 @@ public class UserAccount {
 
     public void setAddressList(List<UserAddress> addressList) {
         this.addressList = addressList;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserAccount that = (UserAccount) o;
+        return userId.equals(that.userId) && email.equals(that.email) && createdAt.equals(that.createdAt);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(userId, email, createdAt);
     }
 }
