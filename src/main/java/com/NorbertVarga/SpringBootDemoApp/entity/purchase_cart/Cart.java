@@ -30,10 +30,18 @@ public class Cart {
     }
 
     public void addProducts(Product product, int quantity) {
-        if (productOrders.containsKey(product)) {
-            productOrders.put(product, productOrders.get(product) + quantity);
-        } else {
+        if (productOrders.isEmpty()) {
             productOrders.put(product,quantity);
+        } else {
+
+            for (Map.Entry<Product, Integer> entry : productOrders.entrySet()) {
+                if (entry.getKey().getProductId().equals(product.getProductId())) {
+                    entry.setValue(entry.getValue() + quantity);
+                    break;
+                } else {
+                    productOrders.put(product,quantity);
+                }
+            }
         }
 
         calculateTotalPrice();
@@ -53,7 +61,10 @@ public class Cart {
     }
 
     public void calculateTotalPrice() {
-        int calculatedPrice = 0; // todo calculate via iterate through the entries
+        int calculatedPrice = 0;
+        for (Map.Entry<Product, Integer> entry : this.productOrders.entrySet()) {
+            calculatedPrice += calculatePriceForEntry(entry);
+        }
         this.totalPrice = calculatedPrice;
     }
 
