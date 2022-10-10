@@ -22,18 +22,21 @@ public class CartService {
     private UserAccount user;
 
     @Autowired
-    public CartService(HttpSession session, UserService userService, ProductService productService) {
+    public CartService(UserService userService, ProductService productService, HttpSession session) {
         this.session = session;
         this.userService = userService;
         this.productService = productService;
     }
 
     public void initCart() {
+
         UserAccount user = userService.getLoggedInUser();
+        Cart cart = (Cart) this.session.getAttribute("cart");
         if (user != null) {
             this.user = user;
-            Cart cart = new Cart(user);
-            session.setAttribute("cart", cart);
+            if (cart == null) {
+                session.setAttribute("cart", new Cart(user));
+            }
         } else {
             throw new EntityNotFoundException("There is no user logged in. Cart cannot be initialize");
         }
@@ -49,7 +52,7 @@ public class CartService {
             throw new EntityNotFoundException("There is no Product with the given Id");
         }
 
-        return new CartInfo_DTO( (Cart) session.getAttribute("cart"));
+        return new CartInfo_DTO((Cart) session.getAttribute("cart"));
     }
 
     public void removeProductsFromCart(Long productId, int quantity) {
