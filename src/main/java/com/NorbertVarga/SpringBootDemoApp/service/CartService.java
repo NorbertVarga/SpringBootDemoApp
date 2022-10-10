@@ -1,9 +1,12 @@
 package com.NorbertVarga.SpringBootDemoApp.service;
 
+import com.NorbertVarga.SpringBootDemoApp.dto.purchase_cart.CartInfo_DTO;
+import com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart.Cart;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 
@@ -11,60 +14,43 @@ import javax.transaction.Transactional;
 @Transactional
 public class CartService {
 
-    private Cart cart;
     private HttpSession session;
     private UserService userService;
+    private ProductService productService;
+    private Cart cart;
     private UserAccount user;
 
     @Autowired
-    public CartService(Cart cart, HttpSession session, UserService userService, UserAccount user) {
-        this.cart = cart;
+    public CartService(HttpSession session, UserService userService, ProductService productService) {
         this.session = session;
         this.userService = userService;
-        this.user = this.userService.getLoggedInUser();
-        System.out.println("*-*".repeat(80));
-        System.out.println("*-*".repeat(80));
-        System.out.println();
-        if (this.user != null) {
+        this.productService = productService;
+    }
 
-            System.out.println(this.user);
+    public void initCart() {
+        UserAccount user = userService.getLoggedInUser();
+        if (user != null) {
+            this.user = user;
+            Cart cart = new Cart(user);
+            session.setAttribute("cart", cart);
         } else {
-            System.out.println("No user");
+            throw new EntityNotFoundException("There is no user logged in. Cart cannot be initialize");
         }
-        System.out.println();
-        System.out.println("*-*".repeat(80));
-        System.out.println("*-*".repeat(80));
     }
 
-    public Cart getCart() {
-        return cart;
+    public void addProductsToCart(Long productId, int quantity) {
+
     }
 
-    public void setCart(Cart cart) {
-        this.cart = cart;
+    public void removeProductsFromCart(Long productId, int quantity) {
+
     }
 
-    public HttpSession getSession() {
-        return session;
+    public void removeProductEntryFromCart(Long productId) {
+
     }
 
-    public void setSession(HttpSession session) {
-        this.session = session;
-    }
-
-    public UserService getUserService() {
-        return userService;
-    }
-
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    public UserAccount getUser() {
-        return user;
-    }
-
-    public void setUser(UserAccount user) {
-        this.user = user;
+    public CartInfo_DTO getCartInfoFromSession() {
+        return new CartInfo_DTO((Cart) session.getAttribute("cart"));
     }
 }

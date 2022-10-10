@@ -4,6 +4,7 @@ import com.NorbertVarga.SpringBootDemoApp.dto.userAccount.UserFullData_DTO;
 import com.NorbertVarga.SpringBootDemoApp.dto.userAccount.UserCreateCommand;
 import com.NorbertVarga.SpringBootDemoApp.dto.userAccount.UserUpdateCommand;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserAccount;
+import com.NorbertVarga.SpringBootDemoApp.service.CartService;
 import com.NorbertVarga.SpringBootDemoApp.service.UserService;
 import com.NorbertVarga.SpringBootDemoApp.validation.UserCreateCommandValidator;
 import com.NorbertVarga.SpringBootDemoApp.validation.UserUpdateCommandValidator;
@@ -26,12 +27,14 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
+    private final CartService cartService;
     private final UserCreateCommandValidator userCreateCommandValidator;
     private final UserUpdateCommandValidator userUpdateCommandValidator;
 
     @Autowired
-    public UserController(UserService userService, UserCreateCommandValidator userCreateCommandValidator, UserUpdateCommandValidator userUpdateCommandValidator) {
+    public UserController(UserService userService, CartService cartService, UserCreateCommandValidator userCreateCommandValidator, UserUpdateCommandValidator userUpdateCommandValidator) {
         this.userService = userService;
+        this.cartService = cartService;
         this.userCreateCommandValidator = userCreateCommandValidator;
         this.userUpdateCommandValidator = userUpdateCommandValidator;
     }
@@ -66,6 +69,7 @@ public class UserController {
         if (authentication.getPrincipal() instanceof UserDetails user) {
             UserAccount loggedUser = userService.findUserByEmail(user.getUsername());
             if (loggedUser != null) {
+                cartService.initCart();
                 response = new ResponseEntity<>(new UserFullData_DTO(loggedUser), HttpStatus.OK);
             } else {
                 response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);

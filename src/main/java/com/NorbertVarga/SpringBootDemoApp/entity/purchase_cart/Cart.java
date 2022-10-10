@@ -39,8 +39,12 @@ public class Cart {
         calculateTotalPrice();
     }
 
-    public void clearProduct() {
+    public void clearCart() {
         this.productOrders.clear();
+    }
+
+    public void clearEntry(Product product) {
+
     }
 
     public void calculateTotalPrice() {
