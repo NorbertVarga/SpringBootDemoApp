@@ -31,17 +31,25 @@ public class Cart {
 
     public void addProducts(Product product, int quantity) {
         if (productOrders.isEmpty()) {
-            productOrders.put(product,quantity);
+            productOrders.put(product, quantity);
         } else {
-
+            // We have a problem here: can't manage the entries while iterating through them
+            // New Map object, we will copy the entries from the original Map and manipulate the values where needed
+            HashMap<Product, Integer> updatedNewMap = new HashMap<>();
+            boolean isProductOnTheCartAlready = false;
             for (Map.Entry<Product, Integer> entry : productOrders.entrySet()) {
-                if (entry.getKey().getProductId().equals(product.getProductId())) {
-                    entry.setValue(entry.getValue() + quantity);
-                    break;
+                if (entry.getKey().equals(product)) {
+                    updatedNewMap.put(entry.getKey(), entry.getValue() + quantity);
+                    isProductOnTheCartAlready = true;
                 } else {
-                    productOrders.put(product,quantity);
+                    updatedNewMap.put(entry.getKey(), entry.getValue());
                 }
             }
+            if (!isProductOnTheCartAlready) {
+                updatedNewMap.put(product, quantity);
+            }
+            productOrders.clear();
+            productOrders.putAll(updatedNewMap);
         }
 
         calculateTotalPrice();
