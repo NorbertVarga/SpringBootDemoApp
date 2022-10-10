@@ -45,7 +45,7 @@ public class ProductController {
     @GetMapping("/find/{id}")
     @Secured({"ROLE_USER", "ROLE_ADMIN"})
     public ResponseEntity<ProductData_DTO> getProductById(@PathVariable(value = "id") Long id) {
-        ProductData_DTO productData = productService.getProductById(id);
+        ProductData_DTO productData = productService.getProductInfoById(id);
         return new ResponseEntity<>(productData, HttpStatus.OK);
     }
 

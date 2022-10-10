@@ -30,6 +30,11 @@ public class Cart {
     }
 
     public void addProducts(Product product, int quantity) {
+        if (productOrders.containsKey(product)) {
+            productOrders.put(product, productOrders.get(product) + quantity);
+        } else {
+            productOrders.put(product,quantity);
+        }
 
         calculateTotalPrice();
     }

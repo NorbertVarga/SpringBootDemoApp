@@ -39,7 +39,7 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
-    public ProductData_DTO getProductById(Long id) {
+    public ProductData_DTO getProductInfoById(Long id) {
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isPresent()) {
             return new ProductData_DTO(productOptional.get());
@@ -100,6 +100,13 @@ public class ProductService {
         productRepository.saveAll(productList);
     }
 
-
+    public Product getProductById(Long id) {
+        Optional<Product> productOptional = productRepository.findById(id);
+        if (productOptional.isPresent()) {
+            return productOptional.get();
+        } else {
+            throw new EntityNotFoundException("There is no Product with the given Id");
+        }
+    }
     ////////////////////////////////////////////////////////////////////////////////
 }
