@@ -1,4 +1,4 @@
-package com.NorbertVarga.SpringBootDemoApp.entity.purchase;
+package com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart;
 
 import com.NorbertVarga.SpringBootDemoApp.entity.product.Product;
 import org.springframework.data.annotation.CreatedDate;
