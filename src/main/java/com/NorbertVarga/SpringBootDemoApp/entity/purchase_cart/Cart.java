@@ -29,15 +29,16 @@ public class Cart {
         this.user = user;
     }
 
+    //  **  CART LOGIC METHODS  /////////////////////////////////////////////
     public void addProducts(Product product, int quantity) {
-        if (productOrders.isEmpty()) {
-            productOrders.put(product, quantity);
+        if (this.productOrders.isEmpty()) {
+            this.productOrders.put(product, quantity);
         } else {
             // We have a problem here: can't manage the entries while iterating through them
             // New Map object, we will copy the entries from the original Map and manipulate the values where needed
             HashMap<Product, Integer> updatedNewMap = new HashMap<>();
             boolean isProductOnTheCartAlready = false;
-            for (Map.Entry<Product, Integer> entry : productOrders.entrySet()) {
+            for (Map.Entry<Product, Integer> entry : this.productOrders.entrySet()) {
                 if (entry.getKey().equals(product)) {
                     updatedNewMap.put(entry.getKey(), entry.getValue() + quantity);
                     isProductOnTheCartAlready = true;
@@ -48,32 +49,63 @@ public class Cart {
             if (!isProductOnTheCartAlready) {
                 updatedNewMap.put(product, quantity);
             }
-            productOrders.clear();
-            productOrders.putAll(updatedNewMap);
+            this.productOrders.clear();
+            this.productOrders.putAll(updatedNewMap);
         }
-
         calculateTotalPrice();
     }
 
     public void removeProducts(Product product, int quantity) {
+        HashMap<Product, Integer> updatedNewMap = new HashMap<>();
+        if (!this.productOrders.isEmpty()) {
+            for (Map.Entry<Product, Integer> entry : this.productOrders.entrySet()) {
+                if (entry.getKey().equals(product)) {
+                    if (entry.getValue() - quantity > 0) {
+                        updatedNewMap.put(entry.getKey(), entry.getValue() - quantity);
+                    }
+                } else {
+                    updatedNewMap.put(entry.getKey(), entry.getValue());
+                }
+            }
+        }
+        this.productOrders.clear();
+        this.productOrders.putAll(updatedNewMap);
+        calculateTotalPrice();
+    }
 
+    public void clearEntry(Product product) {
+        if (!this.productOrders.isEmpty()) {
+            Map.Entry<Product, Integer> entryToDelete = null;
+            for (Map.Entry<Product, Integer> entry : this.productOrders.entrySet()) {
+                if (entry.getKey().equals(product)) {
+                    entryToDelete = entry;
+                    break;
+                }
+            }
+            if (entryToDelete != null) {
+                this.productOrders.remove(entryToDelete.getKey(), entryToDelete.getValue());
+            }
+        }
         calculateTotalPrice();
     }
 
     public void clearCart() {
         this.productOrders.clear();
-    }
-
-    public void clearEntry(Product product) {
 
     }
+    /////////////////////////////////////////////////////////////////////////
 
+    //  **  CALCULATIONS    ////////////////////////////////
     public void calculateTotalPrice() {
         int calculatedPrice = 0;
         for (Map.Entry<Product, Integer> entry : this.productOrders.entrySet()) {
             calculatedPrice += calculatePriceForEntry(entry);
         }
         this.totalPrice = calculatedPrice;
+    }
+
+    public int calculatePriceForEntry(Map.Entry<Product, Integer> entry) {
+        return entry.getKey().getPrice() * entry.getValue();
     }
 
     public int calculateTotalQuantity() {
@@ -83,6 +115,7 @@ public class Cart {
         }
         return sumQuantity;
     }
+    //////////////////////////////////////////////////////////////////////////////
 
     public List<ProductOrderListItemInCart_DTO> mapEntriesToDto() {
         List<ProductOrderListItemInCart_DTO> productOrderDtoList = new ArrayList<>();
@@ -94,10 +127,6 @@ public class Cart {
             productOrderDtoList.add(productOrderDto);
         }
         return productOrderDtoList;
-    }
-
-    public int calculatePriceForEntry(Map.Entry<Product, Integer> entry) {
-        return entry.getKey().getPrice() * entry.getValue();
     }
 
     public HashMap<Product, Integer> getProductOrders() {
