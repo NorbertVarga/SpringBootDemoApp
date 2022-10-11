@@ -24,7 +24,6 @@ public class SharedValidationService {
         return userRepository.findByEmail(email).orElse(null);
     }
 
-    // One more level of validation for the email existence
     public boolean isEmailAlreadyExist(String email) {
         Optional<UserAccount> userOptional = userRepository.findByEmail(email);
         return userOptional.isPresent();

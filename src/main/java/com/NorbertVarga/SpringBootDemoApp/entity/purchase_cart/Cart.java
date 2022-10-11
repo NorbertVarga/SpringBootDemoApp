@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Component
 @Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
@@ -129,6 +130,15 @@ public class Cart {
             productOrderDtoList.add(productOrderDto);
         }
         return productOrderDtoList;
+    }
+
+    public List<ProductOrder> mapEntriesToProductOrderEntities() {
+        List<ProductOrder> productOrders = this.productOrders
+                .entrySet()
+                .stream()
+                .map(ProductOrder::new)
+                .collect(Collectors.toList());
+        return productOrders;
     }
 
     public HashMap<Product, Integer> getProductOrders() {

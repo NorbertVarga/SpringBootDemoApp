@@ -8,6 +8,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.Map;
 
 // Entity Listener needed for auditing and automatically manage the creating and modified dates
 @EntityListeners(AuditingEntityListener.class)
@@ -42,9 +43,9 @@ public class ProductOrder {
     public ProductOrder() {
     }
 
-    public ProductOrder(Product product, int quantity) {
-        this.product = product;
-        this.quantity = quantity;
+    public ProductOrder(Map.Entry<Product, Integer> cartEntry) {
+        this.product = cartEntry.getKey();
+        this.quantity = cartEntry.getValue();
         this.totalPrice = product.getPrice() * quantity;
     }
 

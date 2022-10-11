@@ -17,9 +17,8 @@ import java.util.Optional;
 public class CartService {
 
     private HttpSession session;
-    private UserService userService;
-    private ProductService productService;
-    private UserAccount user;
+    private final UserService userService;
+    private final ProductService productService;
 
     @Autowired
     public CartService(UserService userService, ProductService productService, HttpSession session) {
@@ -32,7 +31,6 @@ public class CartService {
         UserAccount user = userService.getLoggedInUser();
         Cart cart = (Cart) this.session.getAttribute("cart");
         if (user != null) {
-            this.user = user;
             if (cart != null) {
                 if (!cart.getUser().equals(user)) {
                     session.removeAttribute("cart");
