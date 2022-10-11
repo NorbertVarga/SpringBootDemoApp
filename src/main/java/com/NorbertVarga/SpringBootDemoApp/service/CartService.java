@@ -55,16 +55,38 @@ public class CartService {
         } else {
             throw new EntityNotFoundException("There is no Product with the given Id");
         }
-
-        return new CartInfo_DTO((Cart) session.getAttribute("cart"));
+        return getCartInfoFromSession();
     }
 
-    public void removeProductsFromCart(Long productId, int quantity) {
-
+    public CartInfo_DTO removeProductsFromCart(Long productId, int quantity) {
+        Cart cart = (Cart) session.getAttribute("cart");
+        Product product = productService.getProductById(productId);
+        if (product != null) {
+            cart.removeProducts(product, quantity);
+            session.setAttribute("cart", cart);
+        } else {
+            throw new EntityNotFoundException("There is no product with the given id");
+        }
+        return getCartInfoFromSession();
     }
 
-    public void removeProductEntryFromCart(Long productId) {
+    public CartInfo_DTO removeProductEntryFromCart(Long productId) {
+        Cart cart = (Cart) session.getAttribute("cart");
+        Product product = productService.getProductById(productId);
+        if (product != null) {
+            cart.clearEntry(product);
+            session.setAttribute("cart", cart);
+        } else {
+            throw new EntityNotFoundException("There is no product with the given id");
+        }
+        return getCartInfoFromSession();
+    }
 
+    public CartInfo_DTO clearCart() {
+        Cart cart = (Cart) session.getAttribute("cart");
+        cart.clearCart();
+        session.setAttribute("cart", cart);
+        return getCartInfoFromSession();
     }
 
     public CartInfo_DTO getCartInfoFromSession() {
