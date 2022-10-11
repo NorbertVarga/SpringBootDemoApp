@@ -91,15 +91,17 @@ public class Cart {
 
     public void clearCart() {
         this.productOrders.clear();
-
+        calculateTotalPrice();
     }
     /////////////////////////////////////////////////////////////////////////
 
     //  **  CALCULATIONS    ////////////////////////////////
     public void calculateTotalPrice() {
         int calculatedPrice = 0;
-        for (Map.Entry<Product, Integer> entry : this.productOrders.entrySet()) {
-            calculatedPrice += calculatePriceForEntry(entry);
+        if (!this.productOrders.isEmpty()) {
+            for (Map.Entry<Product, Integer> entry : this.productOrders.entrySet()) {
+                calculatedPrice += calculatePriceForEntry(entry);
+            }
         }
         this.totalPrice = calculatedPrice;
     }
