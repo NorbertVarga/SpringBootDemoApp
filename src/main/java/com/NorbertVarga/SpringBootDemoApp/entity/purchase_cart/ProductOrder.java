@@ -46,6 +46,12 @@ public class ProductOrder {
     public ProductOrder(Map.Entry<Product, Integer> cartEntry) {
         this.product = cartEntry.getKey();
         this.quantity = cartEntry.getValue();
+        this.totalPrice = cartEntry.getKey().getPrice() * quantity;
+    }
+
+    public ProductOrder(Product product, int quantity) {
+        this.product = product;
+        this.quantity = quantity;
         this.totalPrice = product.getPrice() * quantity;
     }
 
