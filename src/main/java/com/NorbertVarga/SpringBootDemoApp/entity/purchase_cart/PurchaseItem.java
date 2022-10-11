@@ -35,6 +35,10 @@ public class PurchaseItem {
     @NotNull
     private int totalPrice;
 
+    @Column(name = "purchase_item_total_quantity")
+    @NotNull
+    private int totalQuantity;
+
     @Column(name = "purchase_item_created_at")
     @CreatedDate
     @NotNull
@@ -47,6 +51,7 @@ public class PurchaseItem {
         this.userAccount = userAccount;
         this.productOrderList = productOrderList;
         this.totalPrice = productOrderList.stream().mapToInt(ProductOrder::getTotalPrice).sum();
+        this.totalQuantity = productOrderList.stream().mapToInt(ProductOrder::getQuantity).sum();
     }
 
     public Long getPurchaseItemId() {
@@ -79,6 +84,14 @@ public class PurchaseItem {
 
     public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
+    }
+
+    public int getTotalQuantity() {
+        return totalQuantity;
+    }
+
+    public void setTotalQuantity(int totalQuantity) {
+        this.totalQuantity = totalQuantity;
     }
 
     public LocalDateTime getCreatedAt() {
