@@ -72,29 +72,6 @@ public class PurchaseService {
         }
         return purchaseData;
     }
-    /////////////////////////////////////////////////////////////////////////////////////////
-
-    //  **  UTILS   /////////////////////////////////////////
-    private List<ProductOrder> manageProductOrdersByTotalQuantity(List<ProductOrder> originalOrders) {
-        List<ProductOrder> managedOrders = new ArrayList<>();
-        for (ProductOrder order : originalOrders) {
-            managedOrders.add(setProductOrderQuantityDependingOnAvailableProductQuantity(order));
-        }
-        return managedOrders;
-    }
-
-    // NOTICE: The product entities in the Cart queried earlier,
-    // so we have to query it again from the database to be sure we are working with the actual right quantity.
-    private ProductOrder setProductOrderQuantityDependingOnAvailableProductQuantity(ProductOrder order) {
-        ProductOrder finalOrder;
-        Product product = productService.getProductById(order.getProduct().getProductId());
-        if (product.getTotalQuantity() < order.getQuantity()) {
-            finalOrder = new ProductOrder(product, product.getTotalQuantity());
-        } else {
-            finalOrder = order;
-        }
-        return finalOrder;
-    }
 
     public List<PurchaseItemData_DTO> getMyPurchases() {
         UserAccount user = userService.getLoggedInUser();
@@ -107,4 +84,35 @@ public class PurchaseService {
             throw new EntityNotFoundException("There is no user logged in.");
         }
     }
+    /////////////////////////////////////////////////////////////////////////////////////////
+
+    //  **  UTILS   /////////////////////////////////////////
+    private List<ProductOrder> manageProductOrdersByTotalQuantity(List<ProductOrder> originalOrders) {
+        List<ProductOrder> managedOrders = new ArrayList<>();
+        for (ProductOrder order : originalOrders) {
+            ProductOrder managedProductOrder = setProductOrderQuantityDependingOnAvailableProductQuantity(order);
+            if (managedProductOrder != null) {
+                managedOrders.add(managedProductOrder);
+            }
+        }
+        return managedOrders;
+    }
+
+    // NOTICE: The product entities in the Cart queried earlier,
+    // so we have to query it again from the database to be sure we are working with the actual right quantity.
+    private ProductOrder setProductOrderQuantityDependingOnAvailableProductQuantity(ProductOrder order) {
+        ProductOrder finalOrder;
+        Product product = productService.getProductById(order.getProduct().getProductId());
+        if (product.getTotalQuantity() > 0) {
+            if (product.getTotalQuantity() < order.getQuantity()) {
+                finalOrder = new ProductOrder(product, product.getTotalQuantity());
+            } else {
+                finalOrder = order;
+            }
+        } else {
+            finalOrder = null;
+        }
+        return finalOrder;
+    }
+
 }
