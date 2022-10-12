@@ -8,6 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -86,7 +87,7 @@ public class GlobalExceptionHandler {
         ApiError body = new ApiError(
                 "NOT_FOUND",
                 "Entity is missing for the operation",
-                ex.getLocalizedMessage());
+                ex.getMessage());
         return new ResponseEntity<>(body, status);
     }
 
@@ -97,7 +98,29 @@ public class GlobalExceptionHandler {
         ApiError body = new ApiError(
                 "BAD_REQUEST",
                 "Entity cannot be duplicated.",
-                ex.getLocalizedMessage());
+                ex.getMessage());
+        return new ResponseEntity<>(body, status);
+    }
+
+    @ExceptionHandler(UserBalanceNotEnoughException.class)
+    protected ResponseEntity<ApiError> handleUserBalanceNotEnoughException(UserBalanceNotEnoughException ex) {
+        logger.error("User don't have enough money to make purchase: ", ex);
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ApiError body = new ApiError(
+                "BALANCE_NOT_ENOUGH",
+                "User don't have enough money to make the purchase",
+                ex.getMessage());
+        return new ResponseEntity<>(body, status);
+    }
+
+    @ExceptionHandler(SessionAuthenticationException.class)
+    protected ResponseEntity<ApiError> handleSessionAuthenticationException(SessionAuthenticationException ex) {
+        logger.error("The user in the cart does not match the logged in user: ", ex);
+        HttpStatus status = HttpStatus.BAD_REQUEST;
+        ApiError body = new ApiError(
+                "INVALID_SESSION",
+                "The user in the cart does not match the logged in user",
+                ex.getMessage());
         return new ResponseEntity<>(body, status);
     }
     ////////////////////////////////////////////////////////////
