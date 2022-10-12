@@ -12,7 +12,7 @@ public class PurchaseItemData_DTO {
 
     private String userFullName;
     private String userEmail;
-    private List<ProductOrderData_DTO> productOrders = new ArrayList<>();
+    private List<ProductOrderListItem_DTO> productOrders = new ArrayList<>();
     private int totalPrice;
     private int totalQuantity;
     private String createdAt;
@@ -25,7 +25,7 @@ public class PurchaseItemData_DTO {
         this.userEmail = purchaseItem.getUserAccount().getEmail();
         this.productOrders = purchaseItem.getProductOrderList()
                 .stream()
-                .map(ProductOrderData_DTO::new)
+                .map(ProductOrderListItem_DTO::new)
                 .collect(Collectors.toList());
         this.totalPrice = purchaseItem.getTotalPrice();
         this.totalQuantity = purchaseItem.getTotalQuantity();
@@ -49,11 +49,11 @@ public class PurchaseItemData_DTO {
         this.userEmail = userEmail;
     }
 
-    public List<ProductOrderData_DTO> getProductOrders() {
+    public List<ProductOrderListItem_DTO> getProductOrders() {
         return productOrders;
     }
 
-    public void setProductOrders(List<ProductOrderData_DTO> productOrders) {
+    public void setProductOrders(List<ProductOrderListItem_DTO> productOrders) {
         this.productOrders = productOrders;
     }
 

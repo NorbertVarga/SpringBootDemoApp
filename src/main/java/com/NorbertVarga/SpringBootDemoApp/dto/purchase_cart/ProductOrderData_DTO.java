@@ -7,6 +7,7 @@ import java.time.format.FormatStyle;
 
 public class ProductOrderData_DTO {
 
+    private long purchaseId;
     private String productName;
     private int quantity;
     private int totalPrice;
@@ -16,11 +17,20 @@ public class ProductOrderData_DTO {
     }
 
     public ProductOrderData_DTO(ProductOrder order) {
+        this.purchaseId = order.getPurchaseItem().getPurchaseItemId();
         this.productName = order.getProduct().getName();
         this.quantity = order.getQuantity();
         this.totalPrice = order.getTotalPrice();
         this.createdAt = DateTimeFormatter.ofLocalizedDateTime(FormatStyle.MEDIUM)
                 .format(order.getCreatedAt());
+    }
+
+    public long getPurchaseId() {
+        return purchaseId;
+    }
+
+    public void setPurchaseId(long purchaseId) {
+        this.purchaseId = purchaseId;
     }
 
     public String getProductName() {

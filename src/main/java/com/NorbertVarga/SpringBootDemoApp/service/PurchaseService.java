@@ -66,10 +66,10 @@ public class PurchaseService {
                 }
             } else {
                 session.invalidate();
-                throw new SessionAuthenticationException("The user in the cart is not the same the");
+                throw new SessionAuthenticationException("The user in the cart does not match the logged in user");
             }
         } else {
-            throw new EntityNotFoundException("The user in the cart does not match the logged in user");
+            throw new EntityNotFoundException("There is no user logged in");
         }
         return purchaseData;
     }

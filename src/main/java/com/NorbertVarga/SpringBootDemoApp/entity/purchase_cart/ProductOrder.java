@@ -26,6 +26,11 @@ public class ProductOrder {
     @NotNull
     private Product product;
 
+    @ManyToOne
+    @JoinColumn(name = "purchase_item_id")
+    @NotNull
+    private PurchaseItem purchaseItem;
+
     @Column(name = "product_order_quantity")
     @NotNull
     @Min(1)
@@ -69,6 +74,14 @@ public class ProductOrder {
 
     public void setProduct(Product product) {
         this.product = product;
+    }
+
+    public PurchaseItem getPurchaseItem() {
+        return purchaseItem;
+    }
+
+    public void setPurchaseItem(PurchaseItem purchaseItem) {
+        this.purchaseItem = purchaseItem;
     }
 
     public int getQuantity() {

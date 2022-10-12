@@ -1,6 +1,6 @@
 package com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart;
 
-import com.NorbertVarga.SpringBootDemoApp.dto.purchase_cart.ProductOrderListItemInCart_DTO;
+import com.NorbertVarga.SpringBootDemoApp.dto.purchase_cart.ProductOrderListItem_DTO;
 import com.NorbertVarga.SpringBootDemoApp.entity.product.Product;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserAccount;
 import org.springframework.context.annotation.Scope;
@@ -120,10 +120,10 @@ public class Cart {
     }
     //////////////////////////////////////////////////////////////////////////////
 
-    public List<ProductOrderListItemInCart_DTO> mapEntriesToDto() {
-        List<ProductOrderListItemInCart_DTO> productOrderDtoList = new ArrayList<>();
+    public List<ProductOrderListItem_DTO> mapEntriesToDto() {
+        List<ProductOrderListItem_DTO> productOrderDtoList = new ArrayList<>();
         for (Map.Entry<Product, Integer> entry : this.productOrders.entrySet()) {
-            ProductOrderListItemInCart_DTO productOrderDto = new ProductOrderListItemInCart_DTO();
+            ProductOrderListItem_DTO productOrderDto = new ProductOrderListItem_DTO();
             productOrderDto.setProductName(entry.getKey().getName());
             productOrderDto.setQuantity(entry.getValue());
             productOrderDto.setTotalPrice(calculatePriceForEntry(entry));

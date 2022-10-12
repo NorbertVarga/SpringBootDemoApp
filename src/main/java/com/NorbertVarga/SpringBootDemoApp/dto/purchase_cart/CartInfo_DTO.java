@@ -10,7 +10,7 @@ public class CartInfo_DTO {
     private String userEmail;
     private int productsTotalPrice;
     private int productsTotalQuantity;
-    private List<ProductOrderListItemInCart_DTO> productOrders = new ArrayList<>();
+    private List<ProductOrderListItem_DTO> productOrders = new ArrayList<>();
 
     public CartInfo_DTO(Cart cart) {
         this.userEmail = cart.getUser().getEmail();
@@ -43,11 +43,11 @@ public class CartInfo_DTO {
         this.productsTotalQuantity = productsTotalQuantity;
     }
 
-    public List<ProductOrderListItemInCart_DTO> getProductOrders() {
+    public List<ProductOrderListItem_DTO> getProductOrders() {
         return productOrders;
     }
 
-    public void setProductOrders(List<ProductOrderListItemInCart_DTO> productOrders) {
+    public void setProductOrders(List<ProductOrderListItem_DTO> productOrders) {
         this.productOrders = productOrders;
     }
 }

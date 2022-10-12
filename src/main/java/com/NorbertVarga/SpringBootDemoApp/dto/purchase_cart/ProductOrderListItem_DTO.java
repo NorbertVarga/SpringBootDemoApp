@@ -1,19 +1,27 @@
 package com.NorbertVarga.SpringBootDemoApp.dto.purchase_cart;
 
 
-public class ProductOrderListItemInCart_DTO {
+import com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart.ProductOrder;
+
+public class ProductOrderListItem_DTO {
 
     private String productName;
     private int quantity;
     private int totalPrice;
 
-    public ProductOrderListItemInCart_DTO() {
+    public ProductOrderListItem_DTO() {
     }
 
-    public ProductOrderListItemInCart_DTO(String productName, int quantity, int totalPrice) {
+    public ProductOrderListItem_DTO(String productName, int quantity, int totalPrice) {
         this.productName = productName;
         this.quantity = quantity;
         this.totalPrice = totalPrice;
+    }
+
+    public ProductOrderListItem_DTO(ProductOrder order) {
+        this.productName = order.getProduct().getName();
+        this.quantity = order.getQuantity();
+        this.totalPrice = order.getTotalPrice();
     }
 
     public String getProductName() {
