@@ -42,6 +42,7 @@ public class PurchaseService {
         this.validationService = validationService;
     }
 
+    //  **  STANDARD OPERATIONS ENABLED FOR USERS   /////////////////////////////////////////////
     public PurchaseItemData_DTO makePurchase() {
         UserAccount user = userService.getLoggedInUser();
         Cart cart = (Cart) session.getAttribute("cart");
@@ -85,6 +86,24 @@ public class PurchaseService {
         }
     }
     /////////////////////////////////////////////////////////////////////////////////////////
+
+    //  **  ADMIN OPERATIONS   /////////////////////////////////////////////
+    public List<PurchaseItemData_DTO> getAllPurchaseItemData() {
+        return purchaseRepository.findAll()
+                .stream()
+                .map(PurchaseItemData_DTO::new)
+                .collect(Collectors.toList());
+    }
+
+
+    public List<PurchaseItemData_DTO> getAllPurchaseItemDataByUser(Long userId) {
+        UserAccount user = userService.findUserById(userId);
+        return purchaseRepository.findAllByUserAccountOrderByCreatedAt(user)
+                .stream()
+                .map(PurchaseItemData_DTO::new)
+                .collect(Collectors.toList());
+    }
+    ////////////////////////////////////////////////////////////////////////////////////////////
 
     //  **  UTILS   /////////////////////////////////////////
     private List<ProductOrder> manageProductOrdersByTotalQuantity(List<ProductOrder> originalOrders) {

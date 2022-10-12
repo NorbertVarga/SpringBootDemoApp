@@ -102,13 +102,13 @@ public class UserService {
 
 
     //  **  CRUD methods by id (only for ADMIN role) ////////////////////////////////////////////////////////////////
-    public List<UserFullData_DTO> getAllUsers() {
+    public List<UserFullData_DTO> getAllUsersData() {
         List<UserAccount> users = userRepository.findAll();
         return users.stream()
                 .map(UserFullData_DTO::new).collect(Collectors.toList());
     }
 
-    public UserFullData_DTO findUserById(Long id) {
+    public UserFullData_DTO getUserDataById(Long id) {
         UserFullData_DTO userData;
         Optional<UserAccount> userOptional = userRepository.findById(id);
         if (userOptional.isPresent()) {
@@ -182,6 +182,10 @@ public class UserService {
             throw new EntityNotFoundException("There is no account with the given email.");
         }
         return user;
+    }
+
+    public UserAccount findUserById(Long userId) {
+        return userRepository.findById(userId).orElseThrow(EntityNotFoundException::new);
     }
 
     public void decreaseBalance(UserAccount user, int price) {

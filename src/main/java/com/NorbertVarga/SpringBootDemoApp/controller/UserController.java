@@ -117,14 +117,14 @@ public class UserController {
 //    @Secured({"ROLE_ADMIN"})
     @GetMapping("/all")
     public ResponseEntity<List<UserFullData_DTO>> getAllUsersData() {
-        List<UserFullData_DTO> usersDataList = userService.getAllUsers();
+        List<UserFullData_DTO> usersDataList = userService.getAllUsersData();
         return new ResponseEntity<>(usersDataList, HttpStatus.OK);
     }
 
     @Secured({"ROLE_ADMIN"})
     @GetMapping("/find/{id}")
     public ResponseEntity<UserFullData_DTO> findUserById(@PathVariable(value = "id") Long id) {
-        UserFullData_DTO userData = userService.findUserById(id);
+        UserFullData_DTO userData = userService.getUserDataById(id);
         return new ResponseEntity<>(userData, HttpStatus.OK);
     }
 
