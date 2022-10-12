@@ -1,5 +1,6 @@
 package com.NorbertVarga.SpringBootDemoApp.controller;
 
+import com.NorbertVarga.SpringBootDemoApp.dto.purchase_cart.ProductOrderData_DTO;
 import com.NorbertVarga.SpringBootDemoApp.dto.purchase_cart.PurchaseItemData_DTO;
 import com.NorbertVarga.SpringBootDemoApp.service.PurchaseService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,6 +57,11 @@ public class PurchaseController {
         return new ResponseEntity<>(purchaseItems, HttpStatus.OK);
     }
 
-
+    @Secured({"ROLE_ADMIN"})
+    @GetMapping("/orders/get-all")
+    public ResponseEntity<List<ProductOrderData_DTO>> getAllProductOrders() {
+        List<ProductOrderData_DTO> productOrdersData = purchaseService.getAllProductOrdersData();
+        return new ResponseEntity<>(productOrdersData, HttpStatus.OK);
+    }
     ///////////////////////////////////////////////////////////////////////////////
 }

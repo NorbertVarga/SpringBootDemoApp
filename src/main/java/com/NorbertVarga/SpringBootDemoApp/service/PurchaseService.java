@@ -1,5 +1,6 @@
 package com.NorbertVarga.SpringBootDemoApp.service;
 
+import com.NorbertVarga.SpringBootDemoApp.dto.purchase_cart.ProductOrderData_DTO;
 import com.NorbertVarga.SpringBootDemoApp.dto.purchase_cart.PurchaseItemData_DTO;
 import com.NorbertVarga.SpringBootDemoApp.entity.product.Product;
 import com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart.Cart;
@@ -95,7 +96,6 @@ public class PurchaseService {
                 .collect(Collectors.toList());
     }
 
-
     public List<PurchaseItemData_DTO> getAllPurchaseItemDataByUser(Long userId) {
         UserAccount user = userService.findUserById(userId);
         return purchaseRepository.findAllByUserAccountOrderByCreatedAt(user)
@@ -103,6 +103,14 @@ public class PurchaseService {
                 .map(PurchaseItemData_DTO::new)
                 .collect(Collectors.toList());
     }
+
+    public List<ProductOrderData_DTO> getAllProductOrdersData() {
+        return productOrderRepository.findAll()
+                .stream()
+                .map(ProductOrderData_DTO::new)
+                .collect(Collectors.toList());
+    }
+
     ////////////////////////////////////////////////////////////////////////////////////////////
 
     //  **  UTILS   /////////////////////////////////////////
