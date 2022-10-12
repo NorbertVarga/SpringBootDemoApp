@@ -19,6 +19,7 @@ import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -95,4 +96,15 @@ public class PurchaseService {
         return finalOrder;
     }
 
+    public List<PurchaseItemData_DTO> getMyPurchases() {
+        UserAccount user = userService.getLoggedInUser();
+        if (user != null) {
+            return purchaseRepository.findAllByUserAccountOrderByCreatedAt(user)
+                    .stream()
+                    .map(PurchaseItemData_DTO::new)
+                    .collect(Collectors.toList());
+        } else {
+            throw new EntityNotFoundException("There is no user logged in.");
+        }
+    }
 }
