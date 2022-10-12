@@ -26,7 +26,7 @@ public class PurchaseItem {
     @NotNull
     private UserAccount userAccount;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "purchaseItem")
+    @OneToMany(mappedBy = "purchaseItem", cascade = CascadeType.ALL)
     @NotEmpty
     private List<ProductOrder> productOrderList;
 

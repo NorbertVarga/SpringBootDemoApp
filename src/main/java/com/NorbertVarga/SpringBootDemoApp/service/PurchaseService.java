@@ -55,6 +55,9 @@ public class PurchaseService {
                 List<ProductOrder> managedOrders = manageProductOrdersByTotalQuantity(cart.mapEntriesToProductOrderEntities());
 
                 PurchaseItem purchaseItem = new PurchaseItem(user, managedOrders);
+                for (ProductOrder order : managedOrders) {
+                    order.setPurchaseItem(purchaseItem);
+                }
 
                 if (purchaseItem.getTotalPrice() <= user.getBalance()) {
                     userService.decreaseBalance(user, purchaseItem.getTotalPrice());

@@ -26,8 +26,7 @@ public class ProductOrder {
     @NotNull
     private Product product;
 
-    @ManyToOne
-    @JoinColumn(name = "purchase_item_id")
+    @ManyToOne(fetch = FetchType.LAZY)
     @NotNull
     private PurchaseItem purchaseItem;
 
