@@ -1,5 +1,6 @@
 package com.NorbertVarga.SpringBootDemoApp.service;
 
+import com.NorbertVarga.SpringBootDemoApp.dto.purchase_cart.PurchaseItemData_DTO;
 import com.NorbertVarga.SpringBootDemoApp.entity.product.Product;
 import com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart.Cart;
 import com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart.ProductOrder;
@@ -10,6 +11,7 @@ import com.NorbertVarga.SpringBootDemoApp.repository.ProductOrderRepository;
 import com.NorbertVarga.SpringBootDemoApp.repository.PurchaseRepository;
 import com.NorbertVarga.SpringBootDemoApp.validation.SharedValidationService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -39,13 +41,10 @@ public class PurchaseService {
         this.validationService = validationService;
     }
 
-
-
-    // todo clear the cart
-    public boolean makePurchase() {
-        boolean succes;
+    public PurchaseItemData_DTO makePurchase() {
         UserAccount user = userService.getLoggedInUser();
         Cart cart = (Cart) session.getAttribute("cart");
+        PurchaseItemData_DTO purchaseData;
         if (user != null) {
             if (user.equals(cart.getUser())) {
                 // We need to check that there is enough product in stock,
@@ -57,22 +56,20 @@ public class PurchaseService {
                 if (purchaseItem.getTotalPrice() <= user.getBalance()) {
                     userService.decreaseBalance(user, purchaseItem.getTotalPrice());
                     productService.decreaseTotalQuantityAfterPurchase(purchaseItem.getProductOrderList());
-                    purchaseRepository.save(purchaseItem);
-                    succes = true;
+                    purchaseData = new PurchaseItemData_DTO(purchaseRepository.save(purchaseItem));
                     cart.clearCart();
                     session.setAttribute("cart", cart);
                 } else {
                     throw new UserBalanceNotEnoughException("The User don't have enough money for the purchase");
                 }
             } else {
-                succes = false;
-                session.removeAttribute("cart");
-                session.setAttribute("cart", new Cart(user));
+                session.invalidate();
+                throw new SessionAuthenticationException("The user in the cart is not the same the");
             }
         } else {
-            throw new EntityNotFoundException("There is no User Logged in");
+            throw new EntityNotFoundException("The user in the cart does not match the logged in user");
         }
-        return succes;
+        return purchaseData;
     }
     /////////////////////////////////////////////////////////////////////////////////////////
 
