@@ -3,7 +3,9 @@ package com.NorbertVarga.SpringBootDemoApp.service;
 import com.NorbertVarga.SpringBootDemoApp.entity.product.Product;
 import com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart.Cart;
 import com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart.ProductOrder;
+import com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart.PurchaseItem;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserAccount;
+import com.NorbertVarga.SpringBootDemoApp.errorHandling.UserBalanceNotEnoughException;
 import com.NorbertVarga.SpringBootDemoApp.repository.ProductOrderRepository;
 import com.NorbertVarga.SpringBootDemoApp.repository.PurchaseRepository;
 import com.NorbertVarga.SpringBootDemoApp.validation.SharedValidationService;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityNotFoundException;
 import javax.servlet.http.HttpSession;
 import javax.transaction.Transactional;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -37,16 +40,7 @@ public class PurchaseService {
     }
 
 
-    // check and manage wanted quantity of products
-    // todo check user balance!
-    // todo manage user balance
-    //      methods in userService needed
-            // checkBalance return boolean
-            // decreaseBalance
-    // todo manage products total quantity
-    //      methods in productService
-            // decreaseTotalQuantity
-    // todo save the data
+
     // todo clear the cart
     public boolean makePurchase() {
         boolean succes;
@@ -54,9 +48,22 @@ public class PurchaseService {
         Cart cart = (Cart) session.getAttribute("cart");
         if (user != null) {
             if (user.equals(cart.getUser())) {
-                List<ProductOrder> productOrders = cart.mapEntriesToProductOrderEntities();
+                // We need to check that there is enough product in stock,
+                // because it is possible that in the meantime someone has bought the given product.
+                List<ProductOrder> managedOrders = manageProductOrdersByTotalQuantity(cart.mapEntriesToProductOrderEntities());
 
-                succes = true;
+                PurchaseItem purchaseItem = new PurchaseItem(user, managedOrders);
+
+                if (purchaseItem.getTotalPrice() <= user.getBalance()) {
+                    userService.decreaseBalance(user, purchaseItem.getTotalPrice());
+                    productService.decreaseTotalQuantityAfterPurchase(purchaseItem.getProductOrderList());
+                    purchaseRepository.save(purchaseItem);
+                    succes = true;
+                    cart.clearCart();
+                    session.setAttribute("cart", cart);
+                } else {
+                    throw new UserBalanceNotEnoughException("The User don't have enough money for the purchase");
+                }
             } else {
                 succes = false;
                 session.removeAttribute("cart");
@@ -70,6 +77,16 @@ public class PurchaseService {
     /////////////////////////////////////////////////////////////////////////////////////////
 
     //  **  UTILS   /////////////////////////////////////////
+    private List<ProductOrder> manageProductOrdersByTotalQuantity(List<ProductOrder> originalOrders) {
+        List<ProductOrder> managedOrders = new ArrayList<>();
+        for (ProductOrder order : originalOrders) {
+            managedOrders.add(setProductOrderQuantityDependingOnAvailableProductQuantity(order));
+        }
+        return managedOrders;
+    }
+
+    // NOTICE: The product entities in the Cart queried earlier,
+    // so we have to query it again from the database to be sure we are working with the actual right quantity.
     private ProductOrder setProductOrderQuantityDependingOnAvailableProductQuantity(ProductOrder order) {
         ProductOrder finalOrder;
         Product product = productService.getProductById(order.getProduct().getProductId());
@@ -80,4 +97,5 @@ public class PurchaseService {
         }
         return finalOrder;
     }
+
 }

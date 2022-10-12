@@ -184,6 +184,13 @@ public class UserService {
         return user;
     }
 
+    public void decreaseBalance(UserAccount user, int price) {
+        if (user.getBalance() >= price) {
+            user.setBalance(user.getBalance() - price);
+            userRepository.save(user);
+        }
+    }
+
     //      --  DATABASE INITIATING --  (Methods called in the Constructor)
     // Populate database with dummy users
     private void populateDataBaseWithDummyUsers(int count) {

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/purchase")
 public class PurchaseController {
 
+    @Autowired
     private final PurchaseService purchaseService;
 
     @Autowired

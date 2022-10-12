@@ -4,6 +4,7 @@ import com.NorbertVarga.SpringBootDemoApp.dto.product.ProductCreateCommand;
 import com.NorbertVarga.SpringBootDemoApp.dto.product.ProductData_DTO;
 import com.NorbertVarga.SpringBootDemoApp.dto.product.ProductUpdateCommand;
 import com.NorbertVarga.SpringBootDemoApp.entity.product.Product;
+import com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart.ProductOrder;
 import com.NorbertVarga.SpringBootDemoApp.faker.FakerService;
 import com.NorbertVarga.SpringBootDemoApp.repository.ProductRepository;
 import com.NorbertVarga.SpringBootDemoApp.validation.SharedValidationService;
@@ -106,6 +107,15 @@ public class ProductService {
             return productOptional.get();
         } else {
             throw new EntityNotFoundException("There is no Product with the given Id");
+        }
+    }
+
+    public void decreaseTotalQuantityAfterPurchase(List<ProductOrder> productOrders) {
+        Product managedProduct;
+        for (ProductOrder order : productOrders) {
+            managedProduct = order.getProduct();
+            managedProduct.setTotalQuantity(managedProduct.getTotalQuantity() - order.getQuantity());
+            productRepository.save(managedProduct);
         }
     }
     ////////////////////////////////////////////////////////////////////////////////
