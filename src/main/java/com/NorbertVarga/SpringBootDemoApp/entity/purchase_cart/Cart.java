@@ -121,15 +121,11 @@ public class Cart {
     //////////////////////////////////////////////////////////////////////////////
 
     public List<ProductOrderListItem_DTO> mapEntriesToDto() {
-        List<ProductOrderListItem_DTO> productOrderDtoList = new ArrayList<>();
-        for (Map.Entry<Product, Integer> entry : this.productOrders.entrySet()) {
-            ProductOrderListItem_DTO productOrderDto = new ProductOrderListItem_DTO();
-            productOrderDto.setProductName(entry.getKey().getName());
-            productOrderDto.setQuantity(entry.getValue());
-            productOrderDto.setTotalPrice(calculatePriceForEntry(entry));
-            productOrderDtoList.add(productOrderDto);
-        }
-        return productOrderDtoList;
+        return this.productOrders
+                .entrySet()
+                .stream()
+                .map(ProductOrderListItem_DTO::new)
+                .collect(Collectors.toList());
     }
 
     public List<ProductOrder> mapEntriesToProductOrderEntities() {

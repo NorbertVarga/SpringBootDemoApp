@@ -36,9 +36,9 @@ public class FakerService {
     public UserAccount generateDummyUser() {
         String firstname = faker.name().firstName();
         String lastName = faker.name().lastName();
-        String email = firstname + "." + lastName + "@email.com";
+        String email = (firstname + "." + lastName + "@email.com").toLowerCase();
         String password = "test1234";
-        int balance = random.nextInt(20000) + 5000;
+        int balance = random.nextInt(70000) + 10000;
         List<UserRoleTypes> roles = List.of(UserRoleTypes.ROLE_USER);
         List<UserAddress> addressList = generateRandomCountOfAddresses();
 
@@ -88,10 +88,10 @@ public class FakerService {
 
     public Product generateDummyProduct() {
         String name = faker.commerce().productName();
-        String description = faker.lorem().sentence(random.nextInt(10) + 3);
+        String description = faker.lorem().sentence(random.nextInt(20) + 3);
         List<String> tags = faker.lorem().words(random.nextInt(5));
         int price = random.nextInt(500) + 25;
-        int totalQuantity = random.nextInt(300) + 5;
+        int totalQuantity = random.nextInt(200) + 10;
         return new Product(name, description, tags, price, totalQuantity);
     }
 

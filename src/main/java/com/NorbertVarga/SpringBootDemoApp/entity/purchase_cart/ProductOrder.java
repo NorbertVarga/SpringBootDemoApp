@@ -47,6 +47,7 @@ public class ProductOrder {
     public ProductOrder() {
     }
 
+    // Used in the PurchaseService to map the cart entries to Entity
     public ProductOrder(Map.Entry<Product, Integer> cartEntry) {
         this.product = cartEntry.getKey();
         this.quantity = cartEntry.getValue();

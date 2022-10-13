@@ -16,7 +16,7 @@ import java.util.Optional;
 @Transactional
 public class CartService {
 
-    private HttpSession session;
+    private final HttpSession session;
     private final UserService userService;
     private final ProductService productService;
 

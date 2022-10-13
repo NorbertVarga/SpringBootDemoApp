@@ -6,6 +6,7 @@ import com.NorbertVarga.SpringBootDemoApp.dto.userAccount.UserUpdateCommand;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserAccount;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserPrincipal;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserRoleTypes;
+import com.NorbertVarga.SpringBootDemoApp.errorHandling.UserBalanceNotEnoughException;
 import com.NorbertVarga.SpringBootDemoApp.faker.FakerService;
 import com.NorbertVarga.SpringBootDemoApp.repository.UserRepository;
 import com.NorbertVarga.SpringBootDemoApp.validation.SharedValidationService;
@@ -192,6 +193,8 @@ public class UserService {
         if (user.getBalance() >= price) {
             user.setBalance(user.getBalance() - price);
             userRepository.save(user);
+        } else {
+            throw new UserBalanceNotEnoughException("The User don't have enough money for the purchase");
         }
     }
 
@@ -223,7 +226,7 @@ public class UserService {
         simpleUser.setFirstName("Simple");
         simpleUser.setLastName("User");
         simpleUser.setEnabled(true);
-        simpleUser.setBalance(20000);
+        simpleUser.setBalance(50000);
         simpleUser.setPassword(pwEncoder.encode("test1234"));
         simpleUser.setRoles(List.of(UserRoleTypes.ROLE_USER));
         simpleUser.setAddressList(faker.generateRandomCountOfAddresses());

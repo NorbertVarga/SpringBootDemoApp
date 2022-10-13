@@ -1,7 +1,10 @@
 package com.NorbertVarga.SpringBootDemoApp.dto.purchase_cart;
 
 
+import com.NorbertVarga.SpringBootDemoApp.entity.product.Product;
 import com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart.ProductOrder;
+
+import java.util.Map;
 
 public class ProductOrderListItem_DTO {
 
@@ -12,10 +15,11 @@ public class ProductOrderListItem_DTO {
     public ProductOrderListItem_DTO() {
     }
 
-    public ProductOrderListItem_DTO(String productName, int quantity, int totalPrice) {
-        this.productName = productName;
-        this.quantity = quantity;
-        this.totalPrice = totalPrice;
+    // Used to display the order entries in the cart
+    public ProductOrderListItem_DTO(Map.Entry<Product, Integer> entryFromCart) {
+        this.productName = entryFromCart.getKey().getName();
+        this.quantity = entryFromCart.getValue();
+        this.totalPrice = entryFromCart.getKey().getPrice() * entryFromCart.getValue();
     }
 
     public ProductOrderListItem_DTO(ProductOrder order) {
