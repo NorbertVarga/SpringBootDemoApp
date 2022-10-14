@@ -37,14 +37,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .httpBasic()
-                .and()
-                .formLogin()
-                .defaultSuccessUrl("/api/users/login")
+                .and().formLogin().defaultSuccessUrl("/api/users/login")
                 .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                .and()
-                .logout().logoutUrl("/api/users/logout")
-                .deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true);
+                .and().logout().logoutUrl("/api/users/logout")
+                .deleteCookies("JSESSIONID").invalidateHttpSession(true);
 
         http.authorizeRequests()
                 .antMatchers("/**").permitAll()
