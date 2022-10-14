@@ -46,5 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**").permitAll()
                 .anyRequest().authenticated();
 
+        http.headers().frameOptions().sameOrigin();
     }
 }

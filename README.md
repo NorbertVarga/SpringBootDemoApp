@@ -37,7 +37,7 @@ I just wanted to make a simple and well-functioning system at the basic level in
 - ### Spring Security
 > Spring Security is a framework that provides authentication, authorization, and protection against common attacks.    
 > With first class support for securing both imperative and reactive applications,     
-> it is the de-facto standard for securing Spring-based applications.
+> it is the de-facto standard for securing Spring-based applications.      
 > https://docs.spring.io/spring-security/reference/index.html
 
 **I use basic authentication flow. Users can register and login with their email address.    
@@ -73,6 +73,15 @@ But I secure the endpoints with simple method security in controller level.
 
 
 - ### H2 In-Memory DB
+> H2 is an embedded, open-source, and in-memory database. It is a relational database management system written in Java.  
+> It is a client/server application. It stores data in memory, not persist the data on disk.     
+> https://www.geeksforgeeks.org/spring-boot-h2-database/
+
+**You can access to that in-memory database while the program is running.**      
+Run the program --> open a browser --> write URL: `http://localhost:8080/h2`
+
+![H2 login page](/src/main/resources/pictures/h2_login.png "H2 login page")
+
 - ### Hibernate, JPA
 - ### Validation
 - ### REST
