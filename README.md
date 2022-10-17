@@ -1,7 +1,9 @@
 # Spring Boot Demo Web-shop
 ### Welcome visitor! Thank you for paying attention to my work.
 
+***
 # Global introduction
+
 The project is an implementation of a very small and simple working web-shop.     
 Users can register, login, browse the products and make some purchases.      
 I try to follow the REST principles when building the Project.      
@@ -30,7 +32,9 @@ and in some places, it may contain seemingly unnecessary, or less relevant featu
 **The main goal was the practicing and the self development.         
 I just wanted to make a simple and well-functioning system at the basic level in SpringBoot environment**.
 
+***
 # Technological Features
+
 - ### SpringBoot    
 > Spring Boot provides a good platform for Java developers to develop a stand-alone and production-grade spring application that you can just run.    
 > You can get started with minimum configurations without the need for an entire Spring configuration setup.     
@@ -194,10 +198,52 @@ In the project we use it to populate our database with some dummy users and prod
 **http://dius.github.io/java-faker/apidocs/index.html**
 
 
+***
 # Usage
 
+You can clone the repository to your local machine and run it from an IDE by starting the *SpringBootDemoApplication.java*       
+When the program starts the Faker API generate some dummy users and products and automatically populate our H2 DB.      
+I also put a specified account with ROLE_USER and another one with ROLE_ADMIN.           
+You can use that specified accounts to log in, or you can register new account via the API.    
 
-## API Documentation
+## Functionality
+There is only a very basic functionality implemented for now.
+
+**I recommend for you the Postman application for use and test manually the API**
+
+The registration flow is unsecure, we have to allow our visitors to make are accounts.     
+After the success registration the new account will be saved to our DB with the simple USER role.
+
+**As a simple USER you can do the operations below:**
+- Login
+- Get information about your profile
+- Update your profile 
+- Delete your profile (delete is NOT only logical, we exactly delete that account from the DB and is not exist anymore.)    
+- Logout
+
+- List all the products
+- Operations for Cart(put products, remove products, get your cart info, clear your cart)
+- Make purchase (get the products from your cart and "buy" those)
+- Get all your purchases data
+
+**As an ADMIN you have the same functionality with your account and the purchases.    
+And you have some additional operations what you can do only with ADMIN role.**   
+- Get all users   
+*(for development purposes I comment out the `@Secured` annotation from that endpoint,    
+so you can get the list of the users without any kind of login or authentication,     
+but basically its only allowed for and ADMIN)*       
+- Find user by id
+- Update a user by id
+- Delete a user by id
+- Create a new product
+- Update a product by id
+- Delete a product by id
+
+- Get all the purchases data from all users
+- Get all the purchases from a User by id
+- Get all the product orders from all users        
+*(a product order is a kind of entry which includes which products we want to buy and how much we want from that.    
+One purchase can include more product orders)*
 
 ### - USER ENDPOINTS
 
