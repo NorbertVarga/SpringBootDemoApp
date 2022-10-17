@@ -186,7 +186,7 @@ public class UserCreateCommandValidator implements Validator {
 ```
 And we can put the same constraints annotation to the fields in our entities to ensure that we do the same validations in the database level as well.      
 
-**I will give you specific details about the validation contrainst we use in the API Documentation section.**
+**I will give you specific details about the validation constraints we use in the API Documentation section.**
 
 
 - ### Faker API
@@ -201,18 +201,17 @@ In the project we use it to populate our database with some dummy users and prod
 ***
 # Usage
 
-You can clone the repository to your local machine and run it from an IDE by starting the *SpringBootDemoApplication.java*       
+You can clone the repository to your local machine and run it from an IDE by starting the `SpringBootDemoApplication.java`              
 When the program starts the Faker API generate some dummy users and products and automatically populate our H2 DB.      
+**Notice that the generated users and products will be different in every rerun since we generate data randomly.**          
 I also put a specified account with ROLE_USER and another one with ROLE_ADMIN.           
 You can use that specified accounts to log in, or you can register new account via the API.    
 
 ## Functionality
-There is only a very basic functionality implemented for now.
-
-**I recommend for you the Postman application for use and test manually the API**
-
-The registration flow is unsecure, we have to allow our visitors to make are accounts.     
-After the success registration the new account will be saved to our DB with the simple USER role.
+There is only a very basic functionality implemented for now.       
+**I recommend for you the Postman application for use and test manually the API**       
+The registration flow is unsecure, we have to allow our visitors to make an account.     
+After the success registration the new account will be saved to our DB with the simple USER role.     
 
 **As a simple USER you can do the operations below:**
 - Login
@@ -242,28 +241,90 @@ but basically its only allowed for and ADMIN)*
 - Get all the product orders from all users        
 *(a product order is a kind of entry which includes which products we want to buy and how much we want from that.    
 One purchase can include more product orders)*
+
+**Cart**      
+Every user have their own Cart stored in the session for the lifecycle of that session(1Hour).
+Users can put and remove products from the cart and also can get the data of their Cart.
+If a user logging out we are invalidating his session so the Cart will be cleared.
+
+**Purchase Logic**     
+If we make a purchase the program will pull the product orders from the cart.    
+**We have to take care about the product quantities!**     
+Several users can add the same product to their basket at the same time,   
+and we cannot know whether there is still enough quantity from the given product for the purchase.     
+The program will check it, and will update the quantities before the purchase item is generated.     
+*For example if we have ten pieces in the cart from a product which has a total quantity of six,     
+then the purchase item will include only six piece from that product.     
+If there is no stock from a product we totally remove that order from the purchase.*   
+
+Finally, from these valid and manipulated product orders will be generated the purchase item which stands for "one transaction".    
+The program will calculate automatically the total price for the purchase.     
+We check the User balance before we make the purchase, for sure if the user don't have enough money the purchase will not be completed. Otherwise, if the purchase was successful we clear the Cart.    
+After a successful purchase the program will decrease the balance of the user with the price of the purchase, and also will update the total quantity of the products.
+
+
+
+
 ***
 
 # API Documentation
 In that section I will give you detailed information about the API,         
 the specified validation constrains and how you can use it.      
-If you are familiar with Postman application, I export the whole collection for you.      
-Download it, and import to your Postman.      
+Since the API more-or-less RESTFUL we only communicate with JSON-s.         
+If you are familiar with Postman application, I export the whole collection for you.       
 [Download it, and import to your Postman.](src/main/resources/SpringBootDemoWebshop.postman_collection.json)
 
 
 ### UNSECURED "FREE" ENDPOINTS:
-- Login 
+- **Register:** `http://localhost:8080/api/users/register` **POST**   
+*Register a new account with a simple USER role.*    
+
+**Constraints:**     
+- firstName and lastName: *Must be between 3 and 30 characters and cannot be null, empty or blank string.*     
+- email: *Must be between 10 and 80 characters and cannot be null, empty or blank string.*       
+- password: *Must be between 8 and 40 characters and cannot be null, empty or blank string.*  
+
+*Address:*      
+- country and city: *Minimum 3 characters and cannot be null, empty or blank string.*     
+- zipcode and street: *Cannot be null, empty or blank string.*     
+- houseNumber: *Cannot be null.*    
+- additionalInfo: *Maximum 500characters.*
+
+**A valid registration command looks like this:**       
+
+``` json
+{
+  "firstName": "registered",  
+  "lastName": "user",
+  "email": "registered@email.com",
+  "password": "test1234",
+  "address": {
+    "country": "Somecountry",
+    "city": "somecity",
+    "zipcode": "1157",
+    "street": "teststreet",
+    "houseNumber": 34,
+    "additionalInfo": "Some optional additional info for the address"
+  }
+}
+```
+
+### SECURED USER ENDPOINTS
+- **Login:** `http://localhost:8080/api/users/login` **GET**      
+*Basic authentication flow require an authorization header with Username and password.     
+In our case the username is always the email address of the account.*
+
+You can log in with all the generated dummy users (you can get the list of all users).    
+Or you can log in with the specified USER or ADMIN account.     
+The password for the generated users is always: `test1234`!    
+
+**ADMIN LOGIN**:     
+username: `admin@email.com`     
+password: `test1234`      
+
+**USER LOGIN**:     
+username: `simple.user@email.com`     
+password: `test1234`
 
 
-
-
-### USER ENDPOINTS
-
-
-
-
-
-
-
-### - ADMIN ENDPOINTS
+### ADMIN ENDPOINTS
