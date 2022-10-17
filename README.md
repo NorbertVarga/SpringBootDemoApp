@@ -71,10 +71,118 @@ But I secure the endpoints with simple method security in controller level.
     }
 ```
 
-
 - ### H2 In-Memory DB
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 - ### Hibernate, JPA
+> A JPA (Java Persistence API) is a specification of Java which is used to access, manage, and persist data between Java object and relational database.    
+> It is considered as a standard approach for Object Relational Mapping.        
+> JPA can be seen as a bridge between object-oriented domain models and relational database systems.     
+> Being a specification, JPA doesn't perform any operation by itself.     
+> Thus, it requires implementation. So, ORM tools like Hibernate, TopLink, and iBatis implements JPA specifications for data persistence.
+
+> A Hibernate is a Java framework which is used to store the Java objects in the relational database system.   
+> It is an open-source, lightweight, ORM (Object Relational Mapping) tool.     
+> Hibernate is an implementation of JPA. So, it follows the common standards provided by the JPA.     
+> https://www.javatpoint.com/jpa-vs-hibernate
+
 - ### Validation
+> Validating user input is a super common requirement in most applications.    
+> And the Java Bean Validation framework has become the de facto standard for handling this kind of logic.      
+> https://www.baeldung.com/javax-validation    
+> https://docs.oracle.com/javaee/7/api/javax/validation/constraints/package-summary.html
+
+In the project we use the javax validation API, hibernate-validator, and javax expression language.     
+There is a kind of "multi-level" validation flow with the consistent constraints.     
+We are validating the user commands which are comes to the controller endpoints in the body of the request.      
+Easily we can do this with some simple annotations on the fields in the incoming DTO.     
+``` java
+public class UserCreateCommand {
+
+    @Size(min = 3, max = 30, message
+            = "First name must be between {min} and {max} characters")
+    @NotBlank (message = "Empty string not allowed here!")
+    private String firstName;
+
+    @Size(min = 3, max = 30, message
+            = "Last name must be between {min} and {max} characters")
+    @NotBlank (message = "Empty string not allowed here!")
+    private String lastName;
+
+    @Size(min = 10, max = 80, message
+            = "Email must be between {min} and {max} characters")
+    @NotBlank (message = "Empty string not allowed here!")
+    private String email;
+
+    @Size(min = 8, max = 40, message
+            = "Password must be between {min} and {max} characters")
+    @NotBlank (message = "Empty string not allowed here!")
+    private String password;
+    
+    // rest of the code...
+    }
+```
+Or we can implement a validator class where we can validate some more complex custom constraints.   
+(For example we can check email, or a password format with regex, or some business logic etc.)
+``` java
+@Component
+public class UserCreateCommandValidator implements Validator {
+
+    private final SharedValidationService validationService;
+
+    @Autowired
+    public UserCreateCommandValidator(SharedValidationService validationService) {
+        this.validationService = validationService;
+    }
+
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return UserCreateCommand.class.equals(clazz);
+    }
+
+    @Override
+    public void validate(Object target, Errors errors) {
+        UserCreateCommand command = (UserCreateCommand) target;
+
+        if (!command.getEmail().matches("^(.+)@(.+)$")) {
+            errors.rejectValue("email", "email.valid");
+        }
+
+        if (validationService.findUserByEmail(command.getEmail()) != null) {
+            errors.rejectValue("email", "email.exist");
+        }
+    }
+}
+```
+And we can put the same constraints annotation to the fields in our entities to ensure that we do the same validations in the database level as well.      
+
+**I will give you specific details about the validation contrainst we use in the API Documentation section.**
+
+
+
 - ### REST
 - ### Faker API
 
