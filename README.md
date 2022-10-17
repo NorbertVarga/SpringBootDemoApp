@@ -238,13 +238,33 @@ but basically its only allowed for and ADMIN)*
 - Create a new product
 - Update a product by id
 - Delete a product by id
-
 - Get all the purchases data from all users
 - Get all the purchases from a User by id
 - Get all the product orders from all users        
 *(a product order is a kind of entry which includes which products we want to buy and how much we want from that.    
 One purchase can include more product orders)*
+***
 
-### - USER ENDPOINTS
+# API Documentation
+In that section I will give you detailed information about the API,         
+the specified validation constrains and how you can use it.      
+If you are familiar with Postman application, I export the whole collection for you.      
+Download it, and import to your Postman.      
+[Download it, and import to your Postman.](src/main/resources/SpringBootDemoWebshop.postman_collection.json)
+
+
+### UNSECURED "FREE" ENDPOINTS:
+- Login 
+
+
+
+
+### USER ENDPOINTS
+
+
+
+
+
+
 
 ### - ADMIN ENDPOINTS
