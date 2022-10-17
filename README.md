@@ -220,7 +220,6 @@ After the success registration the new account will be saved to our DB with the 
 - Update your profile 
 - Delete your profile (delete is NOT only logical, we exactly delete that account from the DB and is not exist anymore.)    
 - Logout
-
 - List all the products
 - Operations for Cart(put products, remove products, get your cart info, clear your cart)
 - Make purchase (get the products from your cart and "buy" those)
