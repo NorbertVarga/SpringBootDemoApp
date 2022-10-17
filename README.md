@@ -1,9 +1,12 @@
 # Spring Boot Demo Web-shop
-### Welcome visitor and thank you for paying attention to my work.
+### Welcome visitor! Thank you for paying attention to my work.
 
 # Global introduction
+The project is an implementation of a very small and simple working web-shop.     
+Users can register, login, browse the products and make some purchases.      
+I try to follow the REST principles when building the Project.      
 The entire project was built from scratch by my own hands and is continuously under development.    
-This is only a BackEnd oriented project without any kind of UI included.   
+This is only a BackEnd oriented project without any kind of UI included.
 The project is not installed on any network!           
 You can freely clone the repository and try it out on a local machine. 
 
@@ -182,10 +185,13 @@ And we can put the same constraints annotation to the fields in our entities to 
 **I will give you specific details about the validation contrainst we use in the API Documentation section.**
 
 
-
-- ### REST
 - ### Faker API
+Faker is very simple API to generate some random data. Like names, emails, addresses etc.       
+It's useful when you're developing a new project and need some pretty data for showcase.        
+In the project we use it to populate our database with some dummy users and products with random properties.      
 
+**https://github.com/DiUS/java-faker**        
+**http://dius.github.io/java-faker/apidocs/index.html**
 
 
 # Usage
