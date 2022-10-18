@@ -21,7 +21,7 @@ You can freely clone the repository and try it out on a local machine.
   (We basically use a built-in H2 in-memory database, so you don't need to care about it)
 
 *If you are here, I assume that you are a developer, and you have some relevant experience in IT.     
-So I hope you can easily try the project in action. A detailed description about the usage can be found below.*
+So I hope you can easily try the project in action. A detailed description about the usage can be found below.*  [Usage](#Usage)
 
 **Please notice that this is a hobby project, and it doesn't want to represent any kind of real business value.**      
 There is some functionality which are less realistic or professional.    
@@ -182,9 +182,8 @@ In the project we use it to populate our database with some dummy users and prod
 
 **https://github.com/DiUS/java-faker**        
 **http://dius.github.io/java-faker/apidocs/index.html**
-
-
 ***
+
 # Usage
 
 You can clone the repository to your local machine and run it from an IDE by starting the `SpringBootDemoApplication.java`              
@@ -215,10 +214,10 @@ And you have some additional operations what you can do only with ADMIN role.**
 - Get all users   
 *(for development purposes I comment out the `@Secured` annotation from that endpoint,    
 so you can get the list of the users without any kind of login or authentication,     
-but basically its only allowed for and ADMIN)*       
+but basically its only allowed for ADMIN)*       
 - Find user by id
 - Update a user by id
-- Delete a user by id
+- Delete a user by id (delete is NOT only logical, we exactly delete that account from the DB and is not exist anymore.)      
 - Create a new product
 - Update a product by id
 - Delete a product by id
@@ -245,12 +244,10 @@ If there is no stock from a product we totally remove that order from the purcha
 
 Finally, from these valid and manipulated product orders will be generated the purchase item which stands for "one transaction".    
 The program will calculate automatically the total price for the purchase.     
-We check the User balance before we make the purchase, for sure if the user don't have enough money the purchase will not be completed. Otherwise, if the purchase was successful we clear the Cart.    
-After a successful purchase the program will decrease the balance of the user with the price of the purchase, and also will update the total quantity of the products.
-
-
-
-
+We check the User balance before we make the purchase, for sure if the user don't have enough money the purchase will not be completed.     
+Otherwise, if the purchase was successful we clear the Cart.    
+After a successful purchase the program will decrease the balance of the user with the price of the purchase,     
+and also will update the total quantity of the products.
 ***
 
 # API Documentation
