@@ -173,7 +173,7 @@ public class UserCreateCommandValidator implements Validator {
 And we can put the same constraints annotation to the fields in our entities to ensure that we do the same validations in the database level as well.      
 
 **I will give you specific details about the validation constraints we use in the API Documentation section.**
-
+[Api Documentation](#API Documentation)
 
 - ### Faker API
 Faker is very simple API to generate some random data. Like names, emails, addresses etc.       
@@ -193,6 +193,7 @@ I also put a specified account with ROLE_USER and another one with ROLE_ADMIN.
 You can use that specified accounts to log in, or you can register new account via the API.    
 
 ## Functionality
+
 There is only a very basic functionality implemented for now.       
 **I recommend for you the Postman application for use and test manually the API**       
 The registration flow is unsecure, we have to allow our visitors to make an account.     
@@ -227,12 +228,12 @@ but basically its only allowed for ADMIN)*
 *(a product order is a kind of entry which includes which products we want to buy and how much we want from that.    
 One purchase can include more product orders)*
 
-**Cart**      
+### Cart      
 Every user have their own Cart stored in the session for the lifecycle of that session(1Hour).
 Users can put and remove products from the cart and also can get the data of their Cart.
 If a user logging out we are invalidating his session so the Cart will be cleared.
 
-**Purchase Logic**     
+### Purchase Logic        
 If we make a purchase the program will pull the product orders from the cart.    
 **We have to take care about the product quantities!**     
 Several users can add the same product to their basket at the same time,   
@@ -259,14 +260,18 @@ If you are familiar with Postman application, I export the whole collection for 
 
 
 ### UNSECURED "FREE" ENDPOINTS:
-- **Register:** `http://localhost:8080/api/users/register` **POST**   
+
+#### Register:     
+`http://localhost:8080/api/users/register` **POST**      
+
 *Register a new account with a simple USER role.*    
 
 **Constraints:**     
 - firstName and lastName: *Must be between 3 and 30 characters and cannot be null, empty or blank string.*     
-- email: *Must be between 10 and 80 characters and cannot be null, empty or blank string.*       
-- password: *Must be between 8 and 40 characters and cannot be null, empty or blank string.*  
+- email: *Must be between 10 and 80 characters, must contain a '@' character and cannot be null, empty or blank string.*       
+- password: *Must be between 8 and 40 characters and cannot be null, empty or blank string.*       
 
+*In the future maybe I will separate the address creation logic, for now we have to add an address for the registration.*        
 *Address:*      
 - country and city: *Minimum 3 characters and cannot be null, empty or blank string.*     
 - zipcode and street: *Cannot be null, empty or blank string.*     
@@ -292,22 +297,88 @@ If you are familiar with Postman application, I export the whole collection for 
 }
 ```
 
+
 ### SECURED USER ENDPOINTS
-- **Login:** `http://localhost:8080/api/users/login` **GET**      
+### Login:      
+`http://localhost:8080/api/users/login` **GET**      
+
 *Basic authentication flow require an authorization header with Username and password.     
 In our case the username is always the email address of the account.*
 
 You can log in with all the generated dummy users (you can get the list of all users).    
 Or you can log in with the specified USER or ADMIN account.     
-The password for the generated users is always: `test1234`!    
+The password for the generated users is always: `test1234`    
 
-**ADMIN LOGIN**:     
+- **Admin login**:     
 username: `admin@email.com`     
-password: `test1234`      
+password: `test1234`       
+                    
 
-**USER LOGIN**:     
+- **User login**:     
 username: `simple.user@email.com`     
 password: `test1234`
+      
 
+### My Account:        
+`http://localhost:8080/api/users/me` **GET**       
+
+You will get detailed information about your account and addresses.
+    
+        
+### Update My Account:      
+`http://localhost:8080/api/update/me` **PUT**        
+
+*You can update your profile. For now this functionality is so simple and maybe not that professional.       
+You can update your first name, last name, email address, and password.      
+I think maybe in the future I will rework that logic to be more lifelike.*
+
+**Constraints**     
+For this operation you can leave any of the fields empty or blank.        
+I only check validation for the fields which contains some data.     
+
+- firstName and lastName: *Must be between 3 and 30 characters*          
+- email: *Must be between 10 and 80 characters and must contain a '@' character*            
+- password: *Must be between 8 and 40 characters*           
+
+If you wanted to only update your first name, then you can leave the other fields blank.    
+The program will update only the fields which contain some data.        
+
+A valid command which only update the first name and the password looks like this:     
+*The last name and email will remain the original in that case*
+``` JSON
+{
+    "firstName": "updatedName",
+    "lastName": "",
+    "email": "",
+    "password": "newPassword"
+}
+```
+
+**Notice that: All the fields what you fill with data must be valid.     
+If one of them is invalid the whole update will not be executed!      
+So for example this is an invalid command which will failed and don't update anything since the names are not valid.**
+``` JSON
+{
+    "firstName": "a", 
+    "lastName": "ku",
+    "email": "updated@email.com",
+    "password": "newPassword"
+}
+```
+       
+### Delete My Account      
+`http://localhost:8080/api/users/delete/me` **DELETE**       
+
+*You can delete your account*     
+
+This is again a functionality which could be more professional.     
+**Now this deleting operation an exact delete, so we remove the user from the database and this account is no more exist.**     
+
+
+This should be only a "logical" delete where we still leave the account in the DB,     
+and just indicate somehow that user is deleted, (put it to inactive state, delete the sensitive data etc.)
+
+
+      
 
 ### ADMIN ENDPOINTS
