@@ -374,9 +374,49 @@ So for example this is an invalid command which will failed and don't update any
 This is again a functionality which could be more professional.     
 **Now this deleting operation an exact delete, so we remove the user from the database and this account is no more exist.**     
 
-
 This should be only a "logical" delete where we still leave the account in the DB,     
 and just indicate somehow that user is deleted, (put it to inactive state, delete the sensitive data etc.)
+
+### Logout     
+`http://localhost:8080/api/users/logout` **GET**     
+      
+*You will be logged out and your session will invalidate, and it's mean your shopping cart also will be cleared.*    
+
+### All products     
+`http://localhost:8080/api/products/all` **GET**     
+
+*You can get the list of all products*    
+
+### Find a product by id       
+`http://localhost:8080/api/products/find/5` **GET**      
+*You can get some details about a specified product by id.*     
+     
+I use the `@PathVariable` annotation here, the last number in that URL stands for the id of the product.     
+When you start the program it will generate 30 different products.     
+`.../products/find/1-30`     
+
+### Add one product to the Cart by id
+`http://localhost:8080/api/cart/add-one-product/22` **GET**      
+*You can put only one piece from a product to your cart*
+
+We use the `@PathVariable` annotation here, the last number in that URL stands for the id of the product.   
+When you start the program it will generate 30 different products.     
+`.../add-one-product/1-30`           
+     
+### Add more product to the Cart by id       
+`http://localhost:8080/api/cart/add-more-product?productId=3&quantity=5` **GET**     
+*You can put more pieces from a specified product to your cart*      
+     
+Here we use simple parameters in the URL.      
+`...?productId=1-30&...`      
+
+**Notice that: in that point there is no restriction, or limit for the quantity.     
+You can put to your cart a higher quantity from a product than the actual stock is.     
+Later the program will check it when you initiate a purchase.     
+     
+### Remove one product from the cart by id      
+`http://localhost:8080/api/cart/remove-one-product/1` **GET**    
+     
 
 
       
