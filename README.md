@@ -78,31 +78,17 @@ But I secure the endpoints with simple method security in controller level.
     }
 ```
 
+
 - ### H2 In-Memory DB
+> H2 is an embedded, open-source, and in-memory database. It is a relational database management system written in Java.  
+> It is a client/server application. It stores data in memory, not persist the data on disk.     
+> https://www.geeksforgeeks.org/spring-boot-h2-database/
 
+**You can access to that in-memory database while the program is running.**      
+Run the program --> open a browser --> write URL: `http://localhost:8080/h2`    
+The starting point of the project is -- > **SpringBootDemoApplication.class**
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+![H2 login page](/src/main/resources/pictures/h2_login.png "H2 login page")
 
 - ### Hibernate, JPA
 > A JPA (Java Persistence API) is a specification of Java which is used to access, manage, and persist data between Java object and relational database.    
