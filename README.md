@@ -229,8 +229,8 @@ but basically its only allowed for ADMIN)*
 One purchase can include more product orders)*
 
 ### Cart      
-Every user have their own Cart stored in the session for the lifecycle of that session(1Hour).
-Users can put and remove products from the cart and also can get the data of their Cart.
+Every user have their own Cart stored in the session for the lifecycle of that session(1Hour).        
+Users can put and remove products from the cart and also can get the data of their Cart.        
 If a user logging out we are invalidating his session so the Cart will be cleared.
 
 ### Purchase Logic        
@@ -298,8 +298,9 @@ If you are familiar with Postman application, I export the whole collection for 
 ```
 
 
-### SECURED USER ENDPOINTS
-### Login:      
+### SECURED USER ENDPOINTS    
+
+### Login           
 `http://localhost:8080/api/users/login` **GET**      
 
 *Basic authentication flow require an authorization header with Username and password.     
@@ -309,23 +310,23 @@ You can log in with all the generated dummy users (you can get the list of all u
 Or you can log in with the specified USER or ADMIN account.     
 The password for the generated users is always: `test1234`    
 
-- **Admin login**:     
+- **Admin login:**      
 username: `admin@email.com`     
 password: `test1234`       
                     
 
-- **User login**:     
+- **User login:**     
 username: `simple.user@email.com`     
 password: `test1234`
       
 
-### My Account:        
+### My Account        
 `http://localhost:8080/api/users/me` **GET**       
 
 You will get detailed information about your account and addresses.
     
         
-### Update My Account:      
+### Update My Account      
 `http://localhost:8080/api/update/me` **PUT**        
 
 *You can update your profile. For now this functionality is so simple and maybe not that professional.       
@@ -367,8 +368,7 @@ So for example this is an invalid command which will failed and don't update any
 ```
        
 ### Delete My Account      
-`http://localhost:8080/api/users/delete/me` **DELETE**       
-
+`http://localhost:8080/api/users/delete/me` **DELETE**         
 *You can delete your account*     
 
 This is again a functionality which could be more professional.     
@@ -379,12 +379,10 @@ and just indicate somehow that user is deleted, (put it to inactive state, delet
 
 ### Logout     
 `http://localhost:8080/api/users/logout` **GET**     
-      
 *You will be logged out and your session will invalidate, and it's mean your shopping cart also will be cleared.*    
 
-### All products     
-`http://localhost:8080/api/products/all` **GET**     
-
+### List all products     
+`http://localhost:8080/api/products/all` **GET**          
 *You can get the list of all products*    
 
 ### Find a product by id       
@@ -403,9 +401,9 @@ We use the `@PathVariable` annotation here, the last number in that URL stands f
 When you start the program it will generate 30 different products.     
 `.../add-one-product/1-30`           
      
-### Add more product to the Cart by id       
+### Add more products to the Cart by id       
 `http://localhost:8080/api/cart/add-more-product?productId=3&quantity=5` **GET**     
-*You can put more pieces from a specified product to your cart*      
+*You can put more pieces of a specified product to your cart*      
      
 Here we use simple parameters in the URL.      
 `...?productId=1-30&...`      
@@ -415,10 +413,97 @@ You can put to your cart a higher quantity from a product than the actual stock 
 Later the program will check it when you initiate a purchase.     
      
 ### Remove one product from the cart by id      
-`http://localhost:8080/api/cart/remove-one-product/1` **GET**    
+`http://localhost:8080/api/cart/remove-one-product/1` **GET**      
+*You can remove one piece of a specified product from the cart by id.*
      
-
-
+The logic is the same as the add product method. We use `@PathVariable` to identify the product by the id.       
+*Don't forget we generate 30products* `.../remove-one/product/1-30` 
       
+### Remove more products from the cart by id      
+`http://localhost:8080/api/cart/remove-more-product?productId=28&quantity=19`  **GET**         
+*You can remove more pieces of a specified product by id.*      
 
-### ADMIN ENDPOINTS
+The logic is the same as the add more product method. We use simple parameters here as well.      
+If you remove more pieces from a product than you put in cart, the program will remove the whole product order entry.      
+     
+### Remove product order from the cart by id       
+`http://localhost:8080/api/cart/remove-one-order/2` **GET**      
+*You can remove a full product order entry from the cart by the id of that product, regardless of the quantity*
+
+Here we use again the `@PathVariable` annotations. The number at the end of the URL stands for the product id;      
+`.../remove-one-order/1-30`     
+      
+### Clear cart     
+`http://localhost:8080/api/cart/clear-cart` **GET**       
+*You can remove all the product orders and totally clear the cart*      
+      
+### Make purchase     
+`http://localhost:8080/api/purchase/make-purchase` **GET**     
+*You can initiate a purchase and buy the products from your cart.*    
+
+You can find detailed information about the purchase logic above. [Purchase Logic](#Purchase Logic)      
+     
+### List my purchases     
+`http://localhost:8080/api/purchase/my-purchases` **GET**      
+*You can list all of your purchases what you make before*     
+
+
+
+### SECURED ADMIN ENDPOINTS     
+*As an ADMIN you have extended options. You can manage the products and also the users.*     
+
+These endpoints are secured and only accessible with an account which has the role of ADMIN. `@Secured({"ROLE_ADMIN"})`    
+
+### List all Users    
+`http://localhost:8080/api/users/all`  **GET**     
+*You can list all the users registered and saved in the database.*
+
+**Notice that for some developer purposes I just comment out the `@Secured` annotation from that endpoint.     
+So that's mean you can call that endpoint without any kind of login or authentication.**      
+    
+### Find a User by id     
+`http://localhost:8080/api/users/find/1` **GET**      
+*You can find, and get some information about a user by id.*     
+
+Again I use the `@PathVariable` annotation here. The number at the end of the URL stands for the user id.        
+We generate 10 dummy users, a specified "simple" user, and a specified ADMIN user.       
+So when we start the program there is a total 12 users. `.../find/1-12`      
+    
+### Update a user by id     
+`http://localhost:8080/api/users/update/1` **PUT**       
+*As an ADMIN, you have the option to overwrite user data*     
+
+The constraints are the same as the simple update user method what I describe above. [Update My Account](#Update My Account)    
+     
+### Delete a user by id     
+`http://localhost:8080/api/users/delete/3` **DELETE**     
+*As an ADMIN you have the option to delete a user by its id.*    
+
+**The logic is the same as the simple delete my account method, this is NOT only a logical delete.     
+This will exactly remove the users from the database.**    
+
+### Create Product   
+`http://localhost:8080/api/products/create` **POST**     
+*As an ADMIN you have to option to create and save new product to the database.*    
+
+**Constraints**    
+- name: *Must be between 3 and 80 characters and cannot be empty or blank string.*   
+- description: *Maximum 1000characters.*    
+- price: *Cannot be null and must be a positive whole number.*  
+- quantity: *Cannot be null and must be a positive whole number.*   
+
+A valid command looks like this:    
+``` JSON
+{
+"name": "Custom created product",
+"description": "Some description here",
+"tags": ["food", "meat", "admin_OPS", "someMoreTag"],
+"price": 15,
+"totalQuantity": 6
+}
+```
+
+*Tags are optional*   
+
+### Update product by id     
+
