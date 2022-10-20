@@ -265,7 +265,7 @@ If you are familiar with Postman application, I export the whole collection for 
 #### Register:     
 `http://localhost:8080/api/users/register` **POST**      
 
-*Register a new account with a simple USER role.*    
+*Register a new account with a simple USER role. The registered user will get a default balance: 20000*    
 
 **Constraints:**     
 - firstName and lastName: *Must be between 3 and 30 characters and cannot be null, empty or blank string.*     
@@ -559,15 +559,75 @@ Don't forget there is no purchases in the system. As I describe above you have t
 <table>
 <thead>
   <tr>
+    <th>Function</th>
     <th>URL</th>
     <th>Method</th>
-    <th>Accessible</th>
     <th>Body/Params</th>
+    <th>Accessible</th>
     <th>Response</th>
   </tr>
 </thead>
 <tbody>
   <tr>
+    <td>Register</td>
+    <td>http://localhost:8080/api/users/register</td>
+    <td>POST</td>
+    <td>
+
+```json
+{
+  "firstName": "registered",
+  "lastName": "user",
+  "email": "registered@email.com",
+  "password": "test1234",
+  "address": {
+    "country": "Somecountry",
+    "city": "somecity",
+    "zipcode": "1157",
+    "street": "teststreet",
+    "houseNumber": 34,
+    "additionalInfo": "Some optional additional info for the address"
+  }
+}
+```
+
+</td>
+    <td>ANYONE</td>
+    <td>
+Full details about the registered user.<br>
+
+```json
+{
+    "appUserId": 13,
+    "firstName": "registered",
+    "lastName": "user",
+    "email": "registered@email.com",
+    "enabled": true,
+    "balance": 20000,
+    "roles": [
+        "ROLE_USER"
+    ],
+    "createdAt": "2022. okt. 20. 22:22:39",
+    "lastModified": "2022. okt. 20. 22:22:39",
+    "addressList": [
+        {
+            "addressId": 22,
+            "country": "Somecountry",
+            "city": "somecity",
+            "zipcode": "1157",
+            "street": "teststreet",
+            "houseNumber": 34,
+            "additionalInfo": "Some optional additional info for the address",
+            "createdAt": "2022. okt. 20. 22:22:39",
+            "lastModified": "2022. okt. 20. 22:22:39"
+        }
+    ]
+}
+```
+</td>
+  </tr>
+  <tr>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -580,22 +640,10 @@ Don't forget there is no purchases in the system. As I describe above you have t
     <td></td>
     <td></td>
     <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
     <td></td>
   </tr>
   <tr>
     <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
     <td></td>
     <td></td>
     <td></td>
@@ -608,22 +656,10 @@ Don't forget there is no purchases in the system. As I describe above you have t
     <td></td>
     <td></td>
     <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
     <td></td>
   </tr>
   <tr>
     <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
     <td></td>
     <td></td>
     <td></td>
@@ -636,22 +672,10 @@ Don't forget there is no purchases in the system. As I describe above you have t
     <td></td>
     <td></td>
     <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
     <td></td>
   </tr>
   <tr>
     <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
     <td></td>
     <td></td>
     <td></td>
@@ -664,22 +688,10 @@ Don't forget there is no purchases in the system. As I describe above you have t
     <td></td>
     <td></td>
     <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
     <td></td>
   </tr>
   <tr>
     <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
     <td></td>
     <td></td>
     <td></td>
@@ -692,22 +704,10 @@ Don't forget there is no purchases in the system. As I describe above you have t
     <td></td>
     <td></td>
     <td></td>
-  </tr>
-  <tr>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
     <td></td>
   </tr>
   <tr>
     <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-  </tr>
-  <tr>
     <td></td>
     <td></td>
     <td></td>
@@ -720,6 +720,15 @@ Don't forget there is no purchases in the system. As I describe above you have t
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
   </tr>
   <tr>
     <td></td>
@@ -727,8 +736,74 @@ Don't forget there is no purchases in the system. As I describe above you have t
     <td></td>
     <td></td>
     <td></td>
+    <td></td>
   </tr>
   <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
