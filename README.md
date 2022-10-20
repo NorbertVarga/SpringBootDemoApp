@@ -505,5 +505,50 @@ A valid command looks like this:
 
 *Tags are optional*   
 
-### Update product by id     
+### Update product by id       
+`http://localhost:8080/api/products/update/5` **PUT**      
+*As an ADMIN you can update the properties of a specified product by id.*       
+        
+**Constraints**       
+- name: *Must be between 3 and 80characters*      
+- description: *Maximum 1000characters*
+- price and totalQuantity: *Must be positive whole number*      
 
+Here again we use the `@PathVariable` annotation in the end of the url. *Don't forget we have 30 products*      
+`.../update/1-30`     
+      
+The logic is nearly the same as the user update method. If you don't write data for a field that field will not be updated.      
+For example this is a valid command which only will update the price of a product:      
+```json
+{
+    "name": "",
+    "description": "     ",
+    "price": 1000,
+    "totalQuantity": null
+}
+```
+
+### Delete product by id      
+`http://localhost:8080/api/products/delete/4` **DELETE**     
+*As an ADMIN you have the option to delete a specified product by id*       
+
+Here again we use the `@PathVariable` annotation in the end of the url. *Don't forget we have 30 products*      
+`.../delete/1-30`    
+
+This is again NOT only a logical delete, the product will be totally removed from the database and no more existing.      
+   
+### List all purchases     
+`http://localhost:8080/api/purchase/get-all` **GET**      
+*As an ADMIN you can list all the purchases from all the users*      
+    
+Basically there is no purchases in the system. You have to log in with a user, put something to your cart and initiate some purchases.     
+After that you have to log in with the ADMIN user and get that purchases back.     
+
+### List purchases by User      
+`http://localhost:8080/api/purchase/get-all-by-user/12` **GET**      
+*As an ADMIN you can get all the purchases from a specified User by id.*      
+
+Here again we use the `@PathVariable` annotation in the end of the url. *Don't forget we have 12 users*      
+`.../get-all-by-user/1-12`     
+     
+Don't forget there is no purchases in the system. As I describe above you have to log in with a user and make some.     
