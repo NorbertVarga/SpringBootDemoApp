@@ -552,3 +552,9 @@ Here again we use the `@PathVariable` annotation in the end of the url. *Don't f
 `.../get-all-by-user/1-12`     
      
 Don't forget there is no purchases in the system. As I describe above you have to log in with a user and make some.     
+
+
+Thank you for follow my work!      
+Feel free to clone and use this repository. I hope you can find some useful technic or code snippets in it.      
+This is only a Junior level small application, but it was so enjoyable to build it.     
+I just play around a little with the system of the SpringBoot in a very basic level.    
