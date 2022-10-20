@@ -44,7 +44,7 @@ I just wanted to make a simple and well-functioning system at the basic level in
 - ### Spring Security
 > Spring Security is a framework that provides authentication, authorization, and protection against common attacks.    
 > With first class support for securing both imperative and reactive applications,     
-> it is the de-facto standard for securing Spring-based applications.
+> it is the de-facto standard for securing Spring-based applications.      
 > https://docs.spring.io/spring-security/reference/index.html
 
 **I use basic authentication flow. Users can register and login with their email address.    
@@ -86,7 +86,7 @@ But I secure the endpoints with simple method security in controller level.
 
 **You can access to that in-memory database while the program is running.**      
 Run the program --> open a browser --> write URL: `http://localhost:8080/h2`    
-The starting point of the project is -- > **SpringBootDemoApplication.class**
+The starting point of the project is -- > **SpringBootDemoApplication.java**
 
 ![H2 login page](/src/main/resources/pictures/h2_login.png "H2 login page")
 
@@ -237,8 +237,9 @@ If a user logging out we are invalidating his session so the Cart will be cleare
 If we make a purchase the program will pull the product orders from the cart.    
 **We have to take care about the product quantities!**     
 Several users can add the same product to their basket at the same time,   
-and we cannot know whether there is still enough quantity from the given product for the purchase.     
-The program will check it, and will update the quantities before the purchase item is generated.     
+and we cannot know whether there is still enough quantity from the given product for the purchase.      
+The program will check it, and will update the quantities before the purchase item is generated.       
+
 *For example if we have ten pieces in the cart from a product which has a total quantity of six,     
 then the purchase item will include only six piece from that product.     
 If there is no stock from a product we totally remove that order from the purchase.*   
@@ -330,8 +331,7 @@ You will get detailed information about your account and addresses.
 `http://localhost:8080/api/update/me` **PUT**        
 
 *You can update your profile. For now this functionality is so simple and maybe not that professional.       
-You can update your first name, last name, email address, and password.      
-I think maybe in the future I will rework that logic to be more lifelike.*
+You can update your first name, last name, email address, and password.*    
 
 **Constraints**     
 For this operation you can leave any of the fields empty or blank.        
@@ -410,7 +410,7 @@ Here we use simple parameters in the URL.
 
 **Notice that: in that point there is no restriction, or limit for the quantity.     
 You can put to your cart a higher quantity from a product than the actual stock is.     
-Later the program will check it when you initiate a purchase.     
+Later the program will check it when you initiate a purchase.**     
      
 ### Remove one product from the cart by id      
 `http://localhost:8080/api/cart/remove-one-product/1` **GET**      
@@ -493,7 +493,7 @@ This will exactly remove the users from the database.**
 - quantity: *Cannot be null and must be a positive whole number.*   
 
 A valid command looks like this:    
-``` JSON
+```json
 {
 "name": "Custom created product",
 "description": "Some description here",
@@ -552,3 +552,188 @@ Here again we use the `@PathVariable` annotation in the end of the url. *Don't f
 `.../get-all-by-user/1-12`     
      
 Don't forget there is no purchases in the system. As I describe above you have to log in with a user and make some.     
+
+
+# API Table
+
+<table>
+<thead>
+  <tr>
+    <th>URL</th>
+    <th>Method</th>
+    <th>Accessible</th>
+    <th>Body/Params</th>
+    <th>Response</th>
+  </tr>
+</thead>
+<tbody>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+    <td></td>
+  </tr>
+</tbody>
+</table>
