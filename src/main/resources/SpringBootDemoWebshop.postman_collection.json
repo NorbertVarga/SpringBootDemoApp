@@ -1,0 +1,726 @@
+{
+	"info": {
+		"_postman_id": "d6588339-b114-4635-abe0-45b28dea6387",
+		"name": "SpringBoot Demo Webshop",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19652957"
+	},
+	"item": [
+		{
+			"name": "ADMIN_ENDPOINTS",
+			"item": [
+				{
+					"name": "USER_RELATED",
+					"item": [
+						{
+							"name": "ADMIN_GET_ALL_USERS",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/users/all",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN_FIND_USER_BY_ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/users/find/15",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"find",
+										"15"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN_UPD_USER_BY_ID",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"updated\",\r\n    \"lastName\": \"user\",\r\n    \"email\": \"updated@email.com\",\r\n    \"password\": \"test1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users/update/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"update",
+										"3"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN_DEL_USER_BY_ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/users/delete/3",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"delete",
+										"3"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PRODUCT_RELATED",
+					"item": [
+						{
+							"name": "ADMIN_CREATE_PRODUCT",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"Custom created product\",\r\n    \"description\": \"Some description here\",\r\n    \"tags\": [\"food\", \"meat\", \"admin_OPS\", \"someMoreTag\"],\r\n    \"price\": 15,\r\n    \"totalQuantity\": 6\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/products/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"products",
+										"create"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN_UPD_PRODUCT_BY_ID",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"name\": \"updated product\",\r\n    \"description\": \"Optional description for updated project (descriptional)\",\r\n    \"price\": 100,\r\n    \"totalQuantity\": 50 \r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/products/update/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"products",
+										"update",
+										"5"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN_DEL_PRODUCT_BY_ID",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/products/delete/4",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"products",
+										"delete",
+										"4"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PURCHASE_RELATED",
+					"item": [
+						{
+							"name": "ADMIN_GET_ALL_PURCHASE",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/purchase/get-all",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"purchase",
+										"get-all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN_GET_PURCHASES_BY_USER",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/purchase/get-all-by-user/12",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"purchase",
+										"get-all-by-user",
+										"12"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ADMIN_GET_ALL_ORDER",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/purchase/orders/get-all",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"purchase",
+										"orders",
+										"get-all"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "USER_ENDPOINTS",
+			"item": [
+				{
+					"name": "ACCOUNT_RELATED",
+					"item": [
+						{
+							"name": "USER_REGISTER",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"registered\",\r\n    \"lastName\": \"user\",\r\n    \"email\": \"registered@email.com\",\r\n    \"password\": \"test1234\",\r\n    \"address\": {\r\n        \"country\": \"Somecountry\",\r\n        \"city\": \"somecity\",\r\n        \"zipcode\": \"1157\",\r\n        \"street\": \"teststreet\",\r\n        \"houseNumber\": 34,\r\n        \"additionalInfo\": \"Some optional additional info for the address\" \r\n    }\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"register"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "USER_LOGIN",
+							"request": {
+								"auth": {
+									"type": "basic",
+									"basic": [
+										{
+											"key": "username",
+											"value": "admin@email.com",
+											"type": "string"
+										},
+										{
+											"key": "password",
+											"value": "test1234",
+											"type": "string"
+										}
+									]
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/users/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"login"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "USER_MY_ACCOUNT",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/users/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "USER_UPDATE_MYSELF",
+							"request": {
+								"method": "PUT",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"firstName\": \"updated\",\r\n    \"lastName\": \"user\",\r\n    \"email\": \"updated@email.com\",\r\n    \"password\": \"test1234\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/api/users/update/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"update",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "USER_DELETE_MYSELF",
+							"request": {
+								"method": "DELETE",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/users/delete/me",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"delete",
+										"me"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "USER_LOGOUT",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/users/logout",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"users",
+										"logout"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PRODUCT_RELATED",
+					"item": [
+						{
+							"name": "PRODUCT_GET_ALL",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/products/all",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"products",
+										"all"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "PRODUCT_GET_BY_ID",
+							"request": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/api/products/find/5",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"api",
+										"products",
+										"find",
+										"5"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "PURCHASE_AND_CART_RELATED",
+					"item": [
+						{
+							"name": "CART",
+							"item": [
+								{
+									"name": "CART_GET_MYCART",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/cart/mycart",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"cart",
+												"mycart"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "CART_ADD_ONE",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/cart/add-one-product/22",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"cart",
+												"add-one-product",
+												"22"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "CART_ADD_MORE",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/cart/add-more-product?productId=3&quantity=5",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"cart",
+												"add-more-product"
+											],
+											"query": [
+												{
+													"key": "productId",
+													"value": "3"
+												},
+												{
+													"key": "quantity",
+													"value": "5"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "CART_REMOVE_ONE",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/cart/remove-one-product/1",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"cart",
+												"remove-one-product",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "CART_REMOVE_MORE",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/cart/remove-more-product?productId=28&quantity=19",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"cart",
+												"remove-more-product"
+											],
+											"query": [
+												{
+													"key": "productId",
+													"value": "28"
+												},
+												{
+													"key": "quantity",
+													"value": "19"
+												}
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "CART_REMOVE_ORDER",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/cart/remove-one-order/2",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"cart",
+												"remove-one-order",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "CART_CLEAR_CART",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/cart/clear-cart",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"cart",
+												"clear-cart"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "PURCHASE",
+							"item": [
+								{
+									"name": "MAKE_PURCHASE",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/purchase/make-purchase",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"purchase",
+												"make-purchase"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET_MY_PURCHASES",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/api/purchase/my-purchases",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"api",
+												"purchase",
+												"my-purchases"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
