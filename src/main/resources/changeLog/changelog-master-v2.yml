@@ -1,0 +1,381 @@
+databaseChangeLog:
+- changeSet:
+    id: 1666359951278-1
+    author: A200133714 (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: product_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: product_created_at
+            type: datetime
+        - column:
+            name: product_description
+            type: TEXT
+        - column:
+            constraints:
+              nullable: false
+            name: product_last_modified
+            type: datetime
+        - column:
+            name: product_name
+            type: VARCHAR(80)
+        - column:
+            constraints:
+              nullable: false
+            name: product_price
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: product_total_quantity
+            type: INT
+        tableName: product
+- changeSet:
+    id: 1666359951278-2
+    author: A200133714 (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: product_order_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: product_order_created_at
+            type: datetime
+        - column:
+            constraints:
+              nullable: false
+            name: product_order_quantity
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: product_order_total_price
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: product_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: purchase_item_purchase_item_id
+            type: BIGINT
+        tableName: product_order
+- changeSet:
+    id: 1666359951278-3
+    author: A200133714 (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: product_id
+            type: BIGINT
+        - column:
+            name: tags
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: tags_order
+            type: INT
+        tableName: product_tag
+- changeSet:
+    id: 1666359951278-4
+    author: A200133714 (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: purchase_item_id
+            type: BIGINT
+        - column:
+            constraints:
+              nullable: false
+            name: purchase_item_created_at
+            type: datetime
+        - column:
+            constraints:
+              nullable: false
+            name: purchase_item_total_price
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: purchase_item_total_quantity
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: user_id
+            type: BIGINT
+        tableName: purchase_item
+- changeSet:
+    id: 1666359951278-5
+    author: A200133714 (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: user_id
+            type: BIGINT
+        - column:
+            name: user_balance
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: user_created_at
+            type: datetime
+        - column:
+            name: user_email
+            type: VARCHAR(80)
+        - column:
+            name: user_enabled
+            type: BIT(1)
+        - column:
+            name: user_first_name
+            type: VARCHAR(30)
+        - column:
+            constraints:
+              nullable: false
+            name: user_last_modified
+            type: datetime
+        - column:
+            name: user_last_name
+            type: VARCHAR(30)
+        - column:
+            name: user_password
+            type: VARCHAR(255)
+        tableName: user_account
+- changeSet:
+    id: 1666359951278-6
+    author: A200133714 (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            autoIncrement: true
+            constraints:
+              nullable: false
+              primaryKey: true
+            name: address_id
+            type: BIGINT
+        - column:
+            name: address_additional_info
+            type: TEXT
+        - column:
+            name: address_city
+            type: VARCHAR(255)
+        - column:
+            name: address_country
+            type: VARCHAR(255)
+        - column:
+            constraints:
+              nullable: false
+            name: address_created_at
+            type: datetime
+        - column:
+            constraints:
+              nullable: false
+            name: address_house_number
+            type: INT
+        - column:
+            constraints:
+              nullable: false
+            name: address_last_modified
+            type: datetime
+        - column:
+            name: address_street
+            type: VARCHAR(255)
+        - column:
+            name: address_zipcode
+            type: VARCHAR(255)
+        - column:
+            name: user_id
+            type: BIGINT
+        tableName: user_adress
+- changeSet:
+    id: 1666359951278-7
+    author: A200133714 (generated)
+    changes:
+    - createTable:
+        columns:
+        - column:
+            constraints:
+              nullable: false
+            name: user_account_user_id
+            type: BIGINT
+        - column:
+            name: user_role
+            type: VARCHAR(255)
+        tableName: user_role
+- changeSet:
+    id: 1666359951278-8
+    author: A200133714 (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: user_id
+        indexName: FK4baqoslfogisupd1xw5h0cm7e
+        tableName: user_adress
+- changeSet:
+    id: 1666359951278-9
+    author: A200133714 (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: user_account_user_id
+        indexName: FKf30yh52oprowkgr8yahpx926b
+        tableName: user_role
+- changeSet:
+    id: 1666359951278-10
+    author: A200133714 (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: product_id
+        indexName: FKh73acsd9s5wp6l0e55td6jr1m
+        tableName: product_order
+- changeSet:
+    id: 1666359951278-11
+    author: A200133714 (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: user_id
+        indexName: FKoapc6taccx8b7k5qkt5ufrtnb
+        tableName: purchase_item
+- changeSet:
+    id: 1666359951278-12
+    author: A200133714 (generated)
+    changes:
+    - createIndex:
+        columns:
+        - column:
+            name: purchase_item_purchase_item_id
+        indexName: FKqmv61n2qj61mo4i7mxbhxl2rj
+        tableName: product_order
+- changeSet:
+    id: 1666359951278-13
+    author: A200133714 (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: product_id
+        baseTableName: product_tag
+        constraintName: FK2rf7w3d88x20p7vuc2m9mvv91
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: product_id
+        referencedTableName: product
+        validate: true
+- changeSet:
+    id: 1666359951278-14
+    author: A200133714 (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: user_adress
+        constraintName: FK4baqoslfogisupd1xw5h0cm7e
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: user_id
+        referencedTableName: user_account
+        validate: true
+- changeSet:
+    id: 1666359951278-15
+    author: A200133714 (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_account_user_id
+        baseTableName: user_role
+        constraintName: FKf30yh52oprowkgr8yahpx926b
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: user_id
+        referencedTableName: user_account
+        validate: true
+- changeSet:
+    id: 1666359951278-16
+    author: A200133714 (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: product_id
+        baseTableName: product_order
+        constraintName: FKh73acsd9s5wp6l0e55td6jr1m
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: product_id
+        referencedTableName: product
+        validate: true
+- changeSet:
+    id: 1666359951278-17
+    author: A200133714 (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: user_id
+        baseTableName: purchase_item
+        constraintName: FKoapc6taccx8b7k5qkt5ufrtnb
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: user_id
+        referencedTableName: user_account
+        validate: true
+- changeSet:
+    id: 1666359951278-18
+    author: A200133714 (generated)
+    changes:
+    - addForeignKeyConstraint:
+        baseColumnNames: purchase_item_purchase_item_id
+        baseTableName: product_order
+        constraintName: FKqmv61n2qj61mo4i7mxbhxl2rj
+        deferrable: false
+        initiallyDeferred: false
+        onDelete: RESTRICT
+        onUpdate: RESTRICT
+        referencedColumnNames: purchase_item_id
+        referencedTableName: purchase_item
+        validate: true
+
