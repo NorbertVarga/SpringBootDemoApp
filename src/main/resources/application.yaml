@@ -25,5 +25,7 @@ spring:
         format_sql: true
         generate-ddl: true
         ddl-auto: create-drop
+  liquibase:
+    change-log: classpath:changelog/changelog-master.xml
 
 cors-policies: http://localhost:4200, http://127.0.0.1:4200
