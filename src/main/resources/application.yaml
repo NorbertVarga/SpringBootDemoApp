@@ -11,19 +11,25 @@ spring:
     console:
       enabled: true
       path: /h2
+#  datasource:
+#    url: jdbc:h2:mem:webshop
+#    username: sa
+#    password:
+#    driverClassName: org.h2.Driver
   datasource:
-    url: jdbc:h2:mem:webshop
-    username: sa
+    url: jdbc:mysql://localhost:3306/spring-demo-webshop?serverTimezone=UTC&useUnicode=true&characterEncoding=utf8
+    username: root
     password:
-    driverClassName: org.h2.Driver
-
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   jpa:
+    hibernate:
+      ddl-auto: update
     properties:
       hibernate:
         show_sql: true
         format_sql: true
-        generate-ddl: true
-        ddl-auto: create-drop
+        dialect: org.hibernate.dialect.MySQL8Dialect
+    generate-ddl: true
 
 cors-policies: http://localhost:4200, http://127.0.0.1:4200

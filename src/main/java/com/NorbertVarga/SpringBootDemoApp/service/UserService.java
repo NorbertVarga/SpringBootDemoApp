@@ -36,9 +36,9 @@ public class UserService {
         this.pwEncoder = pwEncoder;
         this.validationService = validationService;
         this.faker = faker;
-        populateDataBaseWithDummyUsers(10);
-        saveAdminUser();
-        saveSimpleUser();
+//        populateDataBaseWithDummyUsers(10);
+//        saveAdminUser();
+//        saveSimpleUser();
     }
 
     //  ** UNSECURED Registration method reachable for anybody

@@ -28,7 +28,7 @@ public class ProductService {
         this.faker = faker;
         this.productRepository = productRepository;
         this.validationService = validationService;
-        populateDataBaseWithDummyProducts(30);
+//        populateDataBaseWithDummyProducts(30);
     }
 
     //  **  SECURED USER METHODS    **  ////////////////////////////////////////////
