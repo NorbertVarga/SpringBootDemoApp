@@ -24,7 +24,7 @@ spring:
         show_sql: true
         format_sql: true
         generate-ddl: true
-        ddl-auto: create-drop
+        ddl-auto: verify
   liquibase:
     change-log: classpath:changelog/changelog-master.xml
 
