@@ -173,7 +173,17 @@ public class UserCreateCommandValidator implements Validator {
 And we can put the same constraints annotation to the fields in our entities to ensure that we do the same validations in the database level as well.      
 
 **I will give you specific details about the validation constraints we use in the API Documentation section.**
-[Api Documentation](#API Documentation)
+[Api Documentation](#API Documentation)     
+
+- ### Liquibase Database versioning
+> Liquibase is a database schema change management solution.    
+> Liquibase enables you to revise and release database changes faster and safer from development to production.    
+> Liquibase uses SQL, XML, JSON, and YAML changelog files to list database changes in sequential order.    
+> Database changes have the format of changesets. Changesets contain Change Type,    
+> which are types of operations to apply to the database, such as adding a column or primary key.     
+> Context, label, and precondition changelog tags help precisely control when a database change is made and to which database environment it is deployed.     
+> https://docs.liquibase.com/concepts/introduction-to-liquibase.html     
+> https://www.baeldung.com/liquibase-refactor-schema-of-java-app
 
 - ### Faker API
 Faker is very simple API to generate some random data. Like names, emails, addresses etc.       
@@ -182,7 +192,8 @@ In the project we use it to populate our database with some dummy users and prod
 
 **https://github.com/DiUS/java-faker**        
 **http://dius.github.io/java-faker/apidocs/index.html**
-***
+***    
+
 
 # Usage
 
