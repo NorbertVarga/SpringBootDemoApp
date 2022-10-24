@@ -35,9 +35,12 @@ public class GlobalExceptionHandler {
     //  **  Validation errors and JSON related  //////////////////////////////
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ValidationError> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
-        logger.error("A validation error occurred: ", ex);
         BindingResult result = ex.getBindingResult();
+        logger.error("** VALIDATION ERROR **");
         List<FieldError> fieldErrors = result.getFieldErrors();
+        for (FieldError fieldError : fieldErrors) {
+            logger.error("** " + fieldError.getField() + ", RV: " + fieldError.getRejectedValue());
+        }
         return new ResponseEntity<>(processFieldErrors(fieldErrors), HttpStatus.BAD_REQUEST);
     }
 

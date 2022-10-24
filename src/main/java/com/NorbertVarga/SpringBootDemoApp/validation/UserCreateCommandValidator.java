@@ -1,6 +1,8 @@
 package com.NorbertVarga.SpringBootDemoApp.validation;
 
 import com.NorbertVarga.SpringBootDemoApp.dto.userAccount.UserCreateCommand;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
@@ -11,6 +13,7 @@ import org.springframework.validation.Validator;
 public class UserCreateCommandValidator implements Validator {
 
     private final SharedValidationService validationService;
+    private static final Logger logger = LoggerFactory.getLogger(UserCreateCommandValidator.class);
 
     @Autowired
     public UserCreateCommandValidator(SharedValidationService validationService) {
@@ -32,6 +35,7 @@ public class UserCreateCommandValidator implements Validator {
 
         if (validationService.findUserByEmail(command.getEmail()) != null) {
             errors.rejectValue("email", "email.exist");
+            logger.warn("* FAILED REGISTER: " + command.getEmail() + " already exist!");
         }
     }
 }

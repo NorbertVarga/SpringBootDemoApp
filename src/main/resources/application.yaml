@@ -19,9 +19,9 @@ spring:
   jpa:
     properties:
       hibernate:
-        show_sql: true
-        format_sql: true
-        generate-ddl: true
+#        show_sql: true
+#        format_sql: true
+#        generate-ddl: true
         ddl-auto: create-drop
   liquibase:
     change-log: classpath:changelog/changelog-master.xml
@@ -30,11 +30,13 @@ logging:
   file:
     name: logs/web-shop.log
   level:
+    liquibase: warn
     hu.NorbertVarga: info
     org.springframework.web: info
+    org.springframework.security: info
     org.hibernate: error
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
-    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} %-5level %logger{36} - %msg%n"
 
 cors-policies: http://localhost:4200, http://127.0.0.1:4200

@@ -78,4 +78,5 @@ public class UserCreateCommand {
     public void setAddressCreateCommand(AddressCreateCommand addressCreateCommand) {
         this.addressCreateCommand = addressCreateCommand;
     }
+
 }
