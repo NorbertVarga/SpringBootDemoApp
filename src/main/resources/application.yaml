@@ -16,8 +16,6 @@ spring:
     username: sa
     password:
     driverClassName: org.h2.Driver
-
-
   jpa:
     properties:
       hibernate:
@@ -27,5 +25,16 @@ spring:
         ddl-auto: create-drop
   liquibase:
     change-log: classpath:changelog/changelog-master.xml
+
+logging:
+  file:
+    name: logs/web-shop.log
+  level:
+    hu.NorbertVarga: info
+    org.springframework.web: info
+    org.hibernate: error
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
 
 cors-policies: http://localhost:4200, http://127.0.0.1:4200
