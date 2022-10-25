@@ -80,8 +80,8 @@ public class GlobalExceptionHandler {
     /////////////////////////////////////////////////////////
 
     //  **  BUSINESS   ////////////////////
-    @ExceptionHandler(LoginFailedException.class)
-    protected ResponseEntity<ApiError> handleEntityNotFoundException(LoginFailedException ex) {
+    @ExceptionHandler(AuthenticationException.class)
+    protected ResponseEntity<ApiError> handleAuthenticationException(AuthenticationException ex) {
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         ApiError body = new ApiError(
                 "UNAUTHORIZED",
