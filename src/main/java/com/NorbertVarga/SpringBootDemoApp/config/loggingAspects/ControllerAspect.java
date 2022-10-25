@@ -16,6 +16,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
 import java.security.Principal;
 
 @Aspect
@@ -27,10 +28,12 @@ public class ControllerAspect {
     @Around("execution(* com.NorbertVarga.SpringBootDemoApp.controller..*(..))")
     public Object profileAllMethods(ProceedingJoinPoint proceedingJoinPoint) throws Throwable
     {
+        MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
                 .getRequest();
         String endpoint = request.getRequestURI();
         String ipAddress = request.getRemoteAddr();
+        String methodName = signature.getMethod().getName();
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String userEmail;
@@ -40,9 +43,9 @@ public class ControllerAspect {
             UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
             userEmail = principal.getEmail();
             userFullName = principal.getFirstName() + " " + principal.getLastName();
-            LOGGER.info("** Controller called: " + endpoint + " FROM: " + userEmail + " " + userFullName + " " + ipAddress);
+            LOGGER.info("-- Controller called: " + endpoint + " | FROM: " + userEmail + " " + userFullName + " " + ipAddress + " || Name:" + methodName);
         } else {
-            LOGGER.info("** Controller called by guest: " + endpoint + " FROM: " + ipAddress);
+            LOGGER.info("-- Controller called by guest: " + endpoint + " | FROM: " + ipAddress + " || Name:" + methodName);
         }
 
 

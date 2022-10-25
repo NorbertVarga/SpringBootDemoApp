@@ -61,7 +61,7 @@ public class UserController {
     // UNSECURED "free" endpoints for the registration and login
     @PostMapping("/register")
     public ResponseEntity<UserFullData_DTO> registerUser(@RequestBody @Valid UserCreateCommand userCreateCommand) {
-        logger.info("* REGISTER ATTEMPT: " + userCreateCommand.getEmail());
+        logger.info("** REGISTER ATTEMPT: " + userCreateCommand.getEmail());
         UserFullData_DTO registeredUserData = userService.registerUser(userCreateCommand);
         return new ResponseEntity<>(registeredUserData, HttpStatus.OK);
     }

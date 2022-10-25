@@ -31,11 +31,12 @@ public class UserCreateCommandValidator implements Validator {
 
         if (!command.getEmail().matches("^(.+)@(.+)$")) {
             errors.rejectValue("email", "email.valid");
+            logger.error("** FAILED REGISTER: " + command.getEmail() + ": FORMAT INVALID");
         }
 
         if (validationService.findUserByEmail(command.getEmail()) != null) {
             errors.rejectValue("email", "email.exist");
-            logger.warn("* FAILED REGISTER: " + command.getEmail() + " already exist!");
+            logger.error("** FAILED REGISTER: " + command.getEmail() + ": ALREADY EXIST");
         }
     }
 }

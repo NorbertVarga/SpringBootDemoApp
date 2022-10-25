@@ -51,9 +51,9 @@ public class UserService {
             UserAccount user = new UserAccount(command);
             user.setPassword(pwEncoder.encode(command.getPassword()));
             registeredUser = userRepository.save(user);
-            logger.info("* USER REGISTERED: " + registeredUser.getEmail() + "! NAME: " + registeredUser.getFirstName() + " " + registeredUser.getLastName());
+            logger.info("** USER REGISTERED: " + registeredUser.getEmail() + "! NAME: " + registeredUser.getFirstName() + " " + registeredUser.getLastName());
         } else {
-            logger.warn("* FAILED REGISTER: " + command.getEmail() + " already exist!");
+            logger.warn("** FAILED REGISTER: " + command.getEmail() + " already exist!");
             throw new EntityExistsException("The given email is already taken.");
         }
 

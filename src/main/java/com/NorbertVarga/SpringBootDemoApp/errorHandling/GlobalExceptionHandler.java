@@ -8,6 +8,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
@@ -36,11 +37,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     protected ResponseEntity<ValidationError> handleMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
         BindingResult result = ex.getBindingResult();
-        logger.error("** VALIDATION ERROR **");
         List<FieldError> fieldErrors = result.getFieldErrors();
-        for (FieldError fieldError : fieldErrors) {
-            logger.error("** " + fieldError.getField() + ", RV: " + fieldError.getRejectedValue());
-        }
         return new ResponseEntity<>(processFieldErrors(fieldErrors), HttpStatus.BAD_REQUEST);
     }
 
@@ -83,6 +80,16 @@ public class GlobalExceptionHandler {
     /////////////////////////////////////////////////////////
 
     //  **  BUSINESS   ////////////////////
+    @ExceptionHandler(LoginFailedException.class)
+    protected ResponseEntity<ApiError> handleEntityNotFoundException(LoginFailedException ex) {
+        HttpStatus status = HttpStatus.UNAUTHORIZED;
+        ApiError body = new ApiError(
+                "UNAUTHORIZED",
+                "Login failed",
+                ex.getMessage());
+        return new ResponseEntity<>(body, status);
+    }
+
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<ApiError> handleEntityNotFoundException(EntityNotFoundException ex) {
         logger.error("Entity not found error: ", ex);
