@@ -24,9 +24,9 @@ import java.security.Principal;
 public class ControllerAspect {
     private static final Logger LOGGER = LoggerFactory.getLogger(ControllerAspect.class);
 
-    //AOP expression for which methods shall be intercepted
+
     @Around("execution(* com.NorbertVarga.SpringBootDemoApp.controller..*(..))")
-    public Object profileAllMethods(ProceedingJoinPoint proceedingJoinPoint) throws Throwable
+    public Object LogAroundControllerCall(ProceedingJoinPoint proceedingJoinPoint) throws Throwable
     {
         MethodSignature signature = (MethodSignature) proceedingJoinPoint.getSignature();
         HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
@@ -43,11 +43,10 @@ public class ControllerAspect {
             UserPrincipal principal = (UserPrincipal) auth.getPrincipal();
             userEmail = principal.getEmail();
             userFullName = principal.getFirstName() + " " + principal.getLastName();
-            LOGGER.info("-- Controller called: " + endpoint + " | FROM: " + userEmail + " " + userFullName + " " + ipAddress + " || Name:" + methodName);
+            LOGGER.info("-- Endpoint called: " + endpoint + " | FROM: " + userEmail + " " + userFullName + " " + ipAddress + " || Method Name:" + methodName);
         } else {
-            LOGGER.info("-- Controller called by guest: " + endpoint + " | FROM: " + ipAddress + " || Name:" + methodName);
+            LOGGER.info("-- Endpoint called by guest: " + endpoint + " | FROM: " + ipAddress + " || Method Name:" + methodName);
         }
-
 
         return proceedingJoinPoint.proceed();
     }
