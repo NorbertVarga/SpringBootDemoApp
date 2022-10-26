@@ -43,7 +43,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     protected ResponseEntity<ApiError> handleHttpMessageNotReadableException(HttpMessageNotReadableException ex) {
-        logger.error("JSON PARSE ERROR: ", ex);
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ApiError body = new ApiError(
                 "BAD_REQUEST",
@@ -58,7 +57,6 @@ public class GlobalExceptionHandler {
     // (Data cannot be saved to the database)
     @ExceptionHandler(ConstraintViolationException.class)
     protected ResponseEntity<ApiError> handleConstraintViolationException(ConstraintViolationException ex) {
-        logger.error("Database validation error: ", ex);
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ApiError body = new ApiError(
                 "BAD_REQUEST",
@@ -69,7 +67,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(JdbcSQLDataException.class)
     protected ResponseEntity<ApiError> handleJdbcSQLDataException(JdbcSQLDataException ex) {
-        logger.error("Database validation error: ", ex);
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ApiError body = new ApiError(
                 "BAD_REQUEST",
@@ -92,7 +89,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityNotFoundException.class)
     protected ResponseEntity<ApiError> handleEntityNotFoundException(EntityNotFoundException ex) {
-        logger.error("Entity not found error: ", ex);
         HttpStatus status = HttpStatus.NOT_FOUND;
         ApiError body = new ApiError(
                 "NOT_FOUND",
@@ -103,7 +99,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(EntityExistsException.class)
     protected ResponseEntity<ApiError> handleEntityExistException(EntityExistsException ex) {
-        logger.error("Entity already exist error: ", ex);
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ApiError body = new ApiError(
                 "BAD_REQUEST",
@@ -114,7 +109,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserBalanceNotEnoughException.class)
     protected ResponseEntity<ApiError> handleUserBalanceNotEnoughException(UserBalanceNotEnoughException ex) {
-        logger.error("User don't have enough money to make purchase: ", ex);
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ApiError body = new ApiError(
                 "BALANCE_NOT_ENOUGH",
@@ -125,7 +119,6 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(SessionAuthenticationException.class)
     protected ResponseEntity<ApiError> handleSessionAuthenticationException(SessionAuthenticationException ex) {
-        logger.error("The user in the cart does not match the logged in user: ", ex);
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ApiError body = new ApiError(
                 "INVALID_SESSION",
