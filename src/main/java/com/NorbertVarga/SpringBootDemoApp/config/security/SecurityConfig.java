@@ -1,6 +1,7 @@
 package com.NorbertVarga.SpringBootDemoApp.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,6 +10,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -18,10 +20,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailsService customUserDetailService;
     private final PasswordEncoder pwEncoder;
 
+    @Qualifier("customAuthenticationEntryPoint")
+    private final AuthenticationEntryPoint authEntryPoint;
+
     @Autowired
-    public SecurityConfig(CustomUserDetailsService customUserDetailService, PasswordEncoder pwEncoder) {
+    public SecurityConfig(CustomUserDetailsService customUserDetailService, PasswordEncoder pwEncoder, AuthenticationEntryPoint authEntryPoint) {
         this.customUserDetailService = customUserDetailService;
         this.pwEncoder = pwEncoder;
+        this.authEntryPoint = authEntryPoint;
     }
 
     @Override
@@ -42,9 +48,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .cors()
                 .and()
                 .httpBasic()
-                .and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
-                .and().headers().frameOptions().sameOrigin()
-                .and().logout().logoutUrl("/api/users/logout")
+                .and()
+                .exceptionHandling().authenticationEntryPoint(authEntryPoint)
+                .and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
+                .and()
+                .headers().frameOptions().sameOrigin()
+                .and()
+                .logout().logoutUrl("/api/users/logout")
                 .deleteCookies("JSESSIONID").invalidateHttpSession(true);
 
     }
