@@ -1,6 +1,7 @@
 package com.NorbertVarga.SpringBootDemoApp.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -12,15 +13,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
 @EnableWebSecurity
-
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailService;
     private final PasswordEncoder pwEncoder;
-    private final CustomAuthenticationEntryPoint authEntryPoint;
+
+    @Qualifier("customAuthEntryPoint")
+    private CustomAuthEntryPoint authEntryPoint;
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsService customUserDetailService, PasswordEncoder pwEncoder, CustomAuthenticationEntryPoint authEntryPoint) {
+    public SecurityConfig(CustomUserDetailsService customUserDetailService, PasswordEncoder pwEncoder, CustomAuthEntryPoint authEntryPoint) {
         this.customUserDetailService = customUserDetailService;
         this.pwEncoder = pwEncoder;
         this.authEntryPoint = authEntryPoint;
@@ -43,9 +45,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .cors()
                 .and()
-                .httpBasic()
-                .and()
-                .exceptionHandling().authenticationEntryPoint(authEntryPoint)
+                .httpBasic().authenticationEntryPoint(authEntryPoint)
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
