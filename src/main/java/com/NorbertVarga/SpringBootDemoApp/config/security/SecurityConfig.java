@@ -1,7 +1,6 @@
 package com.NorbertVarga.SpringBootDemoApp.config.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -10,7 +9,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.AuthenticationEntryPoint;
 
 @Configuration
 @EnableWebSecurity
@@ -19,12 +17,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final CustomUserDetailsService customUserDetailService;
     private final PasswordEncoder pwEncoder;
-
-    @Qualifier("customAuthenticationEntryPoint")
-    private final AuthenticationEntryPoint authEntryPoint;
+    private final CustomAuthenticationEntryPoint authEntryPoint;
 
     @Autowired
-    public SecurityConfig(CustomUserDetailsService customUserDetailService, PasswordEncoder pwEncoder, AuthenticationEntryPoint authEntryPoint) {
+    public SecurityConfig(CustomUserDetailsService customUserDetailService, PasswordEncoder pwEncoder, CustomAuthenticationEntryPoint authEntryPoint) {
         this.customUserDetailService = customUserDetailService;
         this.pwEncoder = pwEncoder;
         this.authEntryPoint = authEntryPoint;
