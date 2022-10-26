@@ -1,4 +1,4 @@
-package com.NorbertVarga.SpringBootDemoApp.config;
+package com.NorbertVarga.SpringBootDemoApp.config.security;
 
 
 import org.springframework.context.annotation.Configuration;
