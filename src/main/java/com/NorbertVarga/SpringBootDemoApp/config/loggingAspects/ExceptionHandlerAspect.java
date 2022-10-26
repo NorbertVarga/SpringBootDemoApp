@@ -20,7 +20,7 @@ import java.lang.reflect.Parameter;
 @Component
 public class ExceptionHandlerAspect {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionHandlerAspect.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger("errorLog");
 
     @Around("execution(* com.NorbertVarga.SpringBootDemoApp.errorHandling.GlobalExceptionHandler..*(..))")
     public Object LogAroundException(ProceedingJoinPoint proceedingJoinPoint) throws Throwable

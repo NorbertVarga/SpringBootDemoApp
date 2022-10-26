@@ -27,14 +27,10 @@ spring:
     change-log: classpath:changelog/changelog-master.xml
 
 logging:
-  file:
-    name: logs/web-shop.log
+  config: logback-spring.xml
   level:
     liquibase: warn
-    hu.NorbertVarga: info
-    org.springframework.web: info
-    org.springframework.security: info
-    org.hibernate: error
+    com.NorbertVarga.SpringBootDemoApp: info
   pattern:
     console: "%d{yyyy-H:mm:ssMM-dd H} %highlight(%-5level) %cyan(%logger{0}) : %msg%n"
     file: "%d{yyyy-H:mm:ssMM-dd H} %-5level %logger{0} : %msg%n"
