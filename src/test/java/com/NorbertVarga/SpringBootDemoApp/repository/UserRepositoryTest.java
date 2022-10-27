@@ -3,6 +3,7 @@ package com.NorbertVarga.SpringBootDemoApp.repository;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserAccount;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserAddress;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserRoleTypes;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,18 +22,16 @@ public class UserRepositoryTest {
     @Autowired
     private UserRepository userRepository;
 
-//    @BeforeEach
-//    public void init() {
-//
-//    }
+    private UserAccount testUser;
+    private UserAddress userAddress;
+    private List<UserAddress> addressList = new ArrayList<>();
+    private List<UserRoleTypes> roles = new ArrayList<>();
 
-    @DisplayName("Test for saving a User")
-    @Test
-    public void givenUser_whenSave_thenReturnSavedUser() {
+    @BeforeEach
+    public void init() {
+        roles.add(UserRoleTypes.ROLE_USER);
 
-        // ** GIVEN
-        UserAddress userAddress =
-                new UserAddress(
+        userAddress = new UserAddress(
                         "testCountry",
                         "testCity",
                         "zipcode",
@@ -42,27 +41,35 @@ public class UserRepositoryTest {
                 );
         userAddress.setCreatedAt(LocalDateTime.now());
         userAddress.setLastModified(LocalDateTime.now());
+        addressList.add(userAddress);
 
-        UserAccount testUser = new UserAccount(
+        testUser = new UserAccount(
                 "test",
                 "user",
                 "test@email.com",
                 true,
                 5000,
-                List.of(UserRoleTypes.ROLE_USER),
-                List.of(userAddress)
+                roles,
+                addressList
         );
         testUser.setCreatedAt(LocalDateTime.now());
         testUser.setLastModified(LocalDateTime.now());
         testUser.setPassword("test1234");
+    }
+
+    @DisplayName("Test for saving a User")
+    @Test
+    public void givenUser_whenSave_thenReturnSavedUser() {
+
+        // ** GIVEN
 
         // ** WHEN
         UserAccount savedUser = userRepository.save(testUser);
 
         // ** THEN
-        assertNotNull(testUser);
-        assertNotNull(testUser.getUserId());
-        assertTrue(testUser.getUserId() > 0);
+        assertNotNull(savedUser);
+        assertNotNull(savedUser.getUserId());
+        assertTrue(savedUser.getUserId() > 0);
 
     }
 
@@ -71,39 +78,14 @@ public class UserRepositoryTest {
     public void given3Users_whenFindAll_thenUserListSizeEquals3() {
 
         // ** GIVEN
-        UserAddress userAddress =
-                new UserAddress(
-                        "testCountry",
-                        "testCity",
-                        "zipcode",
-                        "testStreet",
-                        10,
-                        "additional info"
-                );
-        userAddress.setCreatedAt(LocalDateTime.now());
-        userAddress.setLastModified(LocalDateTime.now());
-
-        UserAccount testUser = new UserAccount(
-                "test",
-                "user",
-                "test1@email.com",
-                true,
-                5000,
-                List.of(UserRoleTypes.ROLE_USER),
-                List.of(userAddress)
-        );
-        testUser.setCreatedAt(LocalDateTime.now());
-        testUser.setLastModified(LocalDateTime.now());
-        testUser.setPassword("test1234");
-
         UserAccount testUser2 = new UserAccount(
                 "test",
                 "user",
                 "test2@email.com",
                 true,
                 5000,
-                List.of(UserRoleTypes.ROLE_USER),
-                List.of(userAddress)
+                roles,
+                addressList
         );
         testUser2.setCreatedAt(LocalDateTime.now());
         testUser2.setLastModified(LocalDateTime.now());
@@ -115,8 +97,8 @@ public class UserRepositoryTest {
                 "test3@email.com",
                 true,
                 5000,
-                List.of(UserRoleTypes.ROLE_USER),
-                List.of(userAddress)
+                roles,
+                addressList
         );
         testUser3.setCreatedAt(LocalDateTime.now());
         testUser3.setLastModified(LocalDateTime.now());
@@ -138,31 +120,6 @@ public class UserRepositoryTest {
     @Test
     public void givenUser_whenFindByEmail_thenReturnUser() {
         // ** GIVEN
-        UserAddress userAddress =
-                new UserAddress(
-                        "testCountry",
-                        "testCity",
-                        "zipcode",
-                        "testStreet",
-                        10,
-                        "additional info"
-                );
-        userAddress.setCreatedAt(LocalDateTime.now());
-        userAddress.setLastModified(LocalDateTime.now());
-
-        UserAccount testUser = new UserAccount(
-                "test",
-                "user",
-                "test@email.com",
-                true,
-                5000,
-                List.of(UserRoleTypes.ROLE_USER),
-                List.of(userAddress)
-        );
-        testUser.setCreatedAt(LocalDateTime.now());
-        testUser.setLastModified(LocalDateTime.now());
-        testUser.setPassword("test1234");
-
         userRepository.save(testUser);
 
         // ** WHEN
@@ -171,38 +128,12 @@ public class UserRepositoryTest {
 
         // ** THEN
         assertNotNull(userByEmail);
-
     }
 
     @DisplayName("Test for unsuccessful findByEmail")
     @Test
     public void givenUser_whenFindByEmail_thenReturnNull() {
         // ** GIVEN
-        UserAddress userAddress =
-                new UserAddress(
-                        "testCountry",
-                        "testCity",
-                        "zipcode",
-                        "testStreet",
-                        10,
-                        "additional info"
-                );
-        userAddress.setCreatedAt(LocalDateTime.now());
-        userAddress.setLastModified(LocalDateTime.now());
-
-        UserAccount testUser = new UserAccount(
-                "test",
-                "user",
-                "test@email.com",
-                true,
-                5000,
-                List.of(UserRoleTypes.ROLE_USER),
-                List.of(userAddress)
-        );
-        testUser.setCreatedAt(LocalDateTime.now());
-        testUser.setLastModified(LocalDateTime.now());
-        testUser.setPassword("test1234");
-
         userRepository.save(testUser);
 
         // ** WHEN
@@ -216,41 +147,7 @@ public class UserRepositoryTest {
     @DisplayName("Test for update User")
     @Test
     public void givenUser_whenUpdateUser_thenReturnUpdatedUser() {
-
         // ** GIVEN
-        UserAddress userAddress =
-                new UserAddress(
-                        "testCountry",
-                        "testCity",
-                        "zipcode",
-                        "testStreet",
-                        10,
-                        "additional info"
-                );
-        userAddress.setCreatedAt(LocalDateTime.now());
-        userAddress.setLastModified(LocalDateTime.now());
-
-        List<UserRoleTypes> roles = new ArrayList<>();
-        roles.add(UserRoleTypes.ROLE_USER);
-
-        List<UserAddress> addresses = new ArrayList<>();
-        addresses.add(userAddress);
-
-
-        UserAccount testUser = new UserAccount(
-                "test",
-                "user",
-                "test@email.com",
-                true,
-                5000,
-                roles,
-                addresses
-
-        );
-        testUser.setCreatedAt(LocalDateTime.now());
-        testUser.setLastModified(LocalDateTime.now());
-        testUser.setPassword("test1234");
-
         userRepository.save(testUser);
 
         // ** WHEN
@@ -271,39 +168,6 @@ public class UserRepositoryTest {
     public void given2User_whenDelete1User_thenReturnUserListWithSize1() {
 
         // ** GIVEN
-        UserAddress userAddress =
-                new UserAddress(
-                        "testCountry",
-                        "testCity",
-                        "zipcode",
-                        "testStreet",
-                        10,
-                        "additional info"
-                );
-        userAddress.setCreatedAt(LocalDateTime.now());
-        userAddress.setLastModified(LocalDateTime.now());
-
-        List<UserRoleTypes> roles = new ArrayList<>();
-        roles.add(UserRoleTypes.ROLE_USER);
-
-        List<UserAddress> addresses = new ArrayList<>();
-        addresses.add(userAddress);
-
-
-        UserAccount testUser = new UserAccount(
-                "test",
-                "user",
-                "test@email.com",
-                true,
-                5000,
-                roles,
-                addresses
-
-        );
-        testUser.setCreatedAt(LocalDateTime.now());
-        testUser.setLastModified(LocalDateTime.now());
-        testUser.setPassword("test1234");
-
         UserAccount testUser2 = new UserAccount(
                 "test",
                 "user",
@@ -311,7 +175,7 @@ public class UserRepositoryTest {
                 true,
                 5000,
                 roles,
-                addresses
+                addressList
 
         );
         testUser2.setCreatedAt(LocalDateTime.now());
@@ -331,6 +195,5 @@ public class UserRepositoryTest {
         // ** THEN
         assertTrue(deletedUser.isEmpty());
         assertEquals(1, userList.size());
-
     }
 }

@@ -8,16 +8,17 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
-        show_sql: true
-        format_sql: true
+        show_sql: false
+        format_sql: false
 
   liquibase:
     change-log: classpath:changelog/test-changelog-master.xml
 
 logging:
   level:
+    liquibase: warn
     com.NorbertVarga: debug
     org.springframework: info
     org.hibernate: error
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+    console: "%d{yyyy-H:mm:ssMM-dd H} %highlight(%-5level) %cyan(%logger{0}) : %msg%n"

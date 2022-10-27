@@ -37,6 +37,6 @@ logging:
     org.hibernate: error
   pattern:
     console: "%d{yyyy-H:mm:ssMM-dd H} %highlight(%-5level) %cyan(%logger{0}) : %msg%n"
-    file: "%d{yyyy-H:mm:ssMM-dd H} %-5level %logger{0} : %msg%n"
+    file: "%d{yyyy-H:mm:ssMM-dd H} %highlight(%-5level) %cyan%logger{0} : %msg%n"
 
 cors-policies: http://localhost:4200, http://127.0.0.1:4200
