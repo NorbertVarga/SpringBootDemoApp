@@ -3,15 +3,13 @@ package com.NorbertVarga.SpringBootDemoApp.repository;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserAccount;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserAddress;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserRoleTypes;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.test.annotation.Rollback;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -208,11 +206,131 @@ public class UserRepositoryTest {
         userRepository.save(testUser);
 
         // ** WHEN
-
-        // Check the email string which are not correct, so we will not find that user.
+        // Check the email string which is not correct, so we will not find that user.
         Optional<UserAccount> userByEmail = userRepository.findByEmail("test2@email.com");
 
         // ** THEN
         assertTrue(userByEmail.isEmpty());
+    }
+
+    @DisplayName("Test for update User")
+    @Test
+    public void givenUser_whenUpdateUser_thenReturnUpdatedUser() {
+
+        // ** GIVEN
+        UserAddress userAddress =
+                new UserAddress(
+                        "testCountry",
+                        "testCity",
+                        "zipcode",
+                        "testStreet",
+                        10,
+                        "additional info"
+                );
+        userAddress.setCreatedAt(LocalDateTime.now());
+        userAddress.setLastModified(LocalDateTime.now());
+
+        List<UserRoleTypes> roles = new ArrayList<>();
+        roles.add(UserRoleTypes.ROLE_USER);
+
+        List<UserAddress> addresses = new ArrayList<>();
+        addresses.add(userAddress);
+
+
+        UserAccount testUser = new UserAccount(
+                "test",
+                "user",
+                "test@email.com",
+                true,
+                5000,
+                roles,
+                addresses
+
+        );
+        testUser.setCreatedAt(LocalDateTime.now());
+        testUser.setLastModified(LocalDateTime.now());
+        testUser.setPassword("test1234");
+
+        userRepository.save(testUser);
+
+        // ** WHEN
+        UserAccount userForUpdate = userRepository.findByEmail("test@email.com").get();
+        userForUpdate.setBalance(10000);
+        userForUpdate.setFirstName("updated");
+        userForUpdate.setLastName("updated");
+        UserAccount updatedUser = userRepository.save(userForUpdate);
+
+        // ** THEN
+        assertEquals(10000, updatedUser.getBalance());
+        assertEquals("updated", updatedUser.getFirstName());
+        assertEquals("updated", updatedUser.getLastName());
+    }
+
+    @DisplayName("Test for delete user")
+    @Test
+    public void given2User_whenDelete1User_thenReturnUserListWithSize1() {
+
+        // ** GIVEN
+        UserAddress userAddress =
+                new UserAddress(
+                        "testCountry",
+                        "testCity",
+                        "zipcode",
+                        "testStreet",
+                        10,
+                        "additional info"
+                );
+        userAddress.setCreatedAt(LocalDateTime.now());
+        userAddress.setLastModified(LocalDateTime.now());
+
+        List<UserRoleTypes> roles = new ArrayList<>();
+        roles.add(UserRoleTypes.ROLE_USER);
+
+        List<UserAddress> addresses = new ArrayList<>();
+        addresses.add(userAddress);
+
+
+        UserAccount testUser = new UserAccount(
+                "test",
+                "user",
+                "test@email.com",
+                true,
+                5000,
+                roles,
+                addresses
+
+        );
+        testUser.setCreatedAt(LocalDateTime.now());
+        testUser.setLastModified(LocalDateTime.now());
+        testUser.setPassword("test1234");
+
+        UserAccount testUser2 = new UserAccount(
+                "test",
+                "user",
+                "test2@email.com",
+                true,
+                5000,
+                roles,
+                addresses
+
+        );
+        testUser2.setCreatedAt(LocalDateTime.now());
+        testUser2.setLastModified(LocalDateTime.now());
+        testUser2.setPassword("test1234");
+
+        userRepository.save(testUser);
+        userRepository.save(testUser2);
+
+        // ** WHEN
+        UserAccount userToDelete = userRepository.findByEmail("test@email.com").get();
+        userRepository.delete(userToDelete);
+
+        Optional<UserAccount> deletedUser = userRepository.findByEmail("test@email.com");
+        List<UserAccount> userList = userRepository.findAll();
+
+        // ** THEN
+        assertTrue(deletedUser.isEmpty());
+        assertEquals(1, userList.size());
+
     }
 }
