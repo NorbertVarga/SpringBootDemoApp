@@ -9,10 +9,14 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.H2Dialect
         show_sql: true
+        format_sql: true
+
+  liquibase:
+    change-log: classpath:changelog/test-changelog-master.xml
 
 logging:
   level:
-    com.progmasters: debug
+    com.NorbertVarga: debug
     org.springframework: info
     org.hibernate: error
   pattern:
