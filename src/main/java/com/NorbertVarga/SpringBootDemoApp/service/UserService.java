@@ -12,6 +12,7 @@ import com.NorbertVarga.SpringBootDemoApp.repository.UserRepository;
 import com.NorbertVarga.SpringBootDemoApp.validation.SharedValidationService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -34,6 +35,7 @@ public class UserService {
     private final FakerService faker;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
+    @Autowired
     public UserService(UserRepository userRepository, PasswordEncoder pwEncoder, SharedValidationService validationService, FakerService faker) {
         this.userRepository = userRepository;
         this.pwEncoder = pwEncoder;
