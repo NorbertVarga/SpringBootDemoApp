@@ -8,6 +8,8 @@ import com.NorbertVarga.SpringBootDemoApp.entity.purchase_cart.ProductOrder;
 import com.NorbertVarga.SpringBootDemoApp.faker.FakerService;
 import com.NorbertVarga.SpringBootDemoApp.repository.ProductRepository;
 import com.NorbertVarga.SpringBootDemoApp.validation.SharedValidationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import javax.persistence.EntityNotFoundException;
@@ -23,6 +25,8 @@ public class ProductService {
     private final FakerService faker;
     private final ProductRepository productRepository;
     private final SharedValidationService validationService;
+
+    private static final Logger logger = LoggerFactory.getLogger("productLog");
 
     public ProductService(FakerService faker, ProductRepository productRepository, SharedValidationService validationService) {
         this.faker = faker;
@@ -113,6 +117,7 @@ public class ProductService {
     public void decreaseTotalQuantityAfterPurchase(List<ProductOrder> productOrders) {
         Product managedProduct;
         for (ProductOrder order : productOrders) {
+
             managedProduct = order.getProduct();
             managedProduct.setTotalQuantity(managedProduct.getTotalQuantity() - order.getQuantity());
             productRepository.save(managedProduct);

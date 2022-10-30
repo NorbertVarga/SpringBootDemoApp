@@ -33,6 +33,7 @@ public class UserService {
     private final SharedValidationService validationService;
     private final FakerService faker;
     private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+    private static final Logger purchaselogger = LoggerFactory.getLogger("purchaseLog");
 
     public UserService(UserRepository userRepository, PasswordEncoder pwEncoder, SharedValidationService validationService, FakerService faker) {
         this.userRepository = userRepository;
@@ -196,9 +197,9 @@ public class UserService {
 
     public void decreaseBalance(UserAccount user, int price) {
         if (user.getBalance() >= price) {
-            logger.info(" ** USER BALANCE DECREASE: " + user.getEmail() + " | " + user.getBalance() + " - " + price + " = " + (user.getBalance() - price));
+            purchaselogger.info(" ** USER BALANCE DECREASE: " + user.getEmail() + " | " + user.getBalance() + " - " + price + " = " + (user.getBalance() - price));
             user.setBalance(user.getBalance() - price);
-            logger.info("User new balance: " + user.getBalance());
+            purchaselogger.info("User new balance: " + user.getBalance());
             userRepository.save(user);
         } else {
             throw new UserBalanceNotEnoughException("The User don't have enough money for the purchase");
