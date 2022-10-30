@@ -26,7 +26,8 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final SharedValidationService validationService;
 
-    private static final Logger logger = LoggerFactory.getLogger("productLog");
+    private static final Logger logger = LoggerFactory.getLogger(ProductService.class);
+    private static final Logger productLogger = LoggerFactory.getLogger("productLog");
 
     public ProductService(FakerService faker, ProductRepository productRepository, SharedValidationService validationService) {
         this.faker = faker;
@@ -58,42 +59,53 @@ public class ProductService {
     //  **  SECURED ADMIN METHODS    **  ////////////////////////////////////////////
     public ProductData_DTO createProduct(ProductCreateCommand command) {
         Product product = new Product(command);
+        productLogger.info(" ** NEW PRODUCT CREATED");
+        productLogger.info(" Product: " + product);
         Product createdProduct = productRepository.save(product);
         return new ProductData_DTO(createdProduct);
     }
 
     public ProductData_DTO updateProductById(ProductUpdateCommand command, Long id) {
+        productLogger.info(" ** PRODUCT UPDATE INITIATED");
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isPresent()) {
             Product product = productOptional.get();
 
             if (!validationService.isStringEmpty(command.getName())) {
+                productLogger.info("Product name changed | Original: " + product.getName() + " New: " + command.getName());
                 product.setName(command.getName());
             }
             if (!validationService.isStringEmpty(command.getDescription())) {
+                productLogger.info("Product description changed | Original: " + product.getDescription() + " New: " + command.getDescription());
                 product.setDescription(command.getDescription());
             }
 
             if (command.getPrice() != null && command.getPrice() > 0) {
+                productLogger.info("Product price changed | Original: " + product.getPrice() + " New: " + command.getPrice());
                 product.setPrice(command.getPrice());
             }
 
             if (command.getTotalQuantity() != null && command.getTotalQuantity() >= 0) {
+                productLogger.info("Product total quantity changed | Original: " + product.getTotalQuantity() + " New: " + command.getTotalQuantity());
                 product.setTotalQuantity(command.getTotalQuantity());
             }
 
             Product updatedProduct = productRepository.save(product);
             return new ProductData_DTO(updatedProduct);
         } else {
+            productLogger.warn(" ** PRODUCT UPDATE FAILED: There is no Product with the given Id");
             throw new EntityNotFoundException("There is no Product with the given Id");
         }
     }
 
     public void deleteProductById(Long id) {
+        productLogger.info(" ** PRODUCT DELETE INITIATED");
         Optional<Product> productOptional = productRepository.findById(id);
         if (productOptional.isPresent()) {
+            productLogger.info("** PRODUCT DELETED |" + "Product name: " + productOptional.get().getName() + " Product id: " + productOptional.get().getProductId());
             productRepository.delete(productOptional.get());
         } else {
+            productLogger.warn(" ** PRODUCT DELETE FAILED: There is no Product with the given Id");
             throw new EntityNotFoundException("There is no Product with the given Id");
         }
     }
@@ -117,9 +129,11 @@ public class ProductService {
     public void decreaseTotalQuantityAfterPurchase(List<ProductOrder> productOrders) {
         Product managedProduct;
         for (ProductOrder order : productOrders) {
-
             managedProduct = order.getProduct();
+            productLogger.info(" ** PRODUCT PURCHASED: " + "Product name: " + managedProduct.getName() + " Product id: " + managedProduct.getProductId());
+            productLogger.info("Product order quantity: " + order.getQuantity());
             managedProduct.setTotalQuantity(managedProduct.getTotalQuantity() - order.getQuantity());
+            productLogger.info("New total quantity of the product: " + managedProduct.getTotalQuantity());
             productRepository.save(managedProduct);
         }
     }
