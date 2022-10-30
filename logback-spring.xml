@@ -1,69 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <configuration>
 
-    <property name="LOGS" value="./logs" />
+    <property name="LOGS" value="./logs"/>
 
-        <appender name="Console"
-                  class="ch.qos.logback.core.ConsoleAppender">
-            <layout class="ch.qos.logback.classic.PatternLayout">
-                <Pattern>
-                    %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
-                </Pattern>
-            </layout>
-        </appender>
+    <appender name="Console"
+              class="ch.qos.logback.core.ConsoleAppender">
+        <layout class="ch.qos.logback.classic.PatternLayout">
+            <Pattern>
+                %black(%d{ISO8601}) %highlight(%-5level) [%blue(%t)] %yellow(%C{1.}): %msg%n%throwable
+            </Pattern>
+        </layout>
+    </appender>
 
-        <appender name="APPLOG"
-                  class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${LOGS}/app.log</file>
-            <encoder
-                    class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
-            </encoder>
+    <appender name="APPLOG"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS}/app.log</file>
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
 
-            <rollingPolicy
-                    class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <!-- rollover daily and when the file reaches 10 MegaBytes -->
-                <fileNamePattern>${LOGS}/archived/applog-%d{yyyy-MM-dd}.%i.log
-                </fileNamePattern>
-                <timeBasedFileNamingAndTriggeringPolicy
-                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                    <maxFileSize>10MB</maxFileSize>
-                </timeBasedFileNamingAndTriggeringPolicy>
-            </rollingPolicy>
-        </appender>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily and when the file reaches 10 MegaBytes -->
+            <fileNamePattern>${LOGS}/archived/applog-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
 
-        <appender name="ERROR"
-                  class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>${LOGS}/error.log</file>
-            <encoder
-                    class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
-                <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
-            </encoder>
+    <appender name="ERROR"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS}/error.log</file>
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
 
-            <rollingPolicy
-                    class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-                <!-- rollover daily and when the file reaches 10 MegaBytes -->
-                <fileNamePattern>${LOGS}/archived/errorLog-%d{yyyy-MM-dd}.%i.log
-                </fileNamePattern>
-                <timeBasedFileNamingAndTriggeringPolicy
-                        class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
-                    <maxFileSize>10MB</maxFileSize>
-                </timeBasedFileNamingAndTriggeringPolicy>
-            </rollingPolicy>
-        </appender>
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily and when the file reaches 10 MegaBytes -->
+            <fileNamePattern>${LOGS}/archived/errorLog-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="PURCHASE"
+              class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${LOGS}/purchase.log</file>
+        <encoder
+                class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+            <Pattern>%d %p %C{1.} [%t] %m%n</Pattern>
+        </encoder>
+
+        <rollingPolicy
+                class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <!-- rollover daily and when the file reaches 10 MegaBytes -->
+            <fileNamePattern>${LOGS}/archived/purchaseLog-%d{yyyy-MM-dd}.%i.log
+            </fileNamePattern>
+            <timeBasedFileNamingAndTriggeringPolicy
+                    class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+                <maxFileSize>10MB</maxFileSize>
+            </timeBasedFileNamingAndTriggeringPolicy>
+        </rollingPolicy>
+    </appender>
 
 
-        <logger name="com.NorbertVarga.SpringBootDemoApp" level="info" additivity="false">
-            <appender-ref ref="APPLOG" />
-        </logger>
+    <logger name="com.NorbertVarga.SpringBootDemoApp" level="info" additivity="false">
+        <appender-ref ref="APPLOG"/>
+    </logger>
 
-        <logger name="errorLog" level="warn" additivity="false">
-            <appender-ref ref="ERROR" />
-        </logger>
+    <logger name="errorLog" level="warn" additivity="false">
+        <appender-ref ref="ERROR"/>
+    </logger>
 
-        <root level="info">
-            <appender-ref ref="Console" />
-        </root>
+    <logger name="purchaseLog" level="info" additivity="false">
+        <appender-ref ref="PURCHASE"/>
+    </logger>
+
+    <root level="info">
+        <appender-ref ref="Console"/>
+    </root>
 
 
 </configuration>

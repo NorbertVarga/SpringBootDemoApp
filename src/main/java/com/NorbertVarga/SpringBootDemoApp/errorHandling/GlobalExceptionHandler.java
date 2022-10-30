@@ -110,7 +110,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserBalanceNotEnoughException.class)
     protected ResponseEntity<ApiError> handleUserBalanceNotEnoughException(UserBalanceNotEnoughException ex) {
-        logger.warn("Unsuccessful purchase occur. User has not enough balance!");
+        logger.warn(" ** UNSUCCESSFUL PURCHASE:  User has not enough balance!");
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ApiError body = new ApiError(
                 "BALANCE_NOT_ENOUGH",
