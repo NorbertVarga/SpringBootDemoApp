@@ -196,7 +196,9 @@ public class UserService {
 
     public void decreaseBalance(UserAccount user, int price) {
         if (user.getBalance() >= price) {
+            logger.info(" ** USER BALANCE DECREASE: " + user.getEmail() + " | " + user.getBalance() + " - " + price + " = " + (user.getBalance() - price));
             user.setBalance(user.getBalance() - price);
+            logger.info("User new balance: " + user.getBalance());
             userRepository.save(user);
         } else {
             throw new UserBalanceNotEnoughException("The User don't have enough money for the purchase");

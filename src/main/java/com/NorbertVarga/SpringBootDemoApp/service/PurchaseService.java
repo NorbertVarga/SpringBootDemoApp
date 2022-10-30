@@ -64,7 +64,7 @@ public class PurchaseService {
                 }
 
                 if (purchaseItem.getTotalPrice() <= user.getBalance()) {
-                    logger.info(user.getEmail() + " have enough balance: " + user.getBalance() + " - " + purchaseItem.getTotalPrice());
+                    logger.info(user.getEmail() + " have enough balance.");
                     userService.decreaseBalance(user, purchaseItem.getTotalPrice());
                     productService.decreaseTotalQuantityAfterPurchase(purchaseItem.getProductOrderList());
                     purchaseData = new PurchaseItemData_DTO(purchaseRepository.save(purchaseItem));
