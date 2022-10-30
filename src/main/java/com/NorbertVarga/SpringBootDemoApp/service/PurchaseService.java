@@ -144,10 +144,14 @@ public class PurchaseService {
         if (product.getTotalQuantity() > 0) {
             if (product.getTotalQuantity() < order.getQuantity()) {
                 finalOrder = new ProductOrder(product, product.getTotalQuantity());
+                logger.info(" ** PRODUCT ORDER MANIPULATED");
+                logger.info("Product name: " + product.getName() + " Product id: " +  product.getProductId() + " On the stock: " + product.getTotalQuantity() + " Quantity wanted: " + order.getQuantity());
             } else {
                 finalOrder = order;
             }
         } else {
+            logger.info(" ** PRODUCT ORDER REMOVED FROM PURCHASE");
+            logger.info("Product name: " + product.getName() + " Product id: " +  product.getProductId() + " has no stock.");
             finalOrder = null;
         }
         return finalOrder;
