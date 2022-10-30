@@ -79,6 +79,7 @@ public class GlobalExceptionHandler {
     //  **  BUSINESS   ////////////////////
     @ExceptionHandler(AuthenticationException.class)
     protected ResponseEntity<ApiError> handleAuthenticationException(AuthenticationException ex) {
+        logger.warn("Unsuccessful authentication occur!");
         HttpStatus status = HttpStatus.UNAUTHORIZED;
         ApiError body = new ApiError(
                 "UNAUTHORIZED",
@@ -109,6 +110,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(UserBalanceNotEnoughException.class)
     protected ResponseEntity<ApiError> handleUserBalanceNotEnoughException(UserBalanceNotEnoughException ex) {
+        logger.warn("Unsuccessful purchase occur. User has not enough balance!");
         HttpStatus status = HttpStatus.BAD_REQUEST;
         ApiError body = new ApiError(
                 "BALANCE_NOT_ENOUGH",
@@ -131,8 +133,10 @@ public class GlobalExceptionHandler {
     //  **  UTILS  ////////////////////////////////
     private ValidationError processFieldErrors(List<FieldError> fieldErrors) {
         ValidationError validationError = new ValidationError();
+        logger.warn("** Validation Error occur");
         for (FieldError fieldError : fieldErrors) {
             validationError.addFieldError(fieldError.getField(), messageSource.getMessage(fieldError, Locale.getDefault()));
+            logger.warn(fieldError.getField() + ": " + messageSource.getMessage(fieldError, Locale.getDefault()));
         }
         return validationError;
     }
