@@ -1,4 +1,4 @@
-package com.NorbertVarga.SpringBootDemoApp.config;
+package com.NorbertVarga.SpringBootDemoApp.config.security;
 
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserAccount;
 import com.NorbertVarga.SpringBootDemoApp.entity.userAccount.UserPrincipal;

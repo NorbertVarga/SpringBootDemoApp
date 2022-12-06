@@ -8,6 +8,8 @@ import com.NorbertVarga.SpringBootDemoApp.service.CartService;
 import com.NorbertVarga.SpringBootDemoApp.service.UserService;
 import com.NorbertVarga.SpringBootDemoApp.validation.UserCreateCommandValidator;
 import com.NorbertVarga.SpringBootDemoApp.validation.UserUpdateCommandValidator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +32,7 @@ public class UserController {
     private final CartService cartService;
     private final UserCreateCommandValidator userCreateCommandValidator;
     private final UserUpdateCommandValidator userUpdateCommandValidator;
+    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     public UserController(UserService userService, CartService cartService, UserCreateCommandValidator userCreateCommandValidator, UserUpdateCommandValidator userUpdateCommandValidator) {
@@ -58,6 +61,7 @@ public class UserController {
     // UNSECURED "free" endpoints for the registration and login
     @PostMapping("/register")
     public ResponseEntity<UserFullData_DTO> registerUser(@RequestBody @Valid UserCreateCommand userCreateCommand) {
+        logger.info("** REGISTER ATTEMPT: " + userCreateCommand.getEmail());
         UserFullData_DTO registeredUserData = userService.registerUser(userCreateCommand);
         return new ResponseEntity<>(registeredUserData, HttpStatus.OK);
     }
@@ -70,11 +74,14 @@ public class UserController {
             UserAccount loggedUser = userService.findUserByEmail(user.getUsername());
             if (loggedUser != null) {
                 cartService.initCart();
+                logger.info("** SUCCESS LOGIN: " + loggedUser.getEmail());
                 response = new ResponseEntity<>(new UserFullData_DTO(loggedUser), HttpStatus.OK);
             } else {
+                logger.warn("** FAILED LOGIN");
                 response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
             }
         } else {
+            logger.warn("** FAILED LOGIN");
             response = new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
         return response;

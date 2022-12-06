@@ -10,6 +10,8 @@ import com.NorbertVarga.SpringBootDemoApp.errorHandling.UserBalanceNotEnoughExce
 import com.NorbertVarga.SpringBootDemoApp.faker.FakerService;
 import com.NorbertVarga.SpringBootDemoApp.repository.UserRepository;
 import com.NorbertVarga.SpringBootDemoApp.validation.SharedValidationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +32,8 @@ public class UserService {
     private final PasswordEncoder pwEncoder;
     private final SharedValidationService validationService;
     private final FakerService faker;
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+    private static final Logger purchaselogger = LoggerFactory.getLogger("purchaseLog");
 
     public UserService(UserRepository userRepository, PasswordEncoder pwEncoder, SharedValidationService validationService, FakerService faker) {
         this.userRepository = userRepository;
@@ -48,7 +52,9 @@ public class UserService {
             UserAccount user = new UserAccount(command);
             user.setPassword(pwEncoder.encode(command.getPassword()));
             registeredUser = userRepository.save(user);
+            logger.info("** USER REGISTERED: " + registeredUser.getEmail() + "! NAME: " + registeredUser.getFirstName() + " " + registeredUser.getLastName());
         } else {
+            logger.warn("** FAILED REGISTER: " + command.getEmail() + " already exist!");
             throw new EntityExistsException("The given email is already taken.");
         }
 
@@ -191,7 +197,9 @@ public class UserService {
 
     public void decreaseBalance(UserAccount user, int price) {
         if (user.getBalance() >= price) {
+            purchaselogger.info(" ** USER BALANCE DECREASE: " + user.getEmail() + " | " + user.getBalance() + " - " + price + " = " + (user.getBalance() - price));
             user.setBalance(user.getBalance() - price);
+            purchaselogger.info("User new balance: " + user.getBalance());
             userRepository.save(user);
         } else {
             throw new UserBalanceNotEnoughException("The User don't have enough money for the purchase");

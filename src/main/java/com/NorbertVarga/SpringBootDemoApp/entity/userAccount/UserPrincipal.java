@@ -98,4 +98,25 @@ public class UserPrincipal implements UserDetails {
         return lastName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    @Override
+    public String toString() {
+        return "UserPrincipal{" +
+                "email='" + email + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", authorities=" + authorities +
+                '}';
+    }
 }

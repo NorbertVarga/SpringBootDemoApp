@@ -1,5 +1,6 @@
 package com.NorbertVarga.SpringBootDemoApp.service;
 
+import com.NorbertVarga.SpringBootDemoApp.controller.UserController;
 import com.NorbertVarga.SpringBootDemoApp.dto.purchase_cart.ProductOrderData_DTO;
 import com.NorbertVarga.SpringBootDemoApp.dto.purchase_cart.PurchaseItemData_DTO;
 import com.NorbertVarga.SpringBootDemoApp.entity.product.Product;
@@ -11,6 +12,8 @@ import com.NorbertVarga.SpringBootDemoApp.errorHandling.UserBalanceNotEnoughExce
 import com.NorbertVarga.SpringBootDemoApp.repository.ProductOrderRepository;
 import com.NorbertVarga.SpringBootDemoApp.repository.PurchaseRepository;
 import com.NorbertVarga.SpringBootDemoApp.validation.SharedValidationService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.session.SessionAuthenticationException;
 import org.springframework.stereotype.Service;
@@ -31,16 +34,16 @@ public class PurchaseService {
     private final ProductOrderRepository productOrderRepository;
     private final UserService userService;
     private final ProductService productService;
-    private final SharedValidationService validationService;
+
+    private static final Logger logger = LoggerFactory.getLogger("purchaseLog");
 
     @Autowired
-    public PurchaseService(HttpSession session, PurchaseRepository purchaseRepository, ProductOrderRepository productOrderRepository, UserService userService, ProductService productService, SharedValidationService validationService) {
+    public PurchaseService(HttpSession session, PurchaseRepository purchaseRepository, ProductOrderRepository productOrderRepository, UserService userService, ProductService productService) {
         this.session = session;
         this.purchaseRepository = purchaseRepository;
         this.productOrderRepository = productOrderRepository;
         this.userService = userService;
         this.productService = productService;
-        this.validationService = validationService;
     }
 
     //  **  STANDARD OPERATIONS ENABLED FOR USERS   /////////////////////////////////////////////
@@ -49,6 +52,7 @@ public class PurchaseService {
         Cart cart = (Cart) session.getAttribute("cart");
         PurchaseItemData_DTO purchaseData;
         if (user != null) {
+            logger.info("** PURCHASE INITIATED | User: " + user.getEmail() + " | " + user.getFirstName() + " " + user.getLastName());
             if (user.equals(cart.getUser())) {
                 // We need to check that there is enough product in stock,
                 // because it is possible that in the meantime someone has bought the given product.
@@ -60,19 +64,23 @@ public class PurchaseService {
                 }
 
                 if (purchaseItem.getTotalPrice() <= user.getBalance()) {
+                    logger.info(user.getEmail() + " have enough balance.");
                     userService.decreaseBalance(user, purchaseItem.getTotalPrice());
                     productService.decreaseTotalQuantityAfterPurchase(purchaseItem.getProductOrderList());
                     purchaseData = new PurchaseItemData_DTO(purchaseRepository.save(purchaseItem));
                     cart.clearCart();
+                    logger.info("** SUCCESSFUL PURCHASE | CART CLEARED");
                     session.setAttribute("cart", cart);
                 } else {
                     throw new UserBalanceNotEnoughException("The User don't have enough money for the purchase");
                 }
             } else {
                 session.invalidate();
+                logger.info("** UNSUCCESSFUL PURCHASE: The user in the cart does not match the logged in user" );
                 throw new SessionAuthenticationException("The user in the cart does not match the logged in user");
             }
         } else {
+            logger.info("** UNSUCCESSFUL PURCHASE: There is no user logged in" );
             throw new EntityNotFoundException("There is no user logged in");
         }
         return purchaseData;
@@ -136,10 +144,14 @@ public class PurchaseService {
         if (product.getTotalQuantity() > 0) {
             if (product.getTotalQuantity() < order.getQuantity()) {
                 finalOrder = new ProductOrder(product, product.getTotalQuantity());
+                logger.info(" ** PRODUCT ORDER MANIPULATED");
+                logger.info("Product name: " + product.getName() + " Product id: " +  product.getProductId() + " On the stock: " + product.getTotalQuantity() + " Quantity wanted: " + order.getQuantity());
             } else {
                 finalOrder = order;
             }
         } else {
+            logger.info(" ** PRODUCT ORDER REMOVED FROM PURCHASE");
+            logger.info("Product name: " + product.getName() + " Product id: " +  product.getProductId() + " has no stock.");
             finalOrder = null;
         }
         return finalOrder;
