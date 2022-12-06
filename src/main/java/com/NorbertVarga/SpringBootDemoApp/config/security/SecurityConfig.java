@@ -18,14 +18,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CustomUserDetailsService customUserDetailService;
     private final PasswordEncoder pwEncoder;
 
-    @Qualifier("customAuthEntryPoint")
-    private CustomAuthEntryPoint authEntryPoint;
-
     @Autowired
     public SecurityConfig(CustomUserDetailsService customUserDetailService, PasswordEncoder pwEncoder, CustomAuthEntryPoint authEntryPoint) {
         this.customUserDetailService = customUserDetailService;
         this.pwEncoder = pwEncoder;
-        this.authEntryPoint = authEntryPoint;
     }
 
     @Override
@@ -45,7 +41,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .cors()
                 .and()
-                .httpBasic().authenticationEntryPoint(authEntryPoint)
+                .httpBasic()
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS)
                 .and()
