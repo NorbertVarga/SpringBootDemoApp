@@ -11,6 +11,8 @@ import { CartComponent } from './component/cart/cart.component';
 import { AdminComponent } from './component/admin/admin.component';
 import { UserProfileComponent } from './component/user-profile/user-profile.component';
 import { HomeComponent } from './component/home/home.component';
+import {ReactiveFormsModule} from "@angular/forms";
+import {HttpClientModule} from "@angular/common/http";
 
 @NgModule({
   declarations: [
@@ -26,6 +28,8 @@ import { HomeComponent } from './component/home/home.component';
   ],
   imports: [
     BrowserModule,
+    ReactiveFormsModule,
+    HttpClientModule,
     AppRoutingModule
   ],
   providers: [],
