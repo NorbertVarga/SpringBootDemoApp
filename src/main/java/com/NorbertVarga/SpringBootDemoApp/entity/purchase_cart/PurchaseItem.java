@@ -21,7 +21,7 @@ public class PurchaseItem {
     @Column(name = "purchase_item_id", nullable = false)
     private Long purchaseItemId;
 
-    @ManyToOne // todo update userAccount entity and related DTO
+    @ManyToOne
     @JoinColumn(name = "user_id")
     @NotNull
     private UserAccount userAccount;
