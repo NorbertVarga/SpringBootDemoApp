@@ -1,7 +1,7 @@
 <div class="container-fluid p-4">
 
 
-  <form class="row g-4">
+  <form class="row g-4" [formGroup]="registerForm">
     <div class="col-md-6">
       <label for="firstName" class="form-label">First Name:</label>
       <input type="text" class="form-control" formControlName="firstName" id="firstName">
@@ -13,6 +13,8 @@
     <div class="col-md-6">
       <label for="inputEmail" class="form-label">Email:</label>
       <input type="email" class="form-control" formControlName="email" id="inputEmail">
+      <p class="small" style="color: var(--error-red)" *ngIf="registerForm.controls['email'].errors.required">E-mail cannot be empty</p>
+
     </div>
     <div class="col-md-6">
       <label for="inputPassword" class="form-label">Password:</label>
@@ -43,7 +45,7 @@
       <textarea class="form-control" aria-label="additional" formControlName="additionalInfo" id="additional"></textarea>
     </div>
     <div class="col-md-12">
-        <button type="submit" class="btn" style="background-color: var(--my-dark-blue); color: var(--text-color-light); position: absolute; left: 33%; right: 33%">
+        <button type="submit" class="btn" style="background-color: var(--my-dark-blue); color: var(--text-color-light); position: absolute; left: 33%; right: 33%" (click)="submitRegister()">
           Register
         </button>
     </div>
