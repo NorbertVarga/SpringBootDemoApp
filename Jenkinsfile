@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Stage 1') {
             steps {
-                echo 'It works! Im really happy'
+                echo 'It works! Im really happyyy'
             }
         }
         stage('Build') {
@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Deploy') {
            steps {
-              sh "sudo cp target/SpringBootDemoApp-0.0.1-SNAPSHOT.jar /SpringBootDemoApp"
+              sh "sudo -E cp target/SpringBootDemoApp-0.0.1-SNAPSHOT.jar /SpringBootDemoApp"
               sh "sudo java -jar /SpringBootDemoApp/SpringBootDemoApp-0.0.1-SNAPSHOT.jar"
            }
         }
