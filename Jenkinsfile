@@ -1,7 +1,9 @@
 pipeline {
     agent any
     triggers {
-        scm('refs/heads/develop')
+        githubPush(
+            branches: ['develop']
+        )
     }
     stages {
         stage('Stage 1') {
