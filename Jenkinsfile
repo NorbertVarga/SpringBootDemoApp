@@ -8,15 +8,14 @@ pipeline {
         }
     }
     options {
-            // Monitor changes in the specified branch
-            scm {
-                git {
-                    remote {
-                        name 'origin'
-                        url 'https://github.com/NorbertVarga/SpringBootDemoApp.git'
-                    }
-                    branch 'develop'
+        // Monitor changes in the specified branch
+        scm {
+            git {
+                remote {
+                    name 'origin'
+                    url 'https://github.com/NorbertVarga/SpringBootDemoApp.git'
                 }
+                branch 'develop'
             }
         }
     }
