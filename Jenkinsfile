@@ -13,7 +13,7 @@ pipeline {
         }
         stage('Deploy') {
            steps {
-              sh "cp target/SpringBootDemoApp-0.0.1-SNAPSHOT.jar /SpringBootDemoApp/"
+              sh "cp target/SpringBootDemoApp-0.0.1-SNAPSHOT.jar /SpringBootDemoApp"
               sh "sudo java -jar /SpringBootDemoApp/SpringBootDemoApp-0.0.1-SNAPSHOT.jar"
            }
         }
