@@ -14,7 +14,7 @@ pipeline {
         stage('Deploy') {
            steps {
               sh "scp target/SpringBootDemoApp-0.0.1-SNAPSHOT.jar <http://3.68.199.215/>:/opt/SpringBootDemoApp/"
-              ssh <http://3.68.199.215/> "sudo systemctl start SpringBootDemoApp-0.0.1-SNAPSHOT.jar"
+              sh "sudo java -jar SpringBootDemoApp-0.0.1-SNAPSHOT.jar"
            }
         }
     }
