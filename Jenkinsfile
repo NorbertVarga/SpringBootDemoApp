@@ -27,8 +27,9 @@ pipeline {
             steps {
                 withCredentials([[
                     $class: 'AmazonWebServicesCredentialsBinding',
-                    accessKeyVariable: 'AKIA5FUQPQIDKP5NLNEN',
-                    secretKeyVariable: '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'
+                    accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                    secretKeyVariable: 'AWS_SECRET_ACCESS_KEY',
+                    region: 'global'
                 ]]) {
                     script {
                         def timestamp = sh(returnStdout: true, script: 'date +%Y-%m-%d-%H-%M-%S').trim()
