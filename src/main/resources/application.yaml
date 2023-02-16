@@ -25,13 +25,10 @@ spring:
 #        format_sql: true
 #        generate-ddl: true
         ddl-auto: create-drop
-  liquibase:
-    change-log: classpath:changelog/changelog-master.xml
 
 logging:
   config: logback-spring.xml
   level:
-    liquibase: warn
     com.NorbertVarga.SpringBootDemoApp: info
   pattern:
     console: "%d{yyyy-H:mm:ssMM-dd H} %highlight(%-5level) %cyan(%logger{0}) : %msg%n"
