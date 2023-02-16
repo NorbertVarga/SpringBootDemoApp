@@ -11,6 +11,7 @@ pipeline {
         stage('Build') {
            steps {
               sh 'mvn clean package -DskipTests'
+              echo 'Build Stage Finished.'
            }
         }
 
@@ -18,6 +19,7 @@ pipeline {
             steps {
                 sh "sudo pkill -f SpringBootDemoApp-0.0.1-SNAPSHOT.jar"
                 sh "sudo rm -rf /home/ec2-user/SpringBootDemoApp/*"
+                echo 'Clear Stage Finished.'
             }
         }
 
@@ -25,6 +27,7 @@ pipeline {
             steps {
                 sh "sudo cp /var/lib/jenkins/workspace/test_develop/target/SpringBootDemoApp-0.0.1-SNAPSHOT.jar /home/ec2-user/SpringBootDemoApp"
                 sh "sudo java -jar /home/ec2-user/SpringBootDemoApp/SpringBootDemoApp-0.0.1-SNAPSHOT.jar &" // start the app in the background
+                echo 'Start Stage Finished.'
             }
         }
 
@@ -36,6 +39,7 @@ pipeline {
                     def response = sh(returnStdout: true, script: "curl http://localhost:8081/api/users/all")
                     echo "Response from http://localhost:8081/api/users/all: ${response}"
                 }
+                echo 'Verify Stage Finished.'
             }
         }
     }
