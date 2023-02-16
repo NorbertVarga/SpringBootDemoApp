@@ -15,6 +15,16 @@ pipeline {
            }
         }
 
+        stage('Copy to S3') {
+            steps {
+                script {
+                    def timestamp = sh(returnStdout: true, script: 'date +%Y-%m-%d-%H-%M-%S').trim()
+                    def s3Path = "s3://jenkins-bucket-sbda/builds/${timestamp}/SpringBootDemoApp-0.0.1-SNAPSHOT.jar"
+                    sh "aws s3 cp /var/lib/jenkins/workspace/test_develop/target/SpringBootDemoApp-0.0.1-SNAPSHOT.jar ${s3Path}"
+                }
+            }
+        }
+
         stage('Stop and Clear') {
             steps {
                 sh "sudo pkill -f SpringBootDemoApp-0.0.1-SNAPSHOT.jar"
