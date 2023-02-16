@@ -39,7 +39,7 @@ pipeline {
                     def response = sh(returnStdout: true, script: "curl http://localhost:8081/api/users/all")
                     echo "Response from http://localhost:8081/api/users/all: ${response}"
                 }
-                echo 'Verify Stage Finished.'
+                echo 'Verify Stage Finished!'
             }
         }
     }
