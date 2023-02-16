@@ -14,7 +14,7 @@ pipeline {
         stage('Deploy') {
            steps {
               sh "sudo -E cp /var/lib/jenkins/workspace/test_develop/target/SpringBootDemoApp-0.0.1-SNAPSHOT.jar /home/ec2-user/SpringBootDemoApp"
-              sh "sudo java -jar /SpringBootDemoApp/SpringBootDemoApp-0.0.1-SNAPSHOT.jar"
+              sh "sudo java -jar /home/ec2-user/SpringBootDemoApp/SpringBootDemoApp-0.0.1-SNAPSHOT.jar"
            }
         }
     }
