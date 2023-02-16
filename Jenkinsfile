@@ -21,10 +21,15 @@ pipeline {
             }
         }
 
-        stage('Deploy') {
+        stage('Copy and Start') {
             steps {
                 sh "sudo cp /var/lib/jenkins/workspace/test_develop/target/SpringBootDemoApp-0.0.1-SNAPSHOT.jar /home/ec2-user/SpringBootDemoApp"
                 sh "sudo java -jar /home/ec2-user/SpringBootDemoApp/SpringBootDemoApp-0.0.1-SNAPSHOT.jar &" // start the app in the background
+            }
+        }
+
+        stage('Copy and Start') {
+            steps {
                 sh "sleep 120" // wait for the app to start up (adjust the sleep time as needed)
                 sh "curl --fail http://localhost:8081/api/users/all || exit 1" // make an HTTP request to the app health endpoint
             }

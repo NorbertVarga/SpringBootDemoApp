@@ -40,7 +40,7 @@ public class UserService {
         this.pwEncoder = pwEncoder;
         this.validationService = validationService;
         this.faker = faker;
-        populateDataBaseWithDummyUsers(10);
+        populateDataBaseWithDummyUsers(3);
         saveAdminUser();
         saveSimpleUser();
     }
