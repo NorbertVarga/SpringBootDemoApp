@@ -28,10 +28,14 @@ pipeline {
             }
         }
 
-        stage('Copy and Start') {
+        stage('Wait and Verify') {
             steps {
                 sh "sleep 120" // wait for the app to start up (adjust the sleep time as needed)
                 sh "curl --fail http://localhost:8081/api/users/all || exit 1" // make an HTTP request to the app health endpoint
+                script {
+                    def response = sh(returnStdout: true, script: "curl http://localhost:8081/api/users/all")
+                    echo "Response from http://localhost:8081/api/users/all: ${response}"
+                }
             }
         }
     }
